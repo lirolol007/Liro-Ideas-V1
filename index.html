@@ -327,4 +327,271 @@
     <button class="nav-item nav-done" id="nav-done" onclick="setView('archive')">✅ Archiv <span class="badge" id="badge-done">0</span></button>
   </nav>
 
-  <div class="section-title" id="ai-title
+  <div class="section-title" id="ai-title" style="display:none;">Generierte KI-Ideen</div>
+  <div class="cards-grid" id="ai-grid" style="display:none;"></div>
+
+  <div class="section-title" id="pool-title">Basis Ideenpool</div>
+  <div class="cards-grid" id="main-grid"></div>
+
+  <footer>
+    <span>&copy; 2026 Liro Labs</span>
+    <a href="https://www.youtube.com/@Liro_LOL" target="_blank">@Liro_LOL</a>
+  </footer>
+
+</div>
+
+<script>
+// Flüssiger Maus-Glow
+const glow = document.getElementById('mouse-glow');
+document.addEventListener('mousemove', (e) => {
+  window.requestAnimationFrame(() => {
+    glow.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+  });
+});
+
+// Kuratierter Basis-Pool
+const baseShort = [
+  { id: 's1', tag:'meme', title:'POV: Jemand fragt ob Furries weird sind', desc:'Reagiere in Character als dein Fursona – absurd, selbstbewusst, witzig.', inspo:'Inspiration: EN VRChat Community' },
+  { id: 's2', tag:'challenge', title:'1 Stunde in VRChat ohne Sprechen', desc:'NPC-Challenge: Antworte nur durch Emotes und Gesten in Public Lobbies.', inspo:'Trend: Silent Challenges' },
+  { id: 's3', tag:'reaction', title:'Reagiere auf Furry-Stereotypen', desc:'Kommentiere kurze Clips mit viel Humor und Augenzwinkern.', inspo:'Format: React Shorts' }
+];
+const baseLong = [
+  { id: 'l1', tag:'story', title:'Mein Weg ins Fandom: Erste Erfahrungen', desc:'Ein ehrliches Storytime-Video über deine allerersten Schritte und Welten.', inspo:'Inspiration: Journey Videos' },
+  { id: 'l2', tag:'meme', title:'Best of VRChat Highlights', desc:'Compilation deiner witzigsten Erlebnisse in öffentlichen Instanzen.', inspo:'Format à la Lolathon' }
+];
+
+// App-Status
+let currentView = 'all'; 
+let currentFormat = 'short';
+
+let aiList = JSON.parse(localStorage.getItem('ll_ai') || '[]');
+let favList = JSON.parse(localStorage.getItem('ll_fav') || '[]');
+let archList = JSON.parse(localStorage.getItem('ll_arch') || '[]');
+
+function save() {
+  localStorage.setItem('ll_ai', JSON.stringify(aiList));
+  localStorage.setItem('ll_fav', JSON.stringify(favList));
+  localStorage.setItem('ll_arch', JSON.stringify(archList));
+  updateBadges();
+}
+
+function updateBadges() {
+  document.getElementById('badge-fav').textContent = favList.length;
+  document.getElementById('badge-done').textContent = archList.length;
+}
+
+function setView(view) {
+  currentView = view;
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('nav-' + (view === 'favorites' ? 'fav' : view === 'archive' ? 'done' : 'all')).classList.add('active');
+  
+  document.getElementById('format-container').style.display = view === 'all' ? 'flex' : 'none';
+  document.getElementById('generator-widget').style.display = view === 'all' ? 'block' : 'none';
+  
+  render();
+}
+
+function setFormat(fmt) {
+  currentFormat = fmt;
+  document.getElementById('btn-fmt-short').classList.toggle('active', fmt === 'short');
+  document.getElementById('btn-fmt-long').classList.toggle('active', fmt === 'long');
+  render();
+}
+
+// WORKFLOW FUNKTIONEN
+function toggleFav(id, origin) {
+  let item = findItem(id, origin);
+  if(!item) return;
+
+  const isFav = favList.some(f => f.id === id);
+  if(isFav) {
+    favList = favList.filter(f => f.id !== id);
+    if(item.isAi && !aiList.some(a => a.id === id) && currentView !== 'all') {
+      aiList.push(item);
+    }
+  } else {
+    if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
+    if(origin === 'arch') archList = archList.filter(a => a.id !== id);
+    favList.push(item);
+  }
+  save();
+  render();
+}
+
+function archiveItem(id, origin) {
+  let item = findItem(id, origin);
+  if(!item) return;
+
+  if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
+  if(origin === 'fav') favList = favList.filter(f => f.id !== id);
+
+  if(!archList.some(a => a.id === id)) archList.push(item);
+  save();
+  render();
+}
+
+function deletePermanent(id) {
+  archList = archList.filter(a => a.id !== id);
+  save();
+  render();
+}
+
+function findItem(id, origin) {
+  if(origin === 'base_short') return baseShort.find(i => i.id === id);
+  if(origin === 'base_long') return baseLong.find(i => i.id === id);
+  if(origin === 'ai') return aiList.find(i => i.id === id);
+  if(origin === 'fav') return favList.find(i => i.id === id);
+  if(origin === 'arch') return archList.find(i => i.id === id);
+  return null;
+}
+
+// CARDS GENERATOR
+function buildCardHTML(item, origin) {
+  const isFav = favList.some(f => f.id === item.id);
+  let buttons = '';
+
+  if(currentView === 'all') {
+    buttons = `
+      <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="toggleFav('${item.id}', '${origin}')" title="Favorisieren">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <button class="icon-action-btn" onclick="archiveItem('${item.id}', '${origin}')" title="Archivieren">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+      </button>
+    `;
+  } else if(currentView === 'favorites') {
+    buttons = `
+      <button class="icon-action-btn active-fav" onclick="toggleFav('${item.id}', 'fav')" title="Vom Plan entfernen">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <button class="icon-action-btn" onclick="archiveItem('${item.id}', 'fav')" title="Als erledigt abhaken">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+      </button>
+    `;
+  } else if(currentView === 'archive') {
+    buttons = `
+      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'arch')" title="Wiederherstellen (Zu Favoriten)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+      <button class="icon-action-btn" onclick="deletePermanent('${item.id}')" title="Endgültig löschen" style="color:rgba(255,69,58,0.6)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+      </button>
+    `;
+  }
+
+  return `
+    <div class="idea-card ${item.isAi?'ai-style':''} ${currentView==='archive'?'archive-style':''}">
+      <div class="card-header">
+        <div class="card-tags">
+          <span class="card-tag">${item.tag}</span>
+          ${item.isAi ? '<span class="card-tag ai-badge">KI</span>' : ''}
+        </div>
+        <div class="card-actions">${buttons}</div>
+      </div>
+      <div class="card-title">${item.title}</div>
+      <div class="card-desc">${item.desc}</div>
+      <div class="card-footer">${item.inspo || 'Liro Labs Engine'}</div>
+    </div>
+  `;
+}
+
+function render() {
+  const mainGrid = document.getElementById('main-grid');
+  const aiGrid = document.getElementById('ai-grid');
+  const aiTitle = document.getElementById('ai-title');
+  const poolTitle = document.getElementById('pool-title');
+
+  if(currentView === 'all') {
+    poolTitle.style.display = 'block';
+    poolTitle.textContent = currentFormat === 'short' ? 'Basis-Ideenpool (Shorts)' : 'Basis-Ideenpool (YouTube)';
+    
+    // KI-Karten filtern/rendern
+    if(aiList.length) {
+      aiTitle.style.display = 'block';
+      aiGrid.style.display = 'grid';
+      aiGrid.innerHTML = aiList.map(i => buildCardHTML(i, 'ai')).join('');
+    } else {
+      aiTitle.style.display = 'none';
+      aiGrid.style.display = 'none';
+    }
+
+    // Basis-Karten rendern
+    let base = currentFormat === 'short' ? baseShort : baseLong;
+    mainGrid.innerHTML = base.map(i => buildCardHTML(i, currentFormat === 'short' ? 'base_short' : 'base_long')).join('');
+
+  } else {
+    aiTitle.style.display = 'none';
+    aiGrid.style.display = 'none';
+    poolTitle.style.display = 'none';
+
+    let listToRender = currentView === 'favorites' ? favList : archList;
+    if(!listToRender.length) {
+      mainGrid.innerHTML = `<div class="empty-state">${currentView === 'favorites' ? 'Noch keine Favoriten geplant. Klicke auf das Lesezeichen-Symbol (📌) bei deinen Ideen!' : 'Das Archiv ist leer.'}</div>`;
+    } else {
+      mainGrid.innerHTML = listToRender.map(i => buildCardHTML(i, currentView === 'favorites' ? 'fav' : 'arch')).join('');
+    }
+  }
+}
+
+// PROMPT GENERATOR LOGIK
+function generatePrompt() {
+  const keyword = document.getElementById('ai-prompt').value.trim();
+  const formatText = currentFormat === 'short' ? 'Kurzform (TikTok/Shorts)' : 'Langform (YouTube)';
+  
+  const promptText = `Du bist ein Social-Media-Experte für Furry- und VRChat-Content. Generiere 4 kreative, frische Video-Ideen für den deutschen Creator "Liro".
+Format: ${formatText}.
+${keyword ? `Fokus-Thema / Stichwort: "${keyword}"` : ''}
+
+Antworte mir AUSSCHLIESSLICH im folgenden JSON-Format als Code-Block, ohne Einleitung oder Erklärung drumherum:
+[
+  {"tag":"meme","title":"Titel 1","desc":"Beschreibung der Idee","inspo":"Inspiration"},
+  {"tag":"challenge","title":"Titel 2","desc":"Beschreibung der Idee","inspo":"Inspiration"},
+  {"tag":"story","title":"Titel 3","desc":"Beschreibung der Idee","inspo":"Inspiration"},
+  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung der Idee","inspo":"Inspiration"}
+]`;
+
+  document.getElementById('prompt-textarea').value = promptText;
+  document.getElementById('prompt-box').style.display = 'block';
+}
+
+function copyPrompt() {
+  const textarea = document.getElementById('prompt-textarea');
+  textarea.select();
+  document.execCommand('copy');
+  alert('Prompt kopiert! Füge ihn einfach im KI-Chat ein.');
+}
+
+function importAIContent() {
+  const val = document.getElementById('import-textarea').value.trim();
+  try {
+    const cleanJson = val.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(cleanJson);
+    
+    if(Array.isArray(parsed)) {
+      const newIdeas = parsed.map(item => ({
+        id: 'ai_' + Math.random().toString(36).substr(2, 9),
+        tag: item.tag || 'video',
+        title: item.title || 'KI Idee',
+        desc: item.desc || '',
+        inspo: item.inspo || 'KI Generiert',
+        isAi: true
+      }));
+      
+      aiList = [...newIdeas, ...aiList];
+      save();
+      document.getElementById('import-textarea').value = '';
+      render();
+    } else {
+      alert('Das Format war nicht ganz richtig. Stelle sicher, dass du das komplette Array kopiert hast.');
+    }
+  } catch(e) {
+    alert('Fehler beim Einlesen. Bitte vergewissere dich, dass du die eckigen Klammern [ ] mitkopiert hast.');
+  }
+}
+
+// Start
+save();
+render();
+</script>
+</body>
+</html>
