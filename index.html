@@ -3,364 +3,463 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liro Labs – Content Engine</title>
+<title>Liro Ideas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2 family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0a0c;
-    --bg-card: #121214;
-    --bg-input: #18181c;
+    --bg2: #121214;
+    --bg3: #1a1a1e;
     --border: rgba(255, 255, 255, 0.06);
-    --border-hover: rgba(255, 255, 255, 0.15);
-    --text-main: #ffffff;
-    --text-muted: #8e8e93;
-    --text-dim: #48484a;
-    
-    /* Glow-Farben */
-    --glow-red: rgba(255, 69, 58, 0.4);
-    --glow-blue: rgba(10, 132, 255, 0.5);
-    --glow-gold: rgba(255, 214, 10, 0.4);
-    --glow-green: rgba(48, 209, 88, 0.4);
-    
-    --radius-apple: 12px;
+    --border2: rgba(255, 255, 255, 0.12);
+    --text: #ffffff;
+    --text2: #a1a1aa;
+    --text3: #52525b;
+    --accent: #ff453a; /* Roter Gaming-Akzent */
+    --accent-glow: rgba(255, 69, 58, 0.35);
+    --radius-apple: 22px; /* Für das perfekte iPhone App Icon */
+    --radius-card: 14px;
     --radius-pill: 999px;
-    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     background: var(--bg);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
     line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
-    position: relative;
   }
 
-  /* Flüssiger Maus-Glow */
+  /* Flüssiger Maus-Glow im Hintergrund */
   #mouse-glow {
     position: fixed;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0) 70%);
-    top: -200px;
-    left: -200px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 70%);
+    top: -250px;
+    left: -250px;
     pointer-events: none;
-    z-index: 9999;
-    transform: translate3d(0,0,0);
+    z-index: 1;
     will-change: transform;
   }
 
-  .page { max-width: 850px; margin: 0 auto; padding: 50px 20px 100px; position: relative; z-index: 2; }
+  .page { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; padding: 60px 24px 100px; }
 
-  /* Korrigierter Header mit großem Text & iOS-App-Icon genau DARÜBER */
-  .profile-header {
+  /* Linktree Style Header mit iOS App Icon direkt DARÜBER */
+  header {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-bottom: 44px;
+    margin-bottom: 48px;
   }
 
-  .avatar-container {
+  .avatar-wrapper {
     position: relative;
+    width: 96px;
+    height: 96px;
     margin-bottom: 20px;
   }
 
-  /* Perfekte iPhone-App-Abrundung (Squircle-Style) */
-  .avatar {
-    width: 95px;
-    height: 95px;
-    border-radius: 22px; 
-    border: 1px solid rgba(255, 255, 255, 0.15);
+  /* Dein Avatar-Bild als abgerundete iPhone App */
+  .app-avatar {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 15px rgba(255,255,255,0.05);
+    border-radius: var(--radius-apple);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
 
-  /* Vergrößerter Liro Labs Schriftzug mit rotem Glow */
-  .logo-title {
-    font-size: 52px;
+  /* Kleiner grüner Online-Dot auf der App */
+  .avatar-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #30d158;
+    border: 3px solid var(--bg);
+  }
+
+  .logo-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Großer Liro Ideas Schriftzug mit fettem rotem Glow */
+  .logo {
+    font-family: 'Syne', sans-serif;
     font-weight: 800;
-    letter-spacing: -0.05em;
-    color: var(--text-main);
+    font-size: 54px;
+    letter-spacing: -0.04em;
+    color: var(--text);
     line-height: 1.1;
-    margin-bottom: 6px;
-    filter: drop-shadow(0 0 20px var(--glow-red));
+    filter: drop-shadow(0 0 25px var(--accent-glow));
   }
 
   .logo-sub {
     font-size: 13px;
-    color: var(--text-muted);
-    font-weight: 400;
-    letter-spacing: 0.05em;
+    color: var(--text3);
+    font-weight: 500;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
-  /* Social Quick-Links */
-  .social-row {
+  .social-links {
     display: flex;
     gap: 10px;
-    margin-top: 16px;
-  }
-  .social-btn {
-    padding: 6px 14px;
-    border-radius: var(--radius-pill);
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 500;
-    transition: var(--transition);
-  }
-  .social-btn:hover {
-    color: var(--text-main);
-    border-color: var(--border-hover);
-    transform: translateY(-2px);
+    margin-top: 20px;
   }
 
-  /* Format Umschalter (Tabs) */
-  .tabs-wrapper {
+  .social-link {
     display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 32px;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--bg2);
+  }
+
+  .social-link:hover {
+    border-color: var(--border2);
+    color: var(--text);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+
+  /* Format Tabs Switcher */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 36px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 5px;
+    border-radius: var(--radius-card);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .tab-btn {
-    padding: 12px 24px;
-    border-radius: var(--radius-apple);
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    color: var(--text-muted);
+    padding: 10px 24px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
     font-family: inherit;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.2s;
   }
 
-  .tab-btn:hover {
-    color: var(--text-main);
-    border-color: var(--border-hover);
-    transform: translateY(-2px);
-  }
-  .tab-btn:first-child:hover { box-shadow: 0 4px 15px rgba(10, 132, 255, 0.2); }
-  .tab-btn:last-child:hover { box-shadow: 0 4px 15px rgba(255, 69, 58, 0.2); }
+  .tab-btn:hover { color: var(--text); }
 
   .tab-btn.active {
-    background: var(--text-main);
+    background: var(--text);
     color: var(--bg);
-    border-color: var(--text-main);
     font-weight: 600;
   }
 
-  /* Live AI Generator Panel */
-  .generator-panel {
-    background: var(--bg-card);
+  /* Filter-Leiste */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+  }
+
+  .filter-label { font-size: 11px; color: var(--text3); font-weight: 700; letter-spacing: 0.08em; margin-right: 4px; }
+
+  .filter-btn {
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
     border: 1px solid var(--border);
-    border-radius: var(--radius-apple);
-    padding: 24px;
+    background: transparent;
+    color: var(--text2);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .filter-btn:hover { border-color: var(--border2); color: var(--text); background: var(--bg2); }
+
+  .filter-btn.active {
+    background: var(--bg3);
+    border-color: var(--border2);
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .spacer { flex: 1; }
+
+  .shuffle-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    color: var(--text2);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .shuffle-btn:hover { border-color: var(--border2); color: var(--text); background: var(--bg3); }
+
+  /* Section Headline */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  /* Cards Grid */
+  .ideas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 14px;
     margin-bottom: 40px;
-    position: relative;
-    overflow: hidden;
   }
-  .generator-panel::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(10, 132, 255, 0.5), transparent);
-  }
-
-  .gen-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-  .gen-badge { font-size: 10px; font-weight: 700; color: #0a84ff; background: rgba(10, 132, 255, 0.15); padding: 2px 8px; border-radius: var(--radius-pill); }
-  .gen-title { font-size: 15px; font-weight: 600; }
-
-  .input-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
-
-  .clean-input {
-    flex: 1; min-width: 260px; padding: 14px 16px; background: var(--bg-input);
-    border: 1px solid var(--border); border-radius: var(--radius-apple);
-    color: var(--text-main); font-family: inherit; font-size: 13px; outline: none; transition: var(--transition);
-  }
-  .clean-input:focus { border-color: rgba(10, 132, 255, 0.4); }
-
-  /* Weisser Button, wird Blau bei Hover, hebt sich an */
-  .gen-button {
-    padding: 14px 22px; background: var(--text-main); color: var(--bg); border: none;
-    border-radius: var(--radius-apple); font-family: inherit; font-size: 13px; font-weight: 600;
-    cursor: pointer; transition: var(--transition); white-space: nowrap;
-  }
-  .gen-button:hover { transform: translateY(-2px); box-shadow: 0 0 20px var(--glow-blue); background: #ffffff; }
-  .gen-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
-
-  .ai-status { margin-top: 12px; font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; min-height: 20px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .spinner { width: 13px; height: 13px; border: 1.5px solid var(--border); border-top-color: #0a84ff; border-radius: 50%; animation: spin 0.7s linear infinite; }
-
-  /* Workflow Navigation */
-  .workflow-nav { display: flex; gap: 12px; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-  .nav-item {
-    display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--radius-apple);
-    background: transparent; border: 1px solid transparent; color: var(--text-muted); font-size: 13px; font-weight: 500; cursor: pointer; transition: var(--transition);
-  }
-  .nav-item:hover { color: var(--text-main); transform: translateY(-2px); }
-  
-  /* Farb-Leuchten für Nav-Tabs */
-  .nav-all.active { background: rgba(255,255,255,0.04); color: var(--text-main); border-color: var(--border); }
-  .nav-fav.active { background: rgba(255, 214, 10, 0.05); color: #ffd60a; border-color: rgba(255, 214, 10, 0.2); }
-  .nav-done.active { background: rgba(48, 209, 88, 0.05); color: #30d158; border-color: rgba(48, 209, 88, 0.2); }
-
-  .nav-fav:hover { box-shadow: 0 0 15px var(--glow-gold); border-color: rgba(255, 214, 10, 0.3); }
-  .nav-done:hover { box-shadow: 0 0 15px var(--glow-green); border-color: rgba(48, 209, 88, 0.3); }
-
-  .badge { font-size: 11px; background: var(--bg-input); padding: 1px 6px; border-radius: 6px; color: var(--text-muted); margin-left: 4px; }
-  .active .badge { background: rgba(255,255,255,0.1); color: inherit; }
-
-  /* Grids & Cards */
-  .section-title { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; margin: 32px 0 12px; text-transform: uppercase; }
-  .cards-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 24px; }
-  @media(min-width: 630px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
 
   .idea-card {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple);
-    padding: 20px; display: flex; flex-direction: column; gap: 10px; transition: var(--transition);
-    animation: fadeIn 0.3s ease forwards;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-  .idea-card:hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.6); }
-  
-  .idea-card.ai-style { border-color: rgba(10, 132, 255, 0.25); background: linear-gradient(to bottom right, var(--bg-card), rgba(10, 132, 255, 0.02)); }
-  .idea-card.ai-style:hover { border-color: rgba(10, 132, 255, 0.4); }
-  .idea-card.archive-style { opacity: 0.4; }
 
-  .card-header { display: flex; justify-content: space-between; align-items: center; }
-  .card-tags { display: flex; gap: 6px; }
-  .card-tag { font-size: 9px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: var(--radius-pill); }
-  
-  /* Farbige Tags je nach Thema */
+  .idea-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.6);
+  }
+
+  .idea-card.is-saved { border-color: rgba(255, 69, 58, 0.3); }
+
+  .card-top { display: flex; align-items: center; justify-content: space-between; }
+
+  .tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 3px 9px;
+    border-radius: var(--radius-pill);
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.05);
+    color: var(--text2);
+  }
+
   .tag-meme { background: rgba(167,139,250,0.12); color: #c4b5fd; }
   .tag-challenge { background: rgba(52,211,153,0.12); color: #6ee7b7; }
   .tag-story { background: rgba(251,191,36,0.12); color: #fcd34d; }
   .tag-reaction { background: rgba(251,146,60,0.12); color: #fdba74; }
   .tag-collab { background: rgba(244,114,182,0.12); color: #f9a8d4; }
-  
-  .card-tag.ai-badge { background: rgba(10, 132, 255, 0.15); color: #0a84ff; }
-  
-  .card-actions { display: flex; gap: 6px; }
-  .icon-action-btn {
-    width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border); background: transparent;
-    color: var(--text-dim); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition);
+
+  .card-save-btn {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text3);
+    transition: all 0.2s;
   }
-  .icon-action-btn:hover { color: var(--text-main); border-color: var(--border-hover); background: rgba(255,255,255,0.03); }
-  .icon-action-btn.active-fav { color: #ffd60a; border-color: rgba(255, 214, 10, 0.4); background: rgba(255, 214, 10, 0.08); }
-  .icon-action-btn.active-fav:hover { box-shadow: 0 0 10px var(--glow-gold); }
 
-  .card-title { font-size: 15px; font-weight: 700; color: var(--text-main); line-height: 1.4; letter-spacing: -0.01em; }
-  .card-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; flex: 1; }
-  .card-footer { font-size: 11px; color: var(--text-dim); padding-top: 8px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 4px; }
-  .card-footer svg { width: 11px; height: 11px; flex-shrink: 0; }
+  .card-save-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .card-save-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(255, 69, 58, 0.1); }
+  .card-save-btn svg { width: 14px; height: 14px; }
 
-  .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-dim); border: 1px dashed var(--border); border-radius: var(--radius-apple); font-size: 13px; }
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+  }
 
-  /* Login Overlay Screen */
-  .login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-  .login-box { background: var(--bg-card); border: 1px solid var(--border-hover); border-radius: 20px; padding: 40px 32px; width: 100%; max-width: 420px; position: relative; text-align: center; }
-  .login-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--glow-red), transparent); }
-  .login-title { font-size: 28px; font-weight: 800; letter-spacing: -0.04em; filter: drop-shadow(0 0 15px var(--glow-red)); margin-bottom: 6px; }
-  .login-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; }
-  .login-label { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; text-align: left; display: block; margin-bottom: 6px; }
-  .login-input { width: 100%; padding: 12px 14px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-apple); color: #fff; font-family: monospace; font-size: 13px; outline: none; margin-bottom: 12px; }
-  .login-input:focus { border-color: rgba(255,69,58,0.4); }
-  .login-hint { font-size: 11.5px; color: var(--text-dim); text-align: left; line-height: 1.5; margin-bottom: 24px; }
-  .login-hint a { color: var(--text-muted); text-decoration: none; }
-  .login-btn { width: 100%; padding: 14px; background: #fff; color: #000; border: none; border-radius: var(--radius-apple); font-weight: 600; cursor: pointer; transition: var(--transition); }
-  .login-btn:hover { background: #e5e5e5; transform: translateY(-1px); }
-  .login-error { font-size: 12px; color: #ff453a; margin-top: 10px; display: none; }
+  .card-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.55;
+    flex: 1;
+  }
 
-  footer { margin-top: 80px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-dim); display: flex; justify-content: space-between; }
-  footer a { color: var(--text-dim); text-decoration: none; }
-  footer a:hover { color: var(--text-muted); }
+  .card-inspo {
+    font-size: 11px;
+    color: var(--text3);
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Saved Panel */
+  .saved-section {
+    margin-top: 48px;
+    border-top: 1px solid var(--border);
+    padding-top: 32px;
+  }
+
+  .saved-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .saved-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .saved-count {
+    background: rgba(255, 69, 58, 0.15);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+  }
+
+  .clear-btn {
+    font-size: 12px;
+    color: var(--text3);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .clear-btn:hover { color: var(--accent); }
+
+  .saved-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .saved-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13.5px;
+  }
+
+  .saved-item-text { flex: 1; }
+  .saved-item-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .unsave-btn {
+    background: none; border: none; cursor: pointer; color: var(--text3); padding: 4px; transition: color 0.2s;
+  }
+  .unsave-btn:hover { color: var(--accent); }
+
+  footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text3);
+    display: flex;
+    justify-content: space-between;
+  }
 </style>
 </head>
 <body>
 
 <div id="mouse-glow"></div>
 
-<div class="login-overlay" id="login-overlay">
-  <div class="login-box">
-    <div class="login-title">Liro Labs</div>
-    <div class="login-sub">Content Idea Generator · Live Engine</div>
-    <label class="login-label">ANTHROPIC API KEY</label>
-    <input class="login-input" id="login-key-input" type="password" placeholder="sk-ant-..." />
-    <div class="login-hint">
-      Hole dir deinen kostenlosen Key auf <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.<br>
-      Der Key verlässt deinen PC niemals, sondern wird nur lokal verschlüsselt gesichert.
-    </div>
-    <button class="login-btn" onclick="submitKey()">Engine starten</button>
-    <div class="login-error" id="login-error">Key ungültig (Muss mit "sk-ant-" beginnen!)</div>
-  </div>
-</div>
-
 <div class="page">
 
-  <header class="profile-header">
-    <div class="avatar-container">
-      <img class="avatar" src="Bild LOL oderso.jpg" alt="Liro Avatar">
+  <header>
+    <div class="avatar-wrapper">
+      <img class="app-avatar" src="Bild LOL oderso.jpg" alt="Liro Avatar">
     </div>
-    <h1 class="logo-title">Liro Labs</h1>
-    <p class="logo-sub">Content Engine · VRChat &amp; Furry</p>
+    <div class="logo-group">
+      <div class="logo">Liro Ideas</div>
+      <div class="logo-sub">Content Hub · VRChat &amp; Furry</div>
+    </div>
     
-    <div class="social-row">
-      <a class="social-btn" href="https://www.youtube.com/@Liro_LOL" target="_blank">YouTube</a>
-      <a class="social-btn" href="https://www.tiktok.com/@liro7160" target="_blank">TikTok</a>
-      <a class="social-btn" href="#" onclick="resetKey(); return false;" style="border-color: rgba(255,69,58,0.2)">Key wechseln</a>
+    <div class="social-links">
+      <a class="social-link" href="https://www.youtube.com/@Liro_LOL" target="_blank">YouTube</a>
+      <a class="social-link" href="https://www.tiktok.com/@liro7160" target="_blank">TikTok</a>
     </div>
   </header>
 
-  <div class="tabs-wrapper" id="format-container">
-    <button class="tab-btn active" id="btn-fmt-short" onclick="setFormat('short')">Kurzform (TikTok/Shorts)</button>
-    <button class="tab-btn" id="btn-fmt-long" onclick="setFormat('long')">Langform (YouTube)</button>
+  <div class="tabs">
+    <button class="tab-btn active" id="btn-short" onclick="switchTab('short')">Kurzform (TikTok/Shorts)</button>
+    <button class="tab-btn" id="btn-long" onclick="switchTab('long')">Langform (YouTube)</button>
   </div>
 
-  <section class="generator-panel" id="generator-widget">
-    <div class="gen-header">
-      <span class="gen-badge">Live</span>
-      <span class="gen-title">KI-Ideen Schmiede</span>
+  <div class="filter-bar">
+    <span class="filter-label">Filter</span>
+    <button class="filter-btn active" onclick="setFilter('all', this)">Alle</button>
+    <button class="filter-btn" onclick="setFilter('meme', this)">Meme</button>
+    <button class="filter-btn" onclick="setFilter('challenge', this)">Challenge</button>
+    <button class="filter-btn" onclick="setFilter('reaction', this)">Reaction</button>
+    <button class="filter-btn" onclick="setFilter('story', this)">Story</button>
+    <div class="spacer"></div>
+    <button class="shuffle-btn" onclick="shufflePool()">Mischen</button>
+  </div>
+
+  <div class="section-label" id="pool-title">Ideen Pool</div>
+  <div class="ideas-grid" id="ideas-grid"></div>
+
+  <div class="saved-section" id="saved-section" style="display:none">
+    <div class="saved-header">
+      <div class="saved-title">
+        Geplante Videos
+        <span class="saved-count" id="saved-count">0</span>
+      </div>
+      <button class="clear-btn" onclick="clearAll()">Alle löschen</button>
     </div>
-    <p style="font-size: 12.5px; color: var(--text-muted)">
-      Generiert vollautomatisch frische Ideen basierend auf englischen Trend-Creatorn wie Lolathon, Wickerbeast oder Nardoragon.
-    </p>
-    <div class="input-row">
-      <input class="clean-input" id="ai-prompt" placeholder='Stichwort eingeben (z.B. "Horror Welten", "POV Schule", "Full Body Fail")...' />
-      <button class="gen-button" id="ai-btn" onclick="generateAI()">Ideen generieren</button>
-    </div>
-    <div class="ai-status" id="ai-status"></div>
-  </section>
-
-  <nav class="workflow-nav">
-    <button class="nav-item nav-all active" id="nav-all" onclick="setView('all')">Ideen Pool</button>
-    <button class="nav-item nav-fav" id="nav-fav" onclick="setView('favorites')">⭐ Geplant <span class="badge" id="badge-fav">0</span></button>
-    <button class="nav-item nav-done" id="nav-done" onclick="setView('archive')">✅ Erledigt <span class="badge" id="badge-done">0</span></button>
-  </nav>
-
-  <div class="section-title" id="ai-title" style="display:none;">Generierte KI-Ideen</div>
-  <div class="cards-grid" id="ai-grid" style="display:none;"></div>
-
-  <div class="section-title" id="pool-title">Kuratierter Basis-Pool</div>
-  <div class="cards-grid" id="main-grid"></div>
+    <div class="saved-list" id="saved-list"></div>
+  </div>
 
   <footer>
-    <span>&copy; 2026 Liro Labs</span>
-    <a href="https://www.youtube.com/@Liro_LOL" target="_blank">@Liro_LOL</a>
+    <span>&copy; 2026 Liro Ideas</span>
+    <span>Kuriert für @Liro_LOL</span>
   </footer>
 
 </div>
 
 <script>
-// Flüssiger Maus-Glow
+// Flüssiger Maus-Glow Effekt
 const glow = document.getElementById('mouse-glow');
 document.addEventListener('mousemove', (e) => {
   window.requestAnimationFrame(() => {
@@ -368,297 +467,126 @@ document.addEventListener('mousemove', (e) => {
   });
 });
 
-// Kuratierter Basis-Ideenpool
-const baseShort = [
-  { id: 's1', tag:'meme', title:'POV: Jemand fragt ob Furries weird sind', desc:'Reagiere in Character als dein Fursona – absurd, selbstbewusst, witzig.', inspo:'Inspiration: EN VRChat Community' },
-  { id: 's2', tag:'challenge', title:'1 Stunde in VRChat ohne Sprechen', desc:'NPC-Challenge: Antworte nur durch Emotes und Gesten in Public Lobbies.', inspo:'Trend: Silent Challenges' },
-  { id: 's3', tag:'reaction', title:'Reagiere auf Furry-Stereotypen', desc:'Kommentiere kurze Clips mit viel Humor und Augenzwinkern.', inspo:'Format: React Shorts' },
-  { id: 's4', tag:'collab', title:'Fremde in VRChat interviewen', desc:'Stell Random-Leuten eine super simple oder absurde Frage und schneide die besten Antworten zusammen.', inspo:'Format: Street-Interviews' }
-];
-const baseLong = [
-  { id: 'l1', tag:'story', title:'Mein Weg ins Fandom: Erste Erfahrungen', desc:'Ein ehrliches Storytime-Video über deine allerersten Schritte und Welten.', inspo:'Inspiration: Journey Videos' },
-  { id: 'l2', tag:'meme', title:'Best of VRChat Highlights', desc:'Compilation deiner witzigsten Erlebnisse in öffentlichen Instanzen.', inspo:'Format à la Lolathon' },
-  { id: 'l3', tag:'challenge', title:'24 Stunden in Public VRChat Welten', desc:'Ein echtes Doku-Experiment: Wen trifft man um 4 Uhr nachts? Wie reagieren Leute?', inspo:'Trend: Long-form vlogs' }
+// Fest eingebauter, kuratierter Daten-Pool
+const shortIdeas = [
+  { id: 's1', tag:'meme', title:'POV: Jemand fragt ob Furries weird sind', desc:'Reagiere in Character als dein Fursona – absurd, selbstbewusst, witzig. Ein perfekter Edit für TikTok.', inspo:'Inspiration: EN Furry Community Trends' },
+  { id: 's2', tag:'challenge', title:'1 Stunde in VRChat ohne Sprechen', desc:'NPC-Challenge: Antworte in Public Lobbies ausschließlich mit Emotes und Zeichensprache.', inspo:'Trend: Silent Voice Challenge' },
+  { id: 's3', tag:'reaction', title:'Reagiere auf Furry-Stereotypen', desc:'Kommentiere virale Klischees aus dem Netz mit Humor, Ironie und coolen Schnitten.', inspo:'Format: Relatable Reactions' },
+  { id: 's4', tag:'story', title:'POV: Du bist mein Full-Body-Tracker um 4 Uhr morgens', desc:'Die Kamera liegt am Boden während dein Avatar im Halbschlaf lost herumtanz und wegglitcht.', inspo:'Trend: Late Night VRChat Fails' },
+  { id: 's5', tag:'meme', title:'POV: Der einzige Nicht-Furry in einer Public Lobby', desc:'Du betrittst eine Map und synchron drehen sich 20 flauschige Riesen-Avatare lautlos zu dir um.', inspo:'Meme-Kultur in VRChat Publics' },
+  { id: 's6', tag:'challenge', title:'POV: Schule als der Schüler, der immer Ärger kriegt', desc:'Egal was auf der Map passiert (Chaos von anderen), der Lehrer schreit sofort dich an. Real.', inspo:'Relatable School Skits' }
 ];
 
-// App State Variablen
-let currentView = 'all'; 
+const longIdeas = [
+  { id: 'l1', tag:'story', title:'Mein Weg ins Fandom: Wie alles begann', desc:'Ein langes, ehrliches Storytime-Video über deine erste World, deinen ersten Avatar und wie du gestartet bist.', inspo:'Format: Community Journey' },
+  { id: 'l2', tag:'meme', title:'Best of VRChat Public Lobbies', desc:'Die absolut witzigsten, chaotischsten Begegnungen eines Monats im coolen Video-Edit zusammengefasst.', inspo:'Format à la Lolathon / VRC Highlights' },
+  { id: 'l3', tag:'challenge', title:'24 Stunden Überleben in Horror-Welten', desc:'Zusammen mit der Community oder Freunden eine brutale Marathon-Session durch die gruseligsten Welten.', inspo:'Trend: VR Horror Gaming' }
+];
+
 let currentFormat = 'short';
-let apiKey = localStorage.getItem('liro_api_key') || '';
+let currentFilter = 'all';
+let saved = JSON.parse(localStorage.getItem('liro_saved_ideas') || '[]');
+let pool = [];
 
-let aiList = JSON.parse(localStorage.getItem('ll_ai') || '[]');
-let favList = JSON.parse(localStorage.getItem('ll_fav') || '[]');
-let archList = JSON.parse(localStorage.getItem('ll_arch') || '[]');
+function getPool() { return currentFormat === 'short' ? shortIdeas : longIdeas; }
 
-function save() {
-  localStorage.setItem('ll_ai', JSON.stringify(aiList));
-  localStorage.setItem('ll_fav', JSON.stringify(favList));
-  localStorage.setItem('ll_arch', JSON.stringify(archList));
-  updateBadges();
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
-function updateBadges() {
-  document.getElementById('badge-fav').textContent = favList.length;
-  document.getElementById('badge-done').textContent = archList.length;
-}
-
-function setView(view) {
-  currentView = view;
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('nav-' + (view === 'favorites' ? 'fav' : view === 'archive' ? 'done' : 'all')).classList.add('active');
-  
-  document.getElementById('format-container').style.display = view === 'all' ? 'flex' : 'none';
-  document.getElementById('generator-widget').style.display = view === 'all' ? 'block' : 'none';
-  
-  render();
-}
-
-function setFormat(fmt) {
+function switchTab(fmt) {
   currentFormat = fmt;
-  document.getElementById('btn-fmt-short').classList.toggle('active', fmt === 'short');
-  document.getElementById('btn-fmt-long').classList.toggle('active', fmt === 'long');
+  currentFilter = 'all';
+  document.getElementById('btn-short').classList.toggle('active', fmt === 'short');
+  document.getElementById('btn-long').classList.toggle('active', fmt === 'long');
+  document.querySelectorAll('.filter-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+  pool = shuffle(getPool());
   render();
 }
 
-// WORKFLOW INTERAKTIONS-LOGIK
-function toggleFav(id, origin) {
-  let item = findItem(id, origin);
-  if(!item) return;
-  const isFav = favList.some(f => f.id === id);
-  if(isFav) {
-    favList = favList.filter(f => f.id !== id);
-    if(item.isAi && !aiList.some(a => a.id === id)) aiList.push(item);
-  } else {
-    if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
-    if(origin === 'arch') archList = archList.filter(a => a.id !== id);
-    favList.push(item);
-  }
-  save(); render();
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
 }
 
-function archiveItem(id, origin) {
-  let item = findItem(id, origin);
-  if(!item) return;
-  if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
-  if(origin === 'fav') favList = favList.filter(f => f.id !== id);
-  if(!archList.some(a => a.id === id)) archList.push(item);
-  save(); render();
+function shufflePool() {
+  pool = shuffle(getPool());
+  render();
 }
 
-function deletePermanent(id) {
-  archList = archList.filter(a => a.id !== id);
-  save(); render();
+function toggleSave(id) {
+  const all = [...shortIdeas, ...longIdeas];
+  const item = all.find(i => i.id === id);
+  if (!item) return;
+  
+  const idx = saved.findIndex(s => s.id === id);
+  if (idx >= 0) saved.splice(idx, 1);
+  else saved.push(item);
+  
+  localStorage.setItem('liro_saved_ideas', JSON.stringify(saved));
+  render();
 }
 
-function findItem(id, origin) {
-  if(origin === 'base_short') return baseShort.find(i => i.id === id);
-  if(origin === 'base_long') return baseLong.find(i => i.id === id);
-  if(origin === 'ai') return aiList.find(i => i.id === id);
-  if(origin === 'fav') return favList.find(i => i.id === id);
-  if(origin === 'arch') return archList.find(i => i.id === id);
-  return null;
-}
-
-// HTML CARD GENERATOR
-function buildCardHTML(item, origin) {
-  const isFav = favList.some(f => f.id === item.id);
-  let buttons = '';
-
-  if(currentView === 'all') {
-    buttons = `
-      <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="toggleFav('${item.id}', '${origin}')" title="Planen (Favorit)">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="archiveItem('${item.id}', '${origin}')" title="Als erledigt markieren">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      </button>
-    `;
-  } else if(currentView === 'favorites') {
-    buttons = `
-      <button class="icon-action-btn active-fav" onclick="toggleFav('${item.id}', 'fav')" title="Zurück in den Pool">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="archiveItem('${item.id}', 'fav')" title="Video ist fertig (Archivieren)">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-      </button>
-    `;
-  } else if(currentView === 'archive') {
-    buttons = `
-      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'arch')" title="Wiederholen (Zu Favoriten)">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="deletePermanent('${item.id}')" title="Löschen" style="color:rgba(255,69,58,0.6)">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
-      </button>
-    `;
-  }
-
-  return `
-    <div class="idea-card ${item.isAi?'ai-style':''} ${currentView==='archive'?'archive-style':''}">
-      <div class="card-header">
-        <div class="card-tags">
-          <span class="card-tag tag-${item.tag}">${item.tag}</span>
-          ${item.isAi ? '<span class="card-tag ai-badge">KI</span>' : ''}
-        </div>
-        <div class="card-actions">${buttons}</div>
-      </div>
-      <div class="card-title">${item.title}</div>
-      <div class="card-desc">${item.desc}</div>
-      <div class="card-footer">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-        ${item.inspo || 'Liro Labs Engine'}
-      </div>
-    </div>
-  `;
+function clearAll() {
+  saved = [];
+  localStorage.setItem('liro_saved_ideas', JSON.stringify(saved));
+  render();
 }
 
 function render() {
-  const mainGrid = document.getElementById('main-grid');
-  const aiGrid = document.getElementById('ai-grid');
-  const aiTitle = document.getElementById('ai-title');
-  const poolTitle = document.getElementById('pool-title');
-
-  if(currentView === 'all') {
-    poolTitle.style.display = 'block';
-    poolTitle.textContent = currentFormat === 'short' ? 'Basis-Ideenpool (Shorts)' : 'Basis-Ideenpool (YouTube)';
-    
-    if(aiList.length) {
-      aiTitle.style.display = 'block';
-      aiGrid.style.display = 'grid';
-      aiGrid.innerHTML = aiList.map(i => buildCardHTML(i, 'ai')).join('');
-    } else {
-      aiTitle.style.display = 'none';
-      aiGrid.style.display = 'none';
-    }
-
-    let base = currentFormat === 'short' ? baseShort : baseLong;
-    mainGrid.innerHTML = base.map(i => buildCardHTML(i, currentFormat === 'short' ? 'base_short' : 'base_long')).join('');
-
-  } else {
-    aiTitle.style.display = 'none';
-    aiGrid.style.display = 'none';
-    poolTitle.style.display = 'none';
-
-    let listToRender = currentView === 'favorites' ? favList : archList;
-    if(!listToRender.length) {
-      mainGrid.innerHTML = `<div class="empty-state">${currentView === 'favorites' ? 'Noch keine Videos geplant. Klicke auf das Lesezeichen (📌) bei deinen Ideen!' : 'Das Archiv ist leer.'}</div>`;
-    } else {
-      mainGrid.innerHTML = listToRender.map(i => buildCardHTML(i, currentView === 'favorites' ? 'fav' : 'arch')).join('');
-    }
-  }
-}
-
-// LIVE CLAUDE-API GENERATOR LOGIK
-async function generateAI() {
-  const btn = document.getElementById('ai-btn');
-  const status = document.getElementById('ai-status');
-  const keyword = document.getElementById('ai-prompt').value.trim();
-  const formatText = currentFormat === 'short' ? 'Kurzform (TikTok/Shorts/Reels unter 60 Sek)' : 'Langform (YouTube Videos)';
-
-  btn.disabled = true;
-  status.innerHTML = '<span class="spinner"></span> Claude durchforstet das Fandom nach Trends...';
-
-  const systemPrompt = `Du bist ein erfahrener Social-Media-Manager für den deutschen VRChat- & Furry-Creator "Liro" (@Liro_LOL).
-  Generiere 4 hochgradig kreative, perfekt passende Video-Ideen basierend auf Trends englischsprachiger Creator (Lolathon, Wickerbeast, Nardoragon).
+  const grid = document.getElementById('ideas-grid');
+  let filtered = currentFilter === 'all' ? pool : pool.filter(i => i.tag === currentFilter);
   
-  Antworte AUSSCHLIESSLICH als valides JSON-Array im folgenden Format, ohne Text davor/danach und ohne Markdown-Code-Blocks:
-  [
-    {"tag":"meme","title":"Titel 1","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-    {"tag":"challenge","title":"Titel 2","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-    {"tag":"story","title":"Titel 3","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-    {"tag":"reaction","title":"Titel 4","desc":"Beschreibung der Idee","inspo":"Inspiration"}
-  ]`;
+  grid.innerHTML = filtered.map(item => {
+    const isSaved = saved.some(s => s.id === item.id);
+    return `
+      <div class="idea-card ${isSaved ? 'is-saved' : ''}">
+        <div class="card-top">
+          <span class="tag tag-${item.tag}">${item.tag}</span>
+          <button class="card-save-btn ${isSaved ? 'active' : ''}" onclick="toggleSave('${item.id}')">
+            <svg viewBox="0 0 24 24" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </button>
+        </div>
+        <div class="card-title">${item.title}</div>
+        <div class="card-desc">${item.desc}</div>
+        <div class="card-inspo">${item.inspo}</div>
+      </div>
+    `;
+  }).join('');
 
-  const userMsg = `Format des Videos: ${formatText}.
-  ${keyword ? `Fokus-Thema / Spezifisches Stichwort: "${keyword}"` : 'Generiere einen abwechslungsreichen Mix aus verschiedenen Kategorien.'}
-  
-  Die Ideen müssen komplett auf Deutsch geschrieben sein und genau zu Liros Zielgruppe passen.`;
+  // Render Saved List
+  const savedSection = document.getElementById('saved-section');
+  const savedList = document.getElementById('saved-list');
+  document.getElementById('saved-count').textContent = saved.length;
 
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
-        'anthropic-beta': 'direct-browser-access-2025-02-06'
-      },
-      body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20260311',
-        max_tokens: 1200,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userMsg }]
-      })
-    });
-    
-    const data = await res.json();
-    const text = data.content?.map(b => b.text || '').join('').trim();
-    const cleanJson = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(cleanJson);
-    
-    if(Array.isArray(parsed)) {
-      const newIdeas = parsed.map(item => ({
-        id: 'ai_' + Math.random().toString(36).substr(2, 9),
-        tag: item.tag || 'meme',
-        title: item.title || 'KI Idee',
-        desc: item.desc || '',
-        inspo: item.inspo || 'KI Generiert',
-        isAi: true
-      }));
-      
-      aiList = [...newIdeas, ...aiList];
-      save();
-      document.getElementById('ai-prompt').value = '';
-      render();
-      status.innerHTML = `<span style="color:#30d158">✓ 4 neue Ideen erfolgreich in den Pool geladen!</span>`;
-    } else {
-      status.innerHTML = `Formatfehler bei der Antwort der KI. Bitte erneut versuchen.`;
-    }
-  } catch(e) {
-    status.innerHTML = `Fehler: API-Key falsch oder Verbindung fehlgeschlagen.`;
-    console.error(e);
-  }
-  btn.disabled = false;
-}
-
-// API KEY LOGIN MANAGEMENT
-function checkLogin() {
-  const overlay = document.getElementById('login-overlay');
-  if (apiKey && apiKey.startsWith('sk-ant-')) {
-    overlay.style.display = 'none';
+  if (!saved.length) {
+    savedSection.style.display = 'none';
   } else {
-    overlay.style.display = 'flex';
+    savedSection.style.display = 'block';
+    savedList.innerHTML = saved.map(s => `
+      <div class="saved-item">
+        <span class="tag tag-${s.tag}">${s.tag}</span>
+        <div class="saved-item-text">
+          <div><strong>${s.title}</strong></div>
+          <div class="saved-item-sub">${s.inspo}</div>
+        </div>
+        <button class="unsave-btn" onclick="toggleSave('${s.id}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    `).join('');
   }
 }
 
-function submitKey() {
-  const input = document.getElementById('login-key-input').value.trim();
-  const error = document.getElementById('login-error');
-  if (!input.startsWith('sk-ant-')) {
-    error.style.display = 'block';
-    return;
-  }
-  error.style.display = 'none';
-  apiKey = input;
-  localStorage.setItem('liro_api_key', apiKey);
-  document.getElementById('login-overlay').style.display = 'none';
-}
-
-function resetKey() {
-  localStorage.removeItem('liro_api_key');
-  apiKey = '';
-  document.getElementById('login-key-input').value = '';
-  document.getElementById('login-overlay').style.display = 'flex';
-}
-
-document.getElementById('login-key-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') submitKey();
-});
-
-// App Start-Trigger
-checkLogin();
-save();
+// Initialisierung
+pool = shuffle(getPool());
 render();
 </script>
 </body>
