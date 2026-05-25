@@ -79,7 +79,7 @@
   /* Rechte Spalte: Hauptinhalt */
   .main-content {
     flex: 1;
-    min-width: 0;
+    min-width: 0; /* Verhindert das Rausrutschen aus dem Rand */
   }
 
   /* Profile Header styled like Linktree */
@@ -290,9 +290,11 @@
   
   .nav-all.active { background: rgba(255,255,255,0.05); color: var(--text-main); border-color: var(--border); }
   .nav-fav.active { background: rgba(255, 214, 10, 0.06); color: #ffd60a; border-color: rgba(255, 214, 10, 0.2); }
+  .nav-umsetzung.active { background: rgba(255, 69, 58, 0.06); color: #ff453a; border-color: rgba(255, 69, 58, 0.2); }
   .nav-done.active { background: rgba(48, 209, 88, 0.06); color: #30d158; border-color: rgba(48, 209, 88, 0.2); }
 
   .nav-fav:hover { box-shadow: 0 0 15px var(--glow-gold); }
+  .nav-umsetzung:hover { box-shadow: 0 0 15px var(--glow-red); }
   .nav-done:hover { box-shadow: 0 0 15px var(--glow-green); }
 
   .badge { font-size: 11px; background: var(--bg-input); padding: 2px 7px; border-radius: 6px; color: var(--text-muted); }
@@ -309,12 +311,14 @@
   }
   .idea-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
   .idea-card.ai-style { border-color: rgba(10, 132, 255, 0.2); background: linear-gradient(to bottom right, var(--bg-card), rgba(10, 132, 255, 0.01)); }
+  .idea-card.umsetzung-style { border-color: rgba(255, 69, 58, 0.2); background: linear-gradient(to bottom right, var(--bg-card), rgba(255, 69, 58, 0.01)); }
   .idea-card.archive-style { opacity: 0.5; }
 
   .card-header { display: flex; justify-content: space-between; align-items: center; }
   .card-tags { display: flex; gap: 6px; }
   .card-tag { font-size: 9px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); font-weight: 700; background: rgba(255,255,255,0.05); padding: 2px 7px; border-radius: var(--radius-pill); }
   .card-tag.ai-badge { background: rgba(10, 132, 255, 0.15); color: #0a84ff; }
+  .card-tag.u-badge { background: rgba(255, 69, 58, 0.15); color: #ff453a; }
   
   .card-actions { display: flex; gap: 4px; }
   .icon-action-btn {
@@ -326,21 +330,21 @@
   .icon-action-btn.active-fav:hover { box-shadow: 0 0 10px var(--glow-gold); }
 
   .card-title { font-size: 14.5px; font-weight: 600; color: var(--text-main); line-height: 1.4; }
-  .card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; flex: 1; }
+  .card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; flex: 1; white-space: pre-wrap; }
   .card-footer { font-size: 11px; color: var(--text-dim); padding-top: 8px; border-top: 1px solid var(--border); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-dim); border: 1px dashed var(--border); border-radius: var(--radius-apple); font-size: 13px; }
 
-  /* UI Elemente für Phase 2 (Konzept-Ausbau) */
-  .builder-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
-  @media(min-width: 750px) { .builder-layout { grid-template-columns: 280px 1fr; } }
+  /* UI Elemente für Phase 2 (Konzept-Ausbau) mit Fix gegen Überlaufen */
+  .builder-layout { display: grid; grid-template-columns: 1fr; gap: 20px; min-width: 0; }
+  @media(min-width: 750px) { .builder-layout { grid-template-columns: 240px 1fr; } }
   
-  .selector-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple); padding: 16px; display: flex; flex-direction: column; gap: 8px; height: fit-content; }
-  .selector-item { padding: 10px 12px; border-radius: 8px; background: var(--bg-input); border: 1px solid transparent; color: var(--text-muted); cursor: pointer; text-align: left; font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: var(--transition); }
+  .selector-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple); padding: 16px; display: flex; flex-direction: column; gap: 8px; height: fit-content; min-width: 0; }
+  .selector-item { padding: 10px 12px; border-radius: 8px; background: var(--bg-input); border: 1px solid transparent; color: var(--text-muted); cursor: pointer; text-align: left; font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: var(--transition); width: 100%; }
   .selector-item:hover { color: var(--text-main); border-color: var(--border-hover); }
   .selector-item.selected { background: rgba(167, 139, 250, 0.1); color: #a78bfa; border-color: rgba(167, 139, 250, 0.3); box-shadow: 0 0 10px var(--glow-purple); }
 
-  .builder-output { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple); padding: 24px; }
+  .builder-output { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple); padding: 24px; min-width: 0; }
 
   footer { margin-top: 80px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-dim); display: flex; justify-content: space-between; }
   footer a { color: var(--text-dim); text-decoration: none; }
@@ -368,6 +372,10 @@
       <button class="nav-item nav-fav" id="nav-fav" onclick="setView('favorites')">
         <span>⭐ Favoriten</span>
         <span class="badge" id="badge-fav">0</span>
+      </button>
+      <button class="nav-item nav-umsetzung" id="nav-umsetzung" onclick="setView('umsetzungen')">
+        <span>🎬 Umsetzung</span>
+        <span class="badge" id="badge-ums">0</span>
       </button>
       <button class="nav-item nav-done" id="nav-done" onclick="setView('archive')">
         <span>✅ Archiv</span>
@@ -425,12 +433,16 @@
         <div class="builder-output">
           <div id="builder-empty-notice" class="empty-state" style="border: none; padding: 20px 0;">Wähle links eine deiner favorisierten Ideen aus, um einen detaillierten Konzept-Prompt zu generieren.</div>
           <div id="builder-content" style="display: none;">
-            <h3 id="builder-display-title" style="font-size: 18px; font-weight: 700; margin-bottom: 6px; color: #a78bfa;">Ideentitel</h3>
+            <h3 id="builder-display-title" style="font-size: 18px; font-weight: 700; margin-bottom: 6px; color: #a78bfa; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Ideentitel</h3>
             <p id="builder-display-desc" style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Beschreibung</p>
             
-            <div class="box-title" style="color: #a78bfa;">Kopiere diesen Konzept-Prompt für die KI:</div>
-            <textarea class="clean-textarea" id="builder-textarea" style="height: 180px; color: var(--text-main);" readonly></textarea>
-            <button class="action-btn" style="background: #a78bfa; color: #000;" onclick="copyBuilderPrompt()">Konzept-Prompt kopieren</button>
+            <div class="box-title" style="color: #a78bfa;">1. Kopiere diesen Konzept-Prompt für die KI:</div>
+            <textarea class="clean-textarea" id="builder-textarea" style="height: 140px; color: var(--text-main);" readonly></textarea>
+            <button class="action-btn" style="background: #a78bfa; color: #000; margin-bottom: 24px;" onclick="copyBuilderPrompt()">Konzept-Prompt kopieren</button>
+            
+            <div class="box-title" style="color: #ff453a; border-top: 1px solid var(--border); padding-top: 16px;">2. KI-Ergebnis (Die Video-Struktur) hier speichern:</div>
+            <textarea class="clean-textarea" id="umsetzung-input-textarea" style="height: 140px; color: var(--text-main);" placeholder="Füge die Antwort von ChatGPT/Gemini hier ein, um das fertige Konzept dauerhaft im Tab 'Umsetzung' zu speichern..."></textarea>
+            <button class="action-btn" style="background: #ff453a; color: #fff;" onclick="saveUmsetzungData()">Konzepte als Umsetzung speichern</button>
           </div>
         </div>
       </div>
@@ -473,17 +485,20 @@ let selectedBuilderItemId = null;
 let aiList = JSON.parse(localStorage.getItem('ll_ai') || '[]');
 let favList = JSON.parse(localStorage.getItem('ll_fav') || '[]');
 let archList = JSON.parse(localStorage.getItem('ll_arch') || '[]');
+let umsList = JSON.parse(localStorage.getItem('ll_ums') || '[]'); // NEU: Speicher für fertige Umsetzungen
 
 function save() {
   localStorage.setItem('ll_ai', JSON.stringify(aiList));
   localStorage.setItem('ll_fav', JSON.stringify(favList));
   localStorage.setItem('ll_arch', JSON.stringify(archList));
+  localStorage.setItem('ll_ums', JSON.stringify(umsList));
   updateBadges();
 }
 
 function updateBadges() {
   document.getElementById('badge-fav').textContent = favList.length;
   document.getElementById('badge-done').textContent = archList.length;
+  document.getElementById('badge-ums').textContent = umsList.length; // NEU: Badge für Umsetzung-Anzahl
 }
 
 function setPhase(phase) {
@@ -504,9 +519,13 @@ function setPhase(phase) {
 function setView(view) {
   currentView = view;
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('nav-' + (view === 'favorites' ? 'fav' : view === 'archive' ? 'done' : 'all')).classList.add('active');
   
-  // Wenn Sidebar geklickt wird, automatisch in Phase 1 wechseln um Pool/Listen zu zeigen
+  let targetId = 'nav-all';
+  if(view === 'favorites') targetId = 'nav-fav';
+  if(view === 'umsetzungen') targetId = 'nav-umsetzung';
+  if(view === 'archive') targetId = 'nav-done';
+  document.getElementById(targetId).classList.add('active');
+  
   setPhase(1);
   
   document.getElementById('format-container').style.display = view === 'all' ? 'flex' : 'none';
@@ -526,13 +545,11 @@ function setFormat(fmt) {
 function getAiLearningContext() {
   if (favList.length === 0) return "";
   
-  // Zähle welche Tags am häufigsten favorisiert wurden
   let tagCounts = {};
   favList.forEach(item => {
     tagCounts[item.tag] = (tagCounts[item.tag] || 0) + 1;
   });
   
-  // Sortiere Tags nach Beliebtheit
   let favoriteTags = Object.keys(tagCounts).sort((a,b) => tagCounts[b] - tagCounts[a]);
   
   let contextText = `\n\nHINWEIS ZU LIROS GESCHMACK (Lerne daraus):\nLiro bevorzugt aktuell Video-Ideen aus den Kategorien: [${favoriteTags.join(', ')}].`;
@@ -555,6 +572,7 @@ function toggleFav(id, origin) {
   } else {
     if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
     if(origin === 'arch') archList = archList.filter(a => a.id !== id);
+    if(origin === 'ums') umsList = umsList.filter(u => u.id !== id);
     favList.push(item);
   }
   save();
@@ -568,6 +586,7 @@ function archiveItem(id, origin) {
 
   if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
   if(origin === 'fav') favList = favList.filter(f => f.id !== id);
+  if(origin === 'ums') umsList = umsList.filter(u => u.id !== id);
 
   if(!archList.some(a => a.id === id)) archList.push(item);
   if(selectedBuilderItemId === id) selectedBuilderItemId = null;
@@ -582,12 +601,19 @@ function deletePermanent(id) {
   render();
 }
 
+function deleteUmsetzung(id) {
+  umsList = umsList.filter(u => u.id !== id);
+  save();
+  render();
+}
+
 function findItem(id, origin) {
   if(origin === 'base_short') return baseShort.find(i => i.id === id);
   if(origin === 'base_long') return baseLong.find(i => i.id === id);
   if(origin === 'ai') return aiList.find(i => i.id === id);
   if(origin === 'fav') return favList.find(i => i.id === id);
   if(origin === 'arch') return archList.find(i => i.id === id);
+  if(origin === 'ums') return umsList.find(i => i.id === id);
   return null;
 }
 
@@ -614,6 +640,16 @@ function buildCardHTML(item, origin) {
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
       </button>
     `;
+  } else if(currentView === 'umsetzungen') {
+    // Buttons für die neue Umsetzungs-Ansicht
+    buttons = `
+      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'ums')" title="Zurück zu Favoriten schieben">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <button class="icon-action-btn" onclick="archiveItem('${item.id}', 'ums')" title="Ins Archiv legen">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+      </button>
+    `;
   } else if(currentView === 'archive') {
     buttons = `
       <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'arch')" title="Wiederherstellen (Zu Favoriten)">
@@ -626,11 +662,12 @@ function buildCardHTML(item, origin) {
   }
 
   return `
-    <div class="idea-card ${item.isAi?'ai-style':''} ${currentView==='archive'?'archive-style':''}">
+    <div class="idea-card ${item.isAi?'ai-style':''} ${item.isUmsetzung?'umsetzung-style':''} ${currentView==='archive'?'archive-style':''}">
       <div class="card-header">
         <div class="card-tags">
           <span class="card-tag">${item.tag}</span>
           ${item.isAi ? '<span class="card-tag ai-badge">KI</span>' : ''}
+          ${item.isUmsetzung ? '<span class="card-tag u-badge">Konzept</span>' : ''}
         </div>
         <div class="card-actions">${buttons}</div>
       </div>
@@ -668,16 +705,23 @@ function render() {
     aiGrid.style.display = 'none';
     poolTitle.style.display = 'none';
 
-    let listToRender = currentView === 'favorites' ? favList : archList;
+    let listToRender = [];
+    if(currentView === 'favorites') listToRender = favList;
+    if(currentView === 'umsetzungen') listToRender = umsList;
+    if(currentView === 'archive') listToRender = archList;
+
     if(!listToRender.length) {
-      mainGrid.innerHTML = `<div class="empty-state">${currentView === 'favorites' ? 'Noch keine Favoriten geplant. Klicke auf das Lesezeichen-Symbol (📌) bei deinen Ideen!' : 'Das Archiv ist leer.'}</div>`;
+      let msg = 'Das Archiv ist leer.';
+      if(currentView === 'favorites') msg = 'Noch keine Favoriten geplant. Klicke auf das Lesezeichen-Symbol bei deinen Ideen!';
+      if(currentView === 'umsetzungen') msg = 'Hier sind noch keine Skripte gespeichert. Gehe in Phase 2 und füge die KI-Antworten hinzu!';
+      mainGrid.innerHTML = `<div class="empty-state">${msg}</div>`;
     } else {
-      mainGrid.innerHTML = listToRender.map(i => buildCardHTML(i, currentView === 'favorites' ? 'fav' : 'arch')).join('');
+      mainGrid.innerHTML = listToRender.map(i => buildCardHTML(i, currentView === 'favorites' ? 'fav' : currentView === 'umsetzungen' ? 'ums' : 'arch')).join('');
     }
   }
 }
 
-// NEU: RENDERING FÜR PHASE 2 (KONZEPT-BUILDER)
+// RENDERING FÜR PHASE 2 (KONZEPT-BUILDER MIT GEFIXTER FLEXIBILITÄT)
 function renderBuilder() {
   const listContainer = document.getElementById('builder-favorites-list');
   if(favList.length === 0) {
@@ -700,8 +744,9 @@ function renderBuilder() {
       document.getElementById('builder-content').style.display = 'block';
       document.getElementById('builder-display-title').textContent = activeItem.title;
       document.getElementById('builder-display-desc').textContent = activeItem.desc;
+      document.getElementById('umsetzung-input-textarea').value = ''; // Reset Eingabefeld
       
-      // Starker, strukturierter Ausbau-Prompt für den Chatpartner (Mensch/KI)
+      // Strukturierter Ausbau-Prompt für ChatGPT oder Gemini
       document.getElementById('builder-textarea').value = `Nimm diese Video-Idee für den deutschen Creator "Liro" (VRChat / Furry Content Engine) und baue sie zu einem klaren, sofort umsetzbaren Konzept aus.
 
 PROJEKT-DATEN:
@@ -736,12 +781,44 @@ function copyBuilderPrompt() {
   alert('Konzept-Prompt kopiert! Schick ihn mir im Chat, damit ich dir den Content perfekt ausarbeite.');
 }
 
-// PROMPT GENERATOR LOGIK (MIT INTEGRIERTER LERNFUNKTION)
+// NEU: Funktion um das fertige Ergebnis der KI im Tab Umsetzung wegzuspeichern
+function saveUmsetzungData() {
+  const textContent = document.getElementById('umsetzung-input-textarea').value.trim();
+  if(!textContent) {
+    alert('Bitte füge erst den Text ein, den dir ChatGPT oder Gemini ausgegeben hat!');
+    return;
+  }
+  
+  const activeItem = favList.find(f => f.id === selectedBuilderItemId);
+  if(!activeItem) return;
+
+  // Erstelle ein neues Umsetzungs-Objekt
+  const newUmsetzung = {
+    id: 'ums_' + Math.random().toString(36).substr(2, 9),
+    tag: activeItem.tag,
+    title: `Umsetzung: ${activeItem.title}`,
+    desc: textContent, // Enthält jetzt das fertig ausformulierte Skript der KI
+    inspo: activeItem.inspo || 'Liro Labs Engine',
+    isUmsetzung: true
+  };
+
+  umsList.unshift(newUmsetzung); // Ganz oben hinzufügen
+  
+  // Optional: Die Idee aus den Favoriten löschen oder drin lassen? Wir verschieben sie ins Archiv als erledigt!
+  favList = favList.filter(f => f.id !== selectedBuilderItemId);
+  selectedBuilderItemId = null;
+
+  save();
+  alert('Konzept erfolgreich im Tab "Umsetzung" gesichert! Deine Favoriten-Idee wurde archiviert.');
+  
+  // Wechsel direkt zur Übersicht
+  setView('umsetzungen');
+}
+
+// PROMPT GENERATOR LOGIK
 function generatePrompt() {
   const keyword = document.getElementById('ai-prompt').value.trim();
   const formatText = currentFormat === 'short' ? 'Kurzform (TikTok/Shorts)' : 'Langform (YouTube)';
-  
-  // Hole dynamisch gelernten Context aus den Favoriten
   const learningContext = getAiLearningContext();
   
   const promptText = `Du bist ein Social-Media-Experte für Furry- und VRChat-Content. Generiere 4 kreative, frische Video-Ideen für den deutschen Creator "Liro".
