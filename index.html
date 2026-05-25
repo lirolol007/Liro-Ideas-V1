@@ -1015,7 +1015,7 @@ Das Array muss exakt 4 Objekte nach diesem Schema enthalten:
 ${userPrompt ? `Vom Nutzer gewünschter Fokus/Stichwort: "${userPrompt}"` : 'Kein spezifisches Stichwort. Würfle selbstständig witzige Creator-Trends (z.B. Waschbecken-Stories, Fan-Begegnungen, Public Lobby Chaos) zusammen!'}`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://api.anthropic.com/v1/messages'), {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
