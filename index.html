@@ -29,7 +29,6 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
 
   body {
@@ -118,8 +117,6 @@
     background: var(--bg3);
   }
 
-  .social-link svg { width: 14px; height: 14px; fill: currentColor; }
-
   .tabs {
     display: flex;
     gap: 6px;
@@ -146,12 +143,7 @@
   }
 
   .tab-btn:hover { color: var(--text); background: var(--bg3); }
-
-  .tab-btn.active {
-    background: var(--accent);
-    color: #0d0d0f;
-    font-weight: 700;
-  }
+  .tab-btn.active { background: var(--accent); color: #0d0d0f; font-weight: 700; }
 
   .ai-bar {
     background: var(--bg2);
@@ -172,12 +164,7 @@
     opacity: 0.4;
   }
 
-  .ai-bar-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 14px;
-  }
+  .ai-bar-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
 
   .ai-badge-label {
     font-size: 11px;
@@ -190,21 +177,10 @@
     border: 1px solid rgba(96,212,240,0.2);
   }
 
-  .ai-bar-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text);
-  }
+  .ai-bar-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); }
+  .ai-bar-desc { font-size: 12px; color: var(--text2); }
 
-  .ai-bar-desc { font-size: 12px; color: var(--text3); }
-
-  .ai-input-row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
+  .ai-input-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
 
   .ai-input {
     flex: 1;
@@ -217,18 +193,14 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
     outline: none;
-    transition: border-color 0.2s;
   }
-
-  .ai-input::placeholder { color: var(--text3); }
-  .ai-input:focus { border-color: rgba(96,212,240,0.4); }
 
   .ai-gen-btn {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 10px 20px;
-    background: var(--accent);
+    background: var(--ai-color);
     color: #0d0d0f;
     border: none;
     border-radius: var(--radius-sm);
@@ -237,46 +209,68 @@
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
-    white-space: nowrap;
-    letter-spacing: 0.02em;
   }
 
-  .ai-gen-btn:hover { background: var(--accent2); transform: translateY(-1px); }
-  .ai-gen-btn:active { transform: translateY(0); }
-  .ai-gen-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .ai-gen-btn:hover { opacity: 0.9; }
 
-  .ai-gen-btn svg { width: 15px; height: 15px; }
+  /* Prompt-Box & Einfügen-Box Styles */
+  .prompt-box-container {
+    background: var(--bg3);
+    border: 1px dashed rgba(96,212,240,0.4);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-top: 16px;
+    display: none;
+  }
 
-  .ai-status {
-    margin-top: 12px;
-    font-size: 12px;
+  .prompt-text {
+    width: 100%;
+    height: 80px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
     color: var(--text2);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 20px;
+    font-family: monospace;
+    font-size: 12px;
+    padding: 10px;
+    resize: none;
+    margin-bottom: 10px;
   }
 
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .spinner {
-    width: 13px; height: 13px;
-    border: 1.5px solid var(--border2);
-    border-top-color: var(--ai-color);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    flex-shrink: 0;
+  .import-box-container {
+    background: var(--bg3);
+    border: 1px solid rgba(200,240,96,0.3);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-top: 16px;
+    display: none;
   }
 
-  .filter-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+  .import-text {
+    width: 100%;
+    height: 100px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: monospace;
+    font-size: 12px;
+    padding: 10px;
+    placeholder-color: var(--text3);
   }
 
-  .filter-label { font-size: 11px; color: var(--text3); font-weight: 500; letter-spacing: 0.06em; margin-right: 4px; }
+  .action-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+  }
+
+  .filter-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .filter-label { font-size: 11px; color: var(--text3); font-weight: 500; letter-spacing: 0.06em; }
 
   .filter-btn {
     padding: 5px 14px;
@@ -286,19 +280,10 @@
     color: var(--text2);
     font-family: 'DM Sans', sans-serif;
     font-size: 12px;
-    font-weight: 500;
     cursor: pointer;
-    transition: all 0.18s;
   }
 
-  .filter-btn:hover { border-color: var(--border2); color: var(--text); background: var(--bg3); }
-
-  .filter-btn.active {
-    background: var(--bg3);
-    border-color: var(--border2);
-    color: var(--text);
-    font-weight: 600;
-  }
+  .filter-btn.active { background: var(--bg3); border-color: var(--border2); color: var(--text); }
 
   .spacer { flex: 1; }
 
@@ -311,575 +296,140 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-pill);
     color: var(--text2);
-    font-family: 'DM Sans', sans-serif;
     font-size: 12px;
-    font-weight: 500;
     cursor: pointer;
-    transition: all 0.18s;
   }
 
-  .shuffle-btn:hover { border-color: var(--border2); color: var(--text); background: var(--bg3); }
-  .shuffle-btn svg { width: 13px; height: 13px; }
+  .section-label { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--text3); margin: 20px 0 14px; }
+  .section-label-line { flex: 1; height: 1px; background: var(--border); }
 
-  .section-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: var(--text3);
-    margin-bottom: 14px;
-    margin-top: 8px;
-  }
-
-  .section-label-line {
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .ideas-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 12px;
-    margin-bottom: 32px;
-  }
+  .ideas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 32px; }
 
   .idea-card {
     background: var(--bg2);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 18px 18px 16px;
-    cursor: default;
-    transition: border-color 0.2s, background 0.2s, transform 0.15s;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    animation: fadeIn 0.3s ease forwards;
   }
 
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .idea-card.ai-card { border-color: rgba(96,212,240,0.3); background: linear-gradient(to bottom right, var(--bg2), rgba(96,212,240,0.02)); }
 
-  .idea-card:hover { border-color: var(--border2); background: var(--bg3); transform: translateY(-2px); }
-
-  .idea-card.ai-card { border-color: rgba(96,212,240,0.2); }
-  .idea-card.ai-card:hover { border-color: rgba(96,212,240,0.4); }
-
-  .idea-card.is-saved { border-color: rgba(200,240,96,0.3); }
-  .idea-card.is-saved:hover { border-color: rgba(200,240,96,0.5); }
-
-  .card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .card-tags { display: flex; gap: 5px; flex-wrap: wrap; }
-
-  .tag {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    padding: 2px 9px;
-    border-radius: var(--radius-pill);
-    text-transform: uppercase;
-  }
-
+  .card-top { display: flex; align-items: center; justify-content: space-between; }
+  .card-tags { display: flex; gap: 5px; }
+  
+  .tag { font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: var(--radius-pill); text-transform: uppercase; }
   .tag-meme { background: rgba(167,139,250,0.15); color: #c4b5fd; }
   .tag-challenge { background: rgba(52,211,153,0.12); color: #6ee7b7; }
   .tag-story { background: rgba(251,191,36,0.12); color: #fcd34d; }
   .tag-collab { background: rgba(244,114,182,0.12); color: #f9a8d4; }
   .tag-reaction { background: rgba(251,146,60,0.12); color: #fdba74; }
-  .tag-tutorial { background: rgba(52,211,153,0.1); color: #86efac; }
-  .tag-compilation { background: rgba(96,165,250,0.12); color: #93c5fd; }
-  .tag-trend { background: rgba(167,139,250,0.12); color: #d8b4fe; }
-  .tag-ai { background: rgba(96,212,240,0.12); color: var(--ai-color); }
+  .tag-ai { background: var(--ai-color); color: #0d0d0f; }
 
-  .card-save-btn {
-    width: 28px; height: 28px;
-    border-radius: 7px;
-    border: 1px solid var(--border);
-    background: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.2s;
-    color: var(--text3);
-  }
+  .card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--text); }
+  .card-desc { font-size: 12px; color: var(--text2); flex: 1; }
+  .card-inspo { font-size: 11px; color: var(--text3); padding-top: 6px; border-top: 1px solid var(--border); }
 
-  .card-save-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim2); }
-  .card-save-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-  .card-save-btn svg { width: 14px; height: 14px; }
-
-  .card-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.35;
-  }
-
-  .card-desc {
-    font-size: 12px;
-    color: var(--text2);
-    line-height: 1.55;
-    flex: 1;
-  }
-
-  .card-inspo {
-    display: flex;
-    align-items: flex-start;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--text3);
-    line-height: 1.4;
-    padding-top: 6px;
-    border-top: 1px solid var(--border);
-  }
-
-  .card-inspo svg { width: 12px; height: 12px; flex-shrink: 0; margin-top: 1px; }
-
-  .saved-section {
-    margin-top: 40px;
-    border-top: 1px solid var(--border);
-    padding-top: 28px;
-  }
-
-  .saved-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-
-  .saved-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .saved-count {
-    background: var(--accent-dim);
-    color: var(--accent);
-    font-size: 11px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: var(--radius-pill);
-  }
-
-  .clear-btn {
-    font-size: 12px;
-    color: var(--text3);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px 0;
-    font-family: 'DM Sans', sans-serif;
-    transition: color 0.2s;
-  }
-
-  .clear-btn:hover { color: var(--text2); }
-
-  .saved-list { display: flex; flex-direction: column; gap: 8px; }
-
-  .saved-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    color: var(--text);
-    transition: border-color 0.2s;
-  }
-
-  .saved-item:hover { border-color: var(--border2); }
-
-  .saved-item-text { flex: 1; line-height: 1.3; }
-  .saved-item-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
-
-  .unsave-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--text3);
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    border-radius: 5px;
-    transition: all 0.2s;
-  }
-
-  .unsave-btn:hover { color: var(--text2); background: var(--bg4); }
-  .unsave-btn svg { width: 14px; height: 14px; }
-
-  .login-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-
-  .login-box {
-    background: var(--bg2);
-    border: 1px solid var(--border2);
-    border-radius: 20px;
-    padding: 40px 36px;
-    width: 100%;
-    max-width: 420px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .login-box::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.6;
-  }
-
-  .login-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 32px;
-    letter-spacing: -1px;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 6px;
-  }
-
-  .login-sub {
-    font-size: 13px;
-    color: var(--text3);
-    margin-bottom: 32px;
-  }
-
-  .login-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    color: var(--text2);
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .login-input {
-    width: 100%;
-    padding: 12px 16px;
-    background: var(--bg3);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-sm);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    outline: none;
-    margin-bottom: 10px;
-    transition: border-color 0.2s;
-    font-family: monospace;
-    letter-spacing: 0.05em;
-  }
-
-  .login-input:focus { border-color: rgba(200,240,96,0.5); }
-  .login-input::placeholder { color: var(--text3); font-family: 'DM Sans', sans-serif; letter-spacing: 0; }
-
-  .login-hint {
-    font-size: 11px;
-    color: var(--text3);
-    margin-bottom: 24px;
-    line-height: 1.5;
-  }
-
-  .login-hint a { color: var(--text2); }
-
-  .login-btn {
-    width: 100%;
-    padding: 12px;
-    background: var(--accent);
-    color: #0d0d0f;
-    border: none;
-    border-radius: var(--radius-sm);
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.02em;
-  }
-
-  .login-btn:hover { background: var(--accent2); }
-  .login-btn:active { transform: scale(0.99); }
-
-  .login-error {
-    font-size: 12px;
-    color: #fdba74;
-    margin-top: 10px;
-    display: none;
-  }
-
-  .login-secure {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 20px;
-    font-size: 11px;
-    color: var(--text3);
-    justify-content: center;
-  }
-
-  .login-secure svg { width: 12px; height: 12px; }
-
-  .key-indicator {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--text3);
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--border);
-    transition: all 0.2s;
-    background: transparent;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .key-indicator:hover { border-color: var(--border2); color: var(--text2); }
-  .key-indicator svg { width: 12px; height: 12px; }
-
-  footer {
-    margin-top: 60px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    font-size: 12px;
-    color: var(--text3);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  footer a { color: var(--text3); text-decoration: none; }
-  footer a:hover { color: var(--text2); }
-
-  .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
-
-  @media (max-width: 600px) {
-    .logo { font-size: 30px; }
-    header { padding: 32px 0 28px; }
-    .tabs { width: 100%; }
-    .tab-btn { flex: 1; text-align: center; }
-    .ai-input-row { flex-direction: column; }
-    .ai-input { width: 100%; }
-    .ai-gen-btn { width: 100%; justify-content: center; }
-  }
+  footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text3); }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <div class="login-overlay" id="login-overlay">
-    <div class="login-box">
-      <div class="login-logo"><span class="logo-dot"></span> Liro Ideas</div>
-      <div class="login-sub">Content Generator · VRChat &amp; Furry</div>
-      <label class="login-label">ANTHROPIC API KEY</label>
-      <input class="login-input" id="login-key-input" type="password" placeholder="sk-ant-..." />
-      <div class="login-hint">
-        Deinen Key bekommst du kostenlos auf <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys → Create Key.<br>
-        Der Key wird nur in deinem Browser gespeichert — niemand sonst sieht ihn.
-      </div>
-      <button class="login-btn" onclick="submitKey()">Einloggen &amp; loslegen</button>
-      <div class="login-error" id="login-error">Key ungültig — fängt mit "sk-ant-" an?</div>
-      <div class="login-secure">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Wird nur lokal in deinem Browser gespeichert
-      </div>
-    </div>
-  </div>
-
   <header>
     <div class="logo-group">
-      <div class="logo">
-        <span class="logo-dot"></span>
-        Liro Ideas
-      </div>
-      <div class="logo-sub">Content Idea Generator · VRChat &amp; Furry</div>
-    </div>
-    <div class="social-links">
-      <a class="social-link" href="https://www.youtube.com/@Liro_LOL" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
-        YouTube
-      </a>
-      <a class="social-link" href="https://www.tiktok.com/@liro7160" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M19.6 3.3a5.5 5.5 0 0 1-3.4-3.3h-3.4v14.5a2.6 2.6 0 1 1-1.8-2.5V8.5a6 6 0 1 0 5.2 5.9V7.8a9 9 0 0 0 5.2 1.6V6a5.5 5.5 0 0 1-1.8-.7z"/></svg>
-        TikTok
-      </a>
-      <a class="social-link" href="https://www.instagram.com/lirooo0/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.2 4.8 1.7 5 5 .1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.2 3.3-1.7 4.9-5 5-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.2-4.8-1.7-5-5C2 16.6 2 16.3 2 12c0-3.2 0-3.6.1-4.8.2-3.3 1.7-4.8 5-5C8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12c0 3.3 0 3.7.1 4.9.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24c3.3 0 3.7 0 4.9-.1 4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9 0-3.3 0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4A6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.9 1.4 1.4 0 0 0 0-2.9z"/></svg>
-        Instagram
-      </a>
-      <button class="key-indicator" onclick="resetKey()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-        API Key ändern
-      </button>
+      <div class="logo"><span class="logo-dot"></span> Liro Ideas</div>
+      <div class="logo-sub">Content Idea Generator · VRChat &amp; Furry (Kein Key benötigt!)</div>
     </div>
   </header>
 
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('short', this)">Kurzform · TikTok / Shorts / Reels</button>
+    <button class="tab-btn active" onclick="switchTab('short', this)">Kurzform · TikTok / Shorts</button>
     <button class="tab-btn" onclick="switchTab('long', this)">Langform · YouTube</button>
   </div>
 
   <div class="ai-bar">
     <div class="ai-bar-header">
-      <span class="ai-badge-label">KI</span>
-      <span class="ai-bar-title">Live Idea Generator</span>
+      <span class="ai-badge-label">PROMPT GENERATOR</span>
+      <span class="ai-bar-title">KI-Ideen erzeugen (Kostenlos &amp; Ohne API-Fehler)</span>
     </div>
-    <div class="ai-bar-desc" style="margin-bottom:14px">
-      Orientiert sich an englischen Creatorn (Wickerbeast, Nardoragon, Lolathon &amp; co.) und überträgt die Ideen auf deinen deutschen VRChat/Furry-Stil.
-      Lass das Feld leer für zufällige Ideen – oder gib ein Stichwort ein.
+    <div class="ai-bar-desc">
+      Gib unten ein Stichwort ein und klicke auf "Schritt 1". Kopiere den Text, sende ihn kurz an deinen KI-Chat und füge die Antwort in "Schritt 2" ein!
     </div>
+    
     <div class="ai-input-row">
-      <input class="ai-input" id="ai-prompt" placeholder='z.B. "etwas mit Tanzen", "Avatar-Builds", "Community-Interaktion" …' />
-      <button class="ai-gen-btn" id="ai-btn" onclick="generateAI()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
-        Ideen generieren
+      <input class="ai-input" id="ai-prompt" placeholder='Optional: z.B. "Horror Worlds", "Avatar-Skins", "Talk-Runde" ...' />
+      <button class="ai-gen-btn" onclick="generatePrompt()">
+        1. Prompt für KI erstellen
       </button>
     </div>
-    <div class="ai-status" id="ai-status"></div>
+
+    <div class="prompt-box-container" id="prompt-box">
+      <div style="font-size:12px; color:var(--ai-color); margin-bottom:6px; font-weight:bold;">Kopiere diesen Text und füge ihn einfach im KI-Chat ein:</div>
+      <textarea class="prompt-text" id="prompt-textarea" readonly></textarea>
+      <button class="action-btn" style="background:var(--ai-color); color:#000;" onclick="copyPrompt()">Text kopieren &amp; KI öffnen</button>
+    </div>
+
+    <div class="import-box-container" id="import-box" style="display:block; margin-top:20px; border-color:rgba(96,212,240,0.2)">
+      <div style="font-size:12px; color:var(--text); margin-bottom:6px; font-weight:bold;">2. Antwort der KI hier reinfügen:</div>
+      <textarea class="import-text" id="import-textarea" placeholder="Füge das von der KI generierte JSON hier ein..."></textarea>
+      <button class="action-btn" style="background:var(--accent); color:#000; margin-top:8px;" onclick="importAIContent()">Ideen im Tool anzeigen</button>
+    </div>
   </div>
 
   <div id="ai-section" style="display:none">
     <div class="section-label">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ai-color)" stroke-width="2.5"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
-      KI-GENERIERTE IDEEN
+      <span style="color:var(--ai-color)">✦ KI-GENERIERTE ANGEPASSTE IDEEN</span>
       <div class="section-label-line"></div>
     </div>
     <div class="ideas-grid" id="ai-grid"></div>
-    <hr class="divider">
   </div>
 
-  <div class="filter-bar" id="filter-bar">
+  <div class="filter-bar">
     <span class="filter-label">FILTER</span>
     <button class="filter-btn active" onclick="setFilter('all',this)">Alle</button>
     <button class="filter-btn" onclick="setFilter('meme',this)">Meme</button>
     <button class="filter-btn" onclick="setFilter('challenge',this)">Challenge</button>
     <button class="filter-btn" onclick="setFilter('reaction',this)">Reaction</button>
-    <button class="filter-btn" onclick="setFilter('story',this)">Story</button>
-    <button class="filter-btn" onclick="setFilter('collab',this)">Collab</button>
     <div class="spacer"></div>
-    <button class="shuffle-btn" onclick="shuffleStatic()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
-      Neue Reihenfolge
-    </button>
+    <button class="shuffle-btn" onclick="shuffleStatic()">Reihenfolge ändern</button>
   </div>
 
   <div class="section-label">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-    KURATIERTE IDEEN
+    <span>KURATIERTE BASIS-IDEEN</span>
     <div class="section-label-line"></div>
   </div>
   <div class="ideas-grid" id="static-grid"></div>
 
-  <div class="saved-section" id="saved-section" style="display:none">
-    <div class="saved-header">
-      <div class="saved-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        Gespeichert
-        <span class="saved-count" id="saved-count">0</span>
-      </div>
-      <button class="clear-btn" onclick="clearAll()">Alle löschen</button>
-    </div>
-    <div class="saved-list" id="saved-list"></div>
-  </div>
-
   <footer>
-    <span>Liro Ideas · Content Generator für @Liro_LOL</span>
-    <span>KI powered by Claude · <a href="https://www.youtube.com/@Liro_LOL" target="_blank">@Liro_LOL</a></span>
+    <span>Liro Ideas · Unabhängiger Prompt-Modus</span>
   </footer>
-
 </div>
 
 <script>
 const shortIdeas = [
-  { tag:'meme', title:'POV: Jemand fragt ob Furries weird sind', desc:'Reagiere in Character als dein Fursona – absurd, selbstbewusst, witzig. Greenscreen-Clip ideal.', inspo:'Inspiriert von: @wickerbeastvrc, @nardoragonvrc (EN)' },
-  { tag:'meme', title:'"Real life vs VRChat" – Vergleich', desc:'Split-Screen: dieselbe Situation im echten Leben vs. in VRChat. Freunde treffen, tanzen, schlafen.', inspo:'Trend: englische VRC Creator Community' },
-  { tag:'meme', title:'Furry-Fandom Bingo live abspielen', desc:'Zeig ein Bingo-Board mit Fandom-Klischees und hak ab was auf dich zutrifft. Selbstironie = Gold.', inspo:'Populär bei: kleinere DE Furry Creator' },
-  { tag:'meme', title:'Wenn dein Avatar zu krass für öffentliche Lobbys ist', desc:'Comedy-Skit: du betrittst eine Lobby, alles crasht, du machst eine unschuldige Pose.', inspo:'VRChat Crasher-Kultur als Comedy' },
-  { tag:'meme', title:'Dinge die nur VRChat-Furries verstehen', desc:'Liste von Insider-Momenten die die Community sofort kennt. Schnelle Cuts, text-on-screen.', inspo:'Format: "You know you\'re X when..." – EN TikTok' },
-  { tag:'challenge', title:'"1 Stunde in VRChat ohne Sprechen"', desc:'NPC-Challenge: antworte nur durch Emotes und Gesten. Andere müssen raten was du sagst.', inspo:'Silent challenge Format (EN TikTok)' },
-  { tag:'challenge', title:'Blindes Avatar-Rating mit der Community', desc:'Follower schicken Screenshots ihrer Avatare, du bewertest live ohne Namen zu kennen.', inspo:'EN VRC Dress-up Trends' },
-  { tag:'challenge', title:'Klassische Memes als VRChat-Szene nachstellen', desc:'Drake, Distracted BF, This is Fine – als VRChat-Szene. Simpel, aber viral.', inspo:'@fennecfoxvrc & ähnliche (EN)' },
-  { tag:'challenge', title:'"Stranger kommentiert meinen Avatar" – reagieren', desc:'Bitte Random-Leute in VRChat deinen Avatar zu bewerten und zeig die Reaktionen.', inspo:'Bekannt durch: Chipz VRChat Social Experiments' },
-  { tag:'reaction', title:'Reagiere auf Furry-Stereotypen aus dem Internet', desc:'Kommentiere kurze Clips oder Screenshots mit Humor, ohne Aggression. Zeigt Persönlichkeit.', inspo:'React + Commentary Short-Format' },
-  { tag:'reaction', title:'Erstes Mal in einer neuen VRChat-World', desc:'30–60s Clip, deine echte Erstreaktion wenn du neue Worlds erkundest.', inspo:'VRChat Exploration Creator (EN)' },
-  { tag:'reaction', title:'Reagiere auf "Ich hab noch nie VRChat gespielt"', desc:'Jemand aus deinem Umfeld spielt VRChat zum ersten Mal – filme die Reaktion.', inspo:'First-reaction Format, stark auf allen Plattformen' },
-  { tag:'story', title:'"Wie ich zum Furry wurde" – 60s Version', desc:'Kurze, authentische Personal Story. Neue Follower lernen dich kennen ohne langen Aufwand.', inspo:'Origin Story Format – stark für Wachstum' },
-  { tag:'story', title:'Mein wildester VRChat-Moment', desc:'Eine verrückte oder witzige Begegnung als Story mit Clip-Cuts erzählen.', inspo:'Storytelling-Shorts performen plattformübergreifend' },
-  { tag:'collab', title:'Duett-Challenge mit anderem Furry Creator', desc:'Ihr macht denselben Clip (gleiche Musik, gleiches Prompt) und verlinkt euch gegenseitig.', inspo:'TikTok Duet-Format, stark für Reichweite' },
-  { tag:'collab', title:'"Fremde in VRChat interviewen" – 30s Clip', desc:'Stell einem Random-Avatar eine simple Frage und schneid die besten Antworten zusammen.', inspo:'Street-Interview Format im VR-Kontext' },
+  { tag:'meme', title:'POV: Jemand fragt ob Furries weird sind', desc:'Reagiere in Character als dein Fursona – absurd, selbstbewusst, witzig.', inspo:'Inspiriert von: @wickerbeastvrc' },
+  { tag:'meme', title:'Real life vs VRChat Vergleich', desc:'Split-Screen: dieselbe Situation im echten Leben vs. in VRChat.', inspo:'Trend: englische VRC Creator Community' },
+  { tag:'challenge', title:'1 Stunde in VRChat ohne Sprechen', desc:'NPC-Challenge: antworte nur durch Emotes und Gesten.', inspo:'Silent challenge Format' },
+  { tag:'reaction', title:'Reagiere auf Furry-Stereotypen', desc:'Kommentiere kurze Clips oder Screenshots mit viel Humor.', inspo:'React Shorts Format' }
 ];
 
 const longIdeas = [
-  { tag:'compilation', title:'Best of VRChat [Monat] – deine Highlights', desc:'Kuratierte Compilation deiner besten Momente. Regelmäßig veröffentlichen baut Stammzuschauer auf.', inspo:'Lolathon, Chipz, Pokelawls (EN) – bewährtes Format' },
-  { tag:'compilation', title:'Die wildesten Avatar-Builds die ich je gesehen habe', desc:'Sammlung der absurdesten, kreativsten oder cringigsten Avatare mit Live-Kommentar.', inspo:'Avatar-Showcase Format (EN VRC Community)' },
-  { tag:'compilation', title:'"24h in VRChat Public Lobbies"', desc:'Dokumentation eines langen Session-Experiments. Wen du triffst, was passiert, ehrliche Reaktionen.', inspo:'Challenge-Doku Format (EN Creator)' },
-  { tag:'compilation', title:'"NPC-Modus" – ich antworte nur als Avatar-NPC', desc:'Stundenlang in Lobbies als NPC verhalten, Reaktionen der Leute als Longform-Story zusammengeschnitten.', inspo:'NPC-Trend auf TikTok als YT-Longform adaptiert' },
-  { tag:'story', title:'Die Geschichte hinter meinem Fursona', desc:'Erzähl die echte Geschichte hinter deinem Design. Wer hat ihn gemacht, was bedeutet er dir.', inspo:'Fursona origin videos = hohes Engagement im Fandom' },
-  { tag:'story', title:'"Mein erster Tag in VRChat" – rekonstruiert', desc:'Rückblick mit alten Clips wenn möglich. Nostalgischer Content baut Verbindung zur Audience auf.', inspo:'Origin/Throwback Format (bewährt)' },
-  { tag:'story', title:'Die cringigsten Momente meiner Creator-Karriere', desc:'Selbstironie: frühere Videos, Fails, peinliche Phasen. Audience liebt Authentizität und Entwicklung.', inspo:'Cringe-Retrospektiv Format für Kanalwachstum' },
-  { tag:'tutorial', title:'Wie ich meine Shorts schneide – Behind the Scenes', desc:'Zeig deinen Workflow: Aufnahme, Schnitt, Effekte. DE Creator zeigen das selten – Nische für dich.', inspo:'Creator-Educational Content, hohe Subscriber-Conversion' },
-  { tag:'tutorial', title:'VRChat-Avatar Guide für Anfänger', desc:'Wo kauft man Avatare, was kostet was, worauf achten. Guter Suchtraffic und Evergreen-Value.', inspo:'Evergreen Tutorial, starker SEO-Wert auf YouTube' },
-  { tag:'collab', title:'Ein Tag mit einem anderen Furry Creator in VRC', desc:'Gemeinsames Adventure, zeigt eure Chemie. Beide Communities sehen den Video.', inspo:'Collab-Longform stark für Kanalwachstum beider Seiten' },
-  { tag:'collab', title:'Furry Community Q&A – ich antworte auf eure Fragen', desc:'Sammle Fragen über Social Media, beantworte im Video. Community Building + Content in einem.', inspo:'Q&A Format mit hoher Community-Bindung' },
-  { tag:'reaction', title:'Ich reagiere auf die ältesten Furry-Videos auf YouTube', desc:'Videos von 2008–2015 anschauen und aus heutiger Sicht kommentieren. Humor + Nostalgie.', inspo:'Reaction + Nostalgie (EN Furry YouTube)' },
-  { tag:'reaction', title:'Wie Furries im TV/in Medien dargestellt werden', desc:'Nachrichtensendungen, Talkshows, Serien – Kombination aus Humor und echter Aufklärung.', inspo:'Community-Representation Content' },
+  { tag:'meme', title:'Best of VRChat Highlights', desc:'Compilation deiner witzigsten Erlebnisse in öffentlichen Welten.', inspo:'Format à la Lolathon' },
+  { tag:'story', title:'Die Geschichte hinter meinem Fursona', desc:'Erzähl authentisch, wie dein Charakter entstanden ist.', inspo:'Community-Klassiker' }
 ];
 
 let currentTab = 'short';
 let currentFilter = 'all';
-let saved = JSON.parse(localStorage.getItem('liro_saved') || '[]');
-let displayed = [];
-let aiIdeas = [];
-
-function getPool() { return currentTab === 'short' ? shortIdeas : longIdeas; }
-
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+let displayed = [...shortIdeas];
 
 function switchTab(tab, btn) {
   currentTab = tab;
-  currentFilter = 'all';
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.filter-btn').forEach((b, i) => { b.classList.toggle('active', i === 0); });
-  document.getElementById('ai-section').style.display = 'none';
-  aiIdeas = [];
-  displayed = shuffle(getPool());
+  displayed = tab === 'short' ? [...shortIdeas] : [...longIdeas];
   renderStatic();
 }
 
@@ -891,189 +441,85 @@ function setFilter(f, btn) {
 }
 
 function shuffleStatic() {
-  displayed = shuffle(getPool());
+  displayed.sort(() => Math.random() - 0.5);
   renderStatic();
-}
-
-function isSaved(idea) { return saved.some(s => s.title === idea.title); }
-
-function toggleSave(title) {
-  const pool = [...shortIdeas, ...longIdeas, ...aiIdeas];
-  const idea = pool.find(i => i.title === title);
-  if (!idea) return;
-  const idx = saved.findIndex(s => s.title === title);
-  if (idx >= 0) saved.splice(idx, 1);
-  else saved.push(idea);
-  localStorage.setItem('liro_saved', JSON.stringify(saved));
-  renderStatic();
-  renderAI();
-  renderSaved();
-}
-
-function removeSaved(title) {
-  saved = saved.filter(s => s.title !== title);
-  localStorage.setItem('liro_saved', JSON.stringify(saved));
-  renderStatic();
-  renderAI();
-  renderSaved();
-}
-
-function clearAll() {
-  saved = [];
-  localStorage.setItem('liro_saved', JSON.stringify(saved));
-  renderStatic();
-  renderAI();
-  renderSaved();
-}
-
-function cardHTML(idea, isAI) {
-  const sv = isSaved(idea);
-  const esc = idea.title.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-  return `<div class="idea-card${isAI ? ' ai-card' : ''}${sv ? ' is-saved' : ''}">
-    <div class="card-top">
-      <div class="card-tags">
-        <span class="tag tag-${idea.tag}">${idea.tag}</span>
-        ${isAI ? '<span class="tag tag-ai">KI</span>' : ''}
-      </div>
-      <button class="card-save-btn${sv ? ' active' : ''}" onclick="toggleSave('${esc}')" aria-label="Speichern">
-        <svg viewBox="0 0 24 24" fill="${sv ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-    </div>
-    <div class="card-title">${idea.title}</div>
-    <div class="card-desc">${idea.desc}</div>
-    <div class="card-inspo">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-      ${idea.inspo}
-    </div>
-  </div>`;
 }
 
 function renderStatic() {
   const grid = document.getElementById('static-grid');
   let ideas = currentFilter === 'all' ? displayed : displayed.filter(i => i.tag === currentFilter);
-  grid.innerHTML = ideas.map(i => cardHTML(i, false)).join('');
-}
-
-function renderAI() {
-  const grid = document.getElementById('ai-grid');
-  const section = document.getElementById('ai-section');
-  if (!aiIdeas.length) { section.style.display = 'none'; return; }
-  section.style.display = 'block';
-  grid.innerHTML = aiIdeas.map(i => cardHTML(i, true)).join('');
-}
-
-function renderSaved() {
-  const section = document.getElementById('saved-section');
-  const list = document.getElementById('saved-list');
-  const count = document.getElementById('saved-count');
-  count.textContent = saved.length;
-  if (!saved.length) { section.style.display = 'none'; return; }
-  section.style.display = 'block';
-  list.innerHTML = saved.map(s => `<div class="saved-item">
-    <span class="tag tag-${s.tag}">${s.tag}</span>
-    <div class="saved-item-text">
-      <div>${s.title}</div>
-      <div class="saved-item-sub">${s.inspo}</div>
-    </div>
-    <button class="unsave-btn" onclick="removeSaved('${s.title.replace(/'/g, "\\'")}')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-    </button>
+  grid.innerHTML = ideas.map(i => `<div class="idea-card">
+    <div class="card-top"><span class="tag tag-${i.tag}">${i.tag}</span></div>
+    <div class="card-title">${i.title}</div>
+    <div class="card-desc">${i.desc}</div>
+    <div class="card-inspo">${i.inspo}</div>
   </div>`).join('');
 }
 
-async function generateAI() {
-  const btn = document.getElementById('ai-btn');
-  const status = document.getElementById('ai-status');
-  const userPrompt = document.getElementById('ai-prompt').value.trim();
-  const format = currentTab === 'short'
-    ? 'Kurzform-Videos (TikTok / YouTube Shorts / Instagram Reels, unter 60 Sekunden)'
-    : 'Langform-YouTube-Videos (5–20 Minuten)';
+// PROMPT GENERATOR LOGIK
+function generatePrompt() {
+  const keyword = document.getElementById('ai-prompt').value.trim();
+  const formatText = currentTab === 'short' ? 'Kurzform (TikTok/Shorts)' : 'Langform (YouTube)';
+  
+  const promptText = `Du bist ein Social-Media-Experte für Furry- und VRChat-Content. Generiere 4 kreative, frische Video-Ideen für den deutschen Creator "Liro".
+Format: ${formatText}.
+${keyword ? `Fokus-Thema / Stichwort: "${keyword}"` : ''}
 
-  btn.disabled = true;
-  status.innerHTML = '<span class="spinner"></span> KI analysiert Creator-Trends und überträgt ins Deutsche …';
+Antworte mir AUSSCHLIESSLICH im folgenden JSON-Format als Code-Block, ohne Einleitung oder Erklärung drumherum:
+[
+  {"tag":"meme","title":"Titel 1","desc":"Beschreibung der Idee","inspo":"Inspiration"},
+  {"tag":"challenge","title":"Titel 2","desc":"Beschreibung der Idee","inspo":"Inspiration"},
+  {"tag":"story","title":"Titel 3","desc":"Beschreibung der Idee","inspo":"Inspiration"},
+  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung der Idee","inspo":"Inspiration"}
+]`;
 
-  const systemPrompt = `Du bist ein Experte für Social-Media-Content-Strategie, speziell für die Furry- und VRChat-Community.
-Antworte NUR mit einem JSON-Array, kein Markdown, keine Erklärung, nur valides JSON:
-[{"tag":"meme|challenge|story|reaction|collab|tutorial|compilation|trend","title":"Titel max 55 Zeichen","desc":"Was ist der Inhalt und warum funktioniert es max 130 Zeichen","inspo":"Welcher EN Creator oder Trend war Vorlage max 70 Zeichen"}]
-Genau 4 Ideen. Nur JSON.`;
+  document.getElementById('prompt-textarea').value = promptText;
+  document.getElementById('prompt-box').style.display = 'block';
+}
 
-  const userMsg = `Format: ${format}
-${userPrompt ? `Stichwort/Thema: "${userPrompt}"` : 'Kein Thema – generiere abwechslungsreiche Ideen über verschiedene Kategorien.'}
-Übertrage aktuelle EN Creator-Trends von Wickerbeast, Nardoragon oder Lolathon auf den deutschen Furry/VRChat-Raum für den Creator "Liro".`;
+function copyPrompt() {
+  const textarea = document.getElementById('prompt-textarea');
+  textarea.select();
+  document.execCommand('copy');
+  alert('Text kopiert! Schicke ihn jetzt einfach hier im Chat ab.');
+}
 
+// ERGEBNISSE IMPORTIEREN
+function importAIContent() {
+  const val = document.getElementById('import-textarea').value.trim();
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userMsg }]
-      })
-    });
+    // Falls Markdown-Codeblöcke enthalten sind, herausschneiden
+    const cleanJson = val.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(cleanJson);
     
-    if (!res.ok) throw new Error('API-Antwort fehlerhaft');
-    
-    const data = await res.json();
-    const text = data.content?.[0]?.text || '';
-    const clean = text.replace(/```json|```/g, '').trim();
-    const ideas = JSON.parse(clean);
-    aiIdeas = Array.isArray(ideas) ? ideas : [];
-    renderAI();
-    status.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> ${aiIdeas.length} neue Ideen generiert`;
-  } catch (e) {
-    status.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fdba74" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg> Fehler beim Generieren – Bitte Key prüfen!`;
-    console.error(e);
-  }
-  btn.disabled = false;
-}
-
-// API Key management
-let apiKey = localStorage.getItem('liro_api_key') || '';
-
-function checkLogin() {
-  const overlay = document.getElementById('login-overlay');
-  if (apiKey && apiKey.startsWith('sk-ant-')) {
-    overlay.style.display = 'none';
-  } else {
-    overlay.style.display = 'flex';
+    if(Array.isArray(parsed)) {
+      const grid = document.getElementById('ai-grid');
+      document.getElementById('ai-section').style.display = 'block';
+      
+      grid.innerHTML = parsed.map(i => `<div class="idea-card ai-card">
+        <div class="card-top">
+          <span class="tag tag-meme" style="background:rgba(96,212,240,0.2); color:var(--ai-color)">${i.tag || 'KI'}</span>
+          <span class="tag tag-ai">KI</span>
+        </div>
+        <div class="card-title">${i.title}</div>
+        <div class="card-desc">${i.desc}</div>
+        <div class="card-inspo">${i.inspo || 'KI Generiert'}</div>
+      </div>`).join('');
+      
+      // Box leeren
+      document.getElementById('import-textarea').value = '';
+      // Scroll zu den neuen Ideen
+      document.getElementById('ai-section').scrollIntoView();
+    } else {
+      alert('Das Format war nicht ganz richtig. Stelle sicher, dass du die komplette Antwort kopiert hast!');
+    }
+  } catch(e) {
+    alert('Fehler beim Lesen der Daten. Bitte kopiere die gesamte Antwort aus dem Chat hier hinein.');
   }
 }
 
-function submitKey() {
-  const input = document.getElementById('login-key-input').value.trim();
-  const error = document.getElementById('login-error');
-  if (!input.startsWith('sk-ant-')) {
-    error.style.display = 'block';
-    return;
-  }
-  error.style.display = 'none';
-  apiKey = input;
-  localStorage.setItem('liro_api_key', apiKey);
-  document.getElementById('login-overlay').style.display = 'none';
-}
-
-function resetKey() {
-  localStorage.removeItem('liro_api_key');
-  apiKey = '';
-  document.getElementById('login-key-input').value = '';
-  document.getElementById('login-overlay').style.display = 'flex';
-}
-
-document.getElementById('login-key-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') submitKey();
-});
-
-checkLogin();
-displayed = shuffle(getPool());
+// Start
 renderStatic();
-renderSaved();
 </script>
 </body>
 </html>
