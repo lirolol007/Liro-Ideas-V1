@@ -3,571 +3,328 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liro – Content Planner</title>
+<title>Liro Labs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0d0f;
-    --bg2: #141416;
-    --bg3: #1c1c20;
-    --bg4: #242428;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.12);
-    --text: #f0eeea;
-    --text2: #9b9894;
-    --text3: #5e5c5a;
-    --accent: #c8f060;
-    --accent2: #a8d040;
-    --accent-dim: rgba(200,240,96,0.12);
-    --ai-color: #60d4f0;
-    --ai-dim: rgba(96,212,240,0.1);
-    --done-color: #52e5a4;
-    --done-dim: rgba(82,229,164,0.1);
-    --radius: 14px;
-    --radius-sm: 8px;
+    --bg: #0a0a0c;
+    --bg-card: #121214;
+    --bg-input: #18181c;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(255, 255, 255, 0.15);
+    --text-main: #ffffff;
+    --text-muted: #8e8e93;
+    --text-dim: #48484a;
+    
+    /* Glow-Farben */
+    --glow-red: rgba(255, 69, 58, 0.35);
+    --glow-blue: rgba(10, 132, 255, 0.5);
+    --glow-gold: rgba(255, 214, 10, 0.4);
+    --glow-green: rgba(48, 209, 88, 0.4);
+    --glow-purple: rgba(167, 139, 250, 0.3);
+    
+    --radius-apple: 12px;
     --radius-pill: 999px;
-    --sidebar-width: 240px;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
     line-height: 1.6;
-    display: flex;
     min-height: 100vh;
     overflow-x: hidden;
+    position: relative;
   }
 
-  body::before {
-    content: '';
+  /* Flüssiger Maus-Glow */
+  #mouse-glow {
     position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0) 70%);
+    top: -200px;
+    left: -200px;
     pointer-events: none;
-    z-index: 0;
+    z-index: 9999;
+    transform: translate3d(0,0,0);
+    will-change: transform;
   }
 
-  /* LINKSEITIGE SIDEBAR */
-  .sidebar {
-    width: var(--sidebar-width);
-    background: var(--bg2);
-    border-right: 1px solid var(--border);
-    padding: 32px 18px;
+  .page { max-width: 800px; margin: 0 auto; padding: 60px 20px 100px; position: relative; z-index: 2; }
+
+  /* Profile Header styled like Linktree */
+  .profile-header {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    position: fixed;
-    top: 0; bottom: 0; left: 0;
-    z-index: 10;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 40px;
   }
 
-  .sidebar-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 24px;
-    letter-spacing: -1px;
+  .avatar-container {
+    position: relative;
+    margin-bottom: 16px;
   }
-  .sidebar-logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 
-  .nav-group { display: flex; flex-direction: column; gap: 6px; }
-  .nav-label { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 0.1em; padding-left: 10px; margin-bottom: 4px; }
+  .avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    object-fit: cover;
+    background: #1c1c1e;
+  }
 
-  .nav-btn {
+  .logo-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--text-main);
+    margin-bottom: 4px;
+    box-shadow: none;
+    filter: drop-shadow(0 0 15px var(--glow-red));
+  }
+
+  .logo-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  /* Format Umschalter */
+  .tabs-wrapper {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 11px 14px;
-    border-radius: var(--radius-sm);
-    border: none;
-    background: transparent;
-    color: var(--text2);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13.5px;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .tab-btn {
+    padding: 10px 20px;
+    border-radius: var(--radius-apple);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    text-align: left;
-    transition: all 0.2s;
-  }
-  .nav-btn:hover { background: var(--bg3); color: var(--text); }
-  .nav-btn.active { background: var(--accent-dim); color: var(--accent); font-weight: 700; }
-  .nav-btn svg { width: 16px; height: 16px; }
-  
-  .badge-count {
-    margin-left: auto;
-    font-size: 11px;
-    background: rgba(255,255,255,0.05);
-    color: var(--text2);
-    padding: 1px 7px;
-    border-radius: var(--radius-pill);
-    font-weight: 500;
-  }
-  .nav-btn.active .badge-count { background: var(--accent); color: #0d0d0f; font-weight: 700; }
-
-  /* HAUPTINHALT */
-  .main-content {
-    margin-left: var(--sidebar-width);
-    flex: 1;
-    padding: 40px 48px;
-    max-width: 1100px;
-    position: relative;
-    z-index: 1;
+    transition: var(--transition);
   }
 
-  .content-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
+  .tab-btn:hover {
+    color: var(--text-main);
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
   }
-  .content-title { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
-  .content-subtitle { font-size: 13px; color: var(--text3); margin-top: 2px; }
+  .tab-btn.tab-shorts:hover { box-shadow: 0 4px 15px rgba(10, 132, 255, 0.2); }
+  .tab-btn.tab-long:hover { box-shadow: 0 4px 15px rgba(255, 69, 58, 0.2); }
 
-  /* TABS FÜR FORMAT (OBEN) */
-  .format-tabs { display: flex; gap: 6px; background: var(--bg2); padding: 4px; border-radius: var(--radius-sm); border: 1px solid var(--border); width: fit-content; }
-  .format-btn { padding: 6px 14px; border-radius: 6px; border: none; background: transparent; color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; }
-  .format-btn.active { background: var(--bg4); color: var(--text); font-weight: 600; }
+  .tab-btn.active {
+    background: var(--text-main);
+    color: var(--bg);
+    border-color: var(--text-main);
+    font-weight: 600;
+  }
 
-  /* AI BOX */
-  .ai-bar { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 32px; position: relative; }
-  .ai-bar-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .ai-badge-label { font-size: 10px; font-weight: 700; color: var(--ai-color); background: var(--ai-dim); padding: 2px 8px; border-radius: var(--radius-pill); border: 1px solid rgba(96,212,240,0.2); }
-  .ai-bar-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; }
-  .ai-input-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
-  .ai-input { flex: 1; min-width: 200px; padding: 10px 14px; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; }
-  .ai-gen-btn { display: flex; align-items: center; gap: 6px; padding: 10px 18px; background: var(--ai-color); color: #0d0d0f; border: none; border-radius: var(--radius-sm); font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
-
-  /* PROMPT / IMPORT WINDOWS */
-  .prompt-box-container { background: var(--bg3); border: 1px dashed rgba(96,212,240,0.3); border-radius: var(--radius-sm); padding: 14px; margin-top: 14px; display: none; }
-  .prompt-text { width: 100%; height: 65px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: var(--text2); font-family: monospace; font-size: 11px; padding: 8px; resize: none; margin-bottom: 8px; }
-  .import-box-container { background: var(--bg3); border: 1px solid rgba(200,240,96,0.15); border-radius: var(--radius-sm); padding: 14px; margin-top: 14px; }
-  .import-text { width: 100%; height: 65px; background: rgba(0,0,0,0.2); border: 1px solid var(--border2); border-radius: 6px; color: var(--text); font-family: monospace; font-size: 11px; padding: 8px; }
-  .action-btn { padding: 6px 12px; border-radius: 5px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 11px; cursor: pointer; border: none; }
-
-  /* CARDS GRID */
-  .section-label { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--text3); margin: 24px 0 14px; }
-  .section-label-line { flex: 1; height: 1px; background: var(--border); }
-  .ideas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; margin-bottom: 32px; }
-
-  /* IDEA CARD STYLES */
-  .idea-card {
-    background: var(--bg2);
+  /* Cleaner Prompt Generator Panel */
+  .generator-panel {
+    background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px;
+    border-radius: var(--radius-apple);
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+
+  .input-row {
     display: flex;
-    flex-direction: column;
     gap: 10px;
-    position: relative;
-    transition: all 0.2s;
+    align-items: center;
+    flex-wrap: wrap;
   }
-  .idea-card:hover { border-color: var(--border2); background: var(--bg3); }
-  .idea-card.ai-card { border-color: rgba(96,212,240,0.2); }
-  .idea-card.fav-card { border-color: rgba(200,240,96,0.25); }
-  .idea-card.done-card { opacity: 0.6; border-color: var(--border); }
 
-  .card-top { display: flex; align-items: center; justify-content: space-between; }
-  .card-tags { display: flex; gap: 4px; }
+  .clean-input {
+    flex: 1;
+    min-width: 260px;
+    padding: 14px 16px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-apple);
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: var(--transition);
+  }
+  .clean-input:focus { border-color: rgba(255, 255, 255, 0.2); }
+
+  /* Prompt Button: Weiss, wird Blau bei Hover, hebt sich an */
+  .gen-button {
+    padding: 14px 22px;
+    background: var(--text-main);
+    color: var(--bg);
+    border: none;
+    border-radius: var(--radius-apple);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+  }
+
+  .gen-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--glow-blue);
+    background: #ffffff;
+  }
+
+  /* Prompt / Import Textfelder */
+  .box-container {
+    background: var(--bg-input);
+    border: 1px dashed var(--border-hover);
+    border-radius: var(--radius-apple);
+    padding: 16px;
+    margin-top: 16px;
+    display: none;
+  }
+  .box-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
   
-  .tag { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: var(--radius-pill); text-transform: uppercase; letter-spacing: 0.02em; }
-  .tag-meme { background: rgba(167,139,250,0.15); color: #c4b5fd; }
-  .tag-challenge { background: rgba(52,211,153,0.12); color: #6ee7b7; }
-  .tag-story { background: rgba(251,191,36,0.12); color: #fcd34d; }
-  .tag-reaction { background: rgba(251,146,60,0.12); color: #fdba74; }
-  .tag-ai { background: var(--ai-color); color: #0d0d0f; }
+  .clean-textarea {
+    width: 100%; height: 70px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text-muted); font-family: monospace; font-size: 11px; padding: 10px;
+    resize: none; margin-bottom: 10px; outline: none;
+  }
+  .clean-textarea::placeholder { color: var(--text-dim); }
+  #import-textarea { color: var(--text-main); }
 
-  /* CARD ACTIONS */
-  .card-actions { display: flex; gap: 5px; }
-  .action-icon-btn {
+  .action-btn {
+    padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: var(--transition);
+  }
+  .action-btn:hover { transform: translateY(-1px); }
+
+  /* Workflow Navigation */
+  .workflow-nav {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--radius-apple);
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .nav-item:hover { color: var(--text-main); transform: translateY(-2px); }
+  
+  /* Farb-Leuchten aus dem Wunschzettel */
+  .nav-all.active { background: rgba(255,255,255,0.04); color: var(--text-main); border-color: var(--border); }
+  .nav-fav.active { background: rgba(255, 214, 10, 0.05); color: #ffd60a; border-color: rgba(255, 214, 10, 0.2); }
+  .nav-done.active { background: rgba(48, 209, 88, 0.05); color: #30d158; border-color: rgba(48, 209, 88, 0.2); }
+
+  .nav-fav:hover { box-shadow: 0 0 15px var(--glow-gold); border-color: rgba(255, 214, 10, 0.3); }
+  .nav-done:hover { box-shadow: 0 0 15px var(--glow-green); border-color: rgba(48, 209, 88, 0.3); }
+
+  .badge { font-size: 11px; background: var(--bg-input); padding: 1px 6px; border-radius: 6px; color: var(--text-muted); margin-left: 4px; }
+  .active .badge { background: rgba(255,255,255,0.1); color: inherit; }
+
+  /* Grids & Cards */
+  .section-title { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; margin: 24px 0 12px; text-transform: uppercase; }
+  .cards-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 24px; }
+  @media(min-width: 600px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .idea-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple);
+    padding: 20px; display: flex; flex-direction: column; gap: 10px; transition: var(--transition);
+  }
+  .idea-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
+  .idea-card.ai-style { border-color: rgba(10, 132, 255, 0.2); background: linear-gradient(to bottom right, var(--bg-card), rgba(10, 132, 255, 0.01)); }
+  .idea-card.archive-style { opacity: 0.5; }
+
+  .card-header { display: flex; justify-content: space-between; align-items: center; }
+  .card-tags { display: flex; gap: 6px; }
+  .card-tag { font-size: 9px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); font-weight: 700; background: rgba(255,255,255,0.05); padding: 2px 7px; border-radius: var(--radius-pill); }
+  .card-tag.ai-badge { background: rgba(10, 132, 255, 0.15); color: #0a84ff; }
+  
+  .card-actions { display: flex; gap: 4px; }
+  .icon-action-btn {
     width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border); background: transparent;
-    cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text3); transition: all 0.15s;
+    color: var(--text-dim); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition);
   }
-  .action-icon-btn:hover { color: var(--text); border-color: var(--border2); background: rgba(255,255,255,0.04); }
-  .action-icon-btn.fav.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
-  .action-icon-btn.done:hover { color: var(--done-color); border-color: var(--done-color); background: var(--done-dim); }
-  .action-icon-btn svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .icon-action-btn:hover { color: var(--text-main); border-color: var(--border-hover); background: rgba(255,255,255,0.03); }
+  .icon-action-btn.active-fav { color: #ffd60a; border-color: rgba(255, 214, 10, 0.4); background: rgba(255, 214, 10, 0.08); }
+  .icon-action-btn.active-fav:hover { box-shadow: 0 0 10px var(--glow-gold); }
 
-  .card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--text); line-height: 1.35; }
-  .card-desc { font-size: 12.5px; color: var(--text2); flex: 1; line-height: 1.5; }
-  .card-inspo { font-size: 11px; color: var(--text3); padding-top: 6px; border-top: 1px solid var(--border); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card-title { font-size: 14.5px; font-weight: 600; color: var(--text-main); line-height: 1.4; }
+  .card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; flex: 1; }
+  .card-footer { font-size: 11px; color: var(--text-dim); padding-top: 8px; border-top: 1px solid var(--border); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .empty-state { grid-column: 1 / -1; text-align: center; padding: 48px 24px; color: var(--text3); border: 1px dashed var(--border); border-radius: var(--radius); font-size: 13px; }
+  .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-dim); border: 1px dashed var(--border); border-radius: var(--radius-apple); font-size: 13px; }
 
-  @media (max-width: 768px) {
-    body { flex-direction: column; }
-    .sidebar { width: 100%; position: relative; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 20px; }
-    .main-content { margin-left: 0; padding: 24px; }
-  }
+  footer { margin-top: 80px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-dim); display: flex; justify-content: space-between; }
+  footer a { color: var(--text-dim); text-decoration: none; }
 </style>
 </head>
 <body>
 
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <span class="sidebar-logo-dot"></span>
-      Liro Planner
+<div id="mouse-glow"></div>
+
+<div class="page">
+
+  <header class="profile-header">
+    <div class="avatar-container">
+      <img class="avatar" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150" alt="Liro Avatar">
+    </div>
+    <h1 class="logo-title">Liro Labs</h1>
+    <p class="logo-sub">Content Engine · VRChat &amp; Furry</p>
+  </header>
+
+  <div class="tabs-wrapper" id="format-container">
+    <button class="tab-btn tab-shorts active" id="btn-fmt-short" onclick="setFormat('short')">Kurzform (Shorts)</button>
+    <button class="tab-btn tab-long" id="btn-fmt-long" onclick="setFormat('long')">Langform (YouTube)</button>
+  </div>
+
+  <section class="generator-panel" id="generator-widget">
+    <div class="input-row">
+      <input class="clean-input" id="ai-prompt" placeholder='Stichwort eingeben (z.B. "Horror Welten", "Blackout")...' />
+      <button class="gen-button" onclick="generatePrompt()">1. Prompt erstellen</button>
     </div>
 
-    <div class="nav-group">
-      <span class="nav-label">IDEEN-POOL</span>
-      <button class="nav-btn active" id="nav-all" onclick="setView('all')">
-        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-        Alle Ideen
-      </button>
+    <div class="box-container" id="prompt-box">
+      <div class="box-title" style="color: #0a84ff;">Kopiere diesen Text für deinen KI-Chat:</div>
+      <textarea class="clean-textarea" id="prompt-textarea" readonly></textarea>
+      <button class="action-btn" style="background:#ffffff; color:#000;" onclick="copyPrompt()">Text kopieren</button>
     </div>
 
-    <div class="nav-group">
-      <span class="nav-label">DEIN WORKFLOW</span>
-      <button class="nav-btn" id="nav-favorites" onclick="setView('favorites')">
-        <svg viewBox="0 0 24 24" style="stroke: var(--accent);"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        ⭐ Favoriten / Plan
-        <span class="badge-count" id="badge-favs">0</span>
-      </button>
-      <button class="nav-btn" id="nav-archive" onclick="setView('archive')">
-        <svg viewBox="0 0 24 24" style="stroke: var(--done-color);"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-        ✅ Erledigt / Archiv
-        <span class="badge-count" id="badge-done">0</span>
-      </button>
+    <div class="box-container" id="import-box" style="display: block; border-style: solid;">
+      <div class="box-title" style="color: #30d158;">2. Antwort der KI hier einfügen:</div>
+      <textarea class="clean-textarea" id="import-textarea" placeholder="Füge das generierte [ ] JSON hier ein..."></textarea>
+      <button class="action-btn" style="background:var(--text-main); color:var(--bg);" onclick="importAIContent()">Ideen einlesen</button>
     </div>
-  </aside>
+  </section>
 
-  <main class="main-content">
-    <div class="content-header">
-      <div>
-        <div class="content-title" id="page-title">Alle Ideen</div>
-        <div class="content-subtitle" id="page-subtitle">Kreative Vorschläge und deine kuratierte Basisliste.</div>
-      </div>
+  <nav class="workflow-nav">
+    <button class="nav-item nav-all active" id="nav-all" onclick="setView('all')">Pool</button>
+    <button class="nav-item nav-fav" id="nav-fav" onclick="setView('favorites')">⭐ Favoriten <span class="badge" id="badge-fav">0</span></button>
+    <button class="nav-item nav-done" id="nav-done" onclick="setView('archive')">✅ Archiv <span class="badge" id="badge-done">0</span></button>
+  </nav>
 
-      <div class="format-tabs" id="format-toggle-container">
-        <button class="format-btn active" id="fmt-short" onclick="setFormat('short')">Kurzform (Shorts)</button>
-        <button class="format-btn" id="fmt-long" onclick="setFormat('long')">Langform (YouTube)</button>
-      </div>
-    </div>
-
-    <div id="ai-generator-widget">
-      <div class="ai-bar">
-        <div class="ai-bar-header">
-          <span class="ai-badge-label">PROMPT GENERATOR</span>
-          <span class="ai-bar-title">KI anwerfen &amp; kopieren</span>
-        </div>
-        <div style="font-size: 12px; color: var(--text2);">Erstelle maßgeschneiderten Content. Keine API-Keys nötig.</div>
-        
-        <div class="ai-input-row">
-          <input class="ai-input" id="ai-prompt" placeholder='Stichwort eingeben (z.B. "Horror Welten", "Verstecken spielen")...' />
-          <button class="ai-gen-btn" onclick="generatePrompt()">
-            1. Prompt erstellen
-          </button>
-        </div>
-
-        <div class="prompt-box-container" id="prompt-box">
-          <textarea class="prompt-text" id="prompt-textarea" readonly></textarea>
-          <button class="action-btn" style="background:var(--ai-color); color:#000;" onclick="copyPrompt()">Prompt kopieren &amp; im Chat abschicken</button>
-        </div>
-
-        <div class="import-box-container" style="margin-top:14px; border-color: rgba(96,212,240,0.15)">
-          <div style="font-size:11px; color:var(--text2); margin-bottom:6px; font-weight:bold;">2. Antwort der KI hier einfügen:</div>
-          <textarea class="import-text" id="import-textarea" placeholder="Füge das generierte [ ] JSON-Array hier ein..."></textarea>
-          <button class="action-btn" style="background:var(--accent); color:#000; margin-top:8px;" onclick="importAIContent()">Ideen einlesen</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="ai-results-label" class="section-label" style="display:none;">
-      <span style="color:var(--ai-color)">✦ NEU GENERIERTE KI-IDEEN</span>
-      <div class="section-label-line"></div>
-    </div>
-    <div class="ideas-grid" id="ai-ideas-grid" style="display:none;"></div>
-
-    <div id="static-results-label" class="section-label">
-      <span id="list-section-title">BASIS IDEENPOOL</span>
-      <div class="section-label-line"></div>
-    </div>
-    <div class="ideas-grid" id="main-ideas-grid"></div>
-
-  </main>
-
-<script>
-// Statische Basislisten
-const baseShortIdeas = [
-  { id: 'bs1', tag:'meme', title:'POV: Jemand fragt ob Furries weird sind', desc:'Reagiere in Character als dein Fursona – absurd, selbstbewusst, witzig.', inspo:'@wickerbeastvrc' },
-  { id: 'bs2', tag:'meme', title:'Real life vs VRChat Vergleich', desc:'Split-Screen: dieselbe Situation im echten Leben vs. in VRChat.', inspo:'VRC Community Trend' },
-  { id: 'bs3', tag:'challenge', title:'1 Stunde in VRChat ohne Sprechen', desc:'NPC-Challenge: antworte nur durch Emotes und Gesten in Public Lobbies.', inspo:'Silent Challenge' },
-  { id: 'bs4', tag:'reaction', title:'Reagiere auf Furry-Stereotypen', desc:'Kommentiere kurze Clips oder TikToks mit viel Humor und Ironie.', inspo:'React Shorts Format' }
-];
-
-const baseLongIdeas = [
-  { id: 'bl1', tag:'meme', title:'Best of VRChat Highlights', desc:'Compilation deiner witzigsten Erlebnisse in öffentlichen Welten.', inspo:'Lolathon Style' },
-  { id: 'bl2', tag:'story', title:'Die Geschichte hinter meinem Fursona', desc:'Erzähl authentisch, wie dein Charakter entstanden ist und was er bedeutet.', inspo:'Community-Klassiker' }
-];
-
-// App-Status & Speicher-Listen
-let currentView = 'all'; // all, favorites, archive
-let currentFormat = 'short'; // short, long
-
-let aiGeneratedList = JSON.parse(localStorage.getItem('liro_ai_list') || '[]');
-let favoriteList = JSON.parse(localStorage.getItem('liro_favs') || '[]');
-let archiveList = JSON.parse(localStorage.getItem('liro_archive') || '[]');
-
-// Hilfsfunktion ID Generator für KI-Ideen
-function genId() { return 'ai_' + Math.random().toString(36).substr(2, 9); }
-
-function saveToLocalStorage() {
-  localStorage.setItem('liro_ai_list', JSON.stringify(aiGeneratedList));
-  localStorage.setItem('liro_favs', JSON.stringify(favoriteList));
-  localStorage.setItem('liro_archive', JSON.stringify(archiveList));
-  updateBadges();
-}
-
-function updateBadges() {
-  document.getElementById('badge-favs').textContent = favoriteList.length;
-  document.getElementById('badge-done').textContent = archiveList.length;
-}
-
-// Navigations-Ansichten umschalten
-function setView(view) {
-  currentView = view;
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('nav-' + (view === 'favorites' ? 'favorites' : view === 'archive' ? 'archive' : 'all')).classList.add('active');
-  
-  const headerTitle = document.getElementById('page-title');
-  const headerSub = document.getElementById('page-subtitle');
-  const formatToggle = document.getElementById('format-toggle-container');
-  const aiWidget = document.getElementById('ai-generator-widget');
-
-  if (view === 'all') {
-    headerTitle.textContent = "Alle Ideen";
-    headerSub.textContent = "Kreative Vorschläge und deine kuratierte Basisliste.";
-    formatToggle.style.display = "flex";
-    aiWidget.style.display = "block";
-  } else if (view === 'favorites') {
-    headerTitle.textContent = "⭐ Favoriten & Planung";
-    headerSub.textContent = "Hier sind deine gemerkten Ideen. Bereit für die Produktion!";
-    formatToggle.style.display = "none";
-    aiWidget.style.display = "none";
-  } else if (view === 'archive') {
-    headerTitle.textContent = "✅ Erledigt & Verworfen";
-    headerSub.textContent = "Bereits hochgeladener Content oder aussortierte Skripte.";
-    formatToggle.style.display = "none";
-    aiWidget.style.display = "none";
-  }
-  render();
-}
-
-function setFormat(fmt) {
-  currentFormat = fmt;
-  document.getElementById('fmt-short').classList.toggle('active', fmt === 'short');
-  document.getElementById('fmt-long').classList.toggle('active', fmt === 'long');
-  render();
-}
-
-// WORKFLOW AKTIONEN
-function moveToFavorites(id, listType) {
-  let targetItem = findIdea(id, listType);
-  if (!targetItem) return;
-
-  // Aus alter Liste löschen falls nötig (ausser aus Base-Pools)
-  if (listType === 'ai') aiGeneratedList = aiGeneratedList.filter(i => i.id !== id);
-  if (listType === 'archive') archiveList = archiveList.filter(i => i.id !== id);
-
-  if (!favoriteList.some(i => i.id === id)) {
-    favoriteList.push({ ...targetItem, sourceList: listType });
-  }
-  saveToLocalStorage();
-  render();
-}
-
-function moveToArchive(id, listType) {
-  let targetItem = findIdea(id, listType);
-  if (!targetItem) return;
-
-  if (listType === 'ai') aiGeneratedList = aiGeneratedList.filter(i => i.id !== id);
-  if (listType === 'fav') favoriteList = favoriteList.filter(i => i.id !== id);
-
-  if (!archiveList.some(i => i.id === id)) {
-    archiveList.push(targetItem);
-  }
-  saveToLocalStorage();
-  render();
-}
-
-function deletePermanently(id) {
-  archiveList = archiveList.filter(i => i.id !== id);
-  saveToLocalStorage();
-  render();
-}
-
-function findIdea(id, listType) {
-  if (listType === 'base_short') return baseShortIdeas.find(i => i.id === id);
-  if (listType === 'base_long') return baseLongIdeas.find(i => i.id === id);
-  if (listType === 'ai') return aiGeneratedList.find(i => i.id === id);
-  if (listType === 'fav') return favoriteList.find(i => i.id === id);
-  if (listType === 'archive') return archiveList.find(i => i.id === id);
-  return null;
-}
-
-// RENDERING LOGIK
-function makeCardHTML(item, type) {
-  const isFav = favoriteList.some(f => f.id === item.id);
-  const isDone = archiveList.some(a => a.id === item.id);
-  
-  let actionButtons = '';
-  
-  if (currentView === 'all') {
-    actionButtons = `
-      <button class="action-icon-btn fav ${isFav?'active':''}" onclick="moveToFavorites('${item.id}', '${type}')" title="Anheften / Planen">
-        <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="${isFav?'currentColor':'none'}"/></svg>
-      </button>
-      <button class="action-icon-btn done" onclick="moveToArchive('${item.id}', '${type}')" title="Als erledigt archivieren">
-        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-      </button>
-    `;
-  } else if (currentView === 'favorites') {
-    actionButtons = `
-      <button class="action-icon-btn done" style="color:var(--done-color); border-color:rgba(82,229,164,0.3);" onclick="moveToArchive('${item.id}', 'fav')" title="Abhaken & Erledigt!">
-        <svg viewBox="0 0 24 24" style="stroke:var(--done-color)"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-      </button>
-    `;
-  } else if (currentView === 'archive') {
-    actionButtons = `
-      <button class="action-icon-btn" onclick="moveToFavorites('${item.id}', 'archive')" title="Wiederherstellen (Zu Favoriten)">
-        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-      </button>
-      <button class="action-icon-btn" style="color:#f472b6;" onclick="deletePermanently('${item.id}')" title="Endgültig löschen">
-        <svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-      </button>
-    `;
-  }
-
-  return `
-    <div class="idea-card ${type==='ai'?'ai-card':''} ${currentView==='favorites'?'fav-card':''} ${currentView==='archive'?'done-card':''}">
-      <div class="card-top">
-        <div class="card-tags">
-          <span class="tag tag-${item.tag || 'meme'}">${item.tag || 'Video'}</span>
-          ${type === 'ai' ? '<span class="tag tag-ai">KI</span>' : ''}
-        </div>
-        <div class="card-actions">${actionButtons}</div>
-      </div>
-      <div class="card-title">${item.title}</div>
-      <div class="card-desc">${item.desc}</div>
-      <div class="card-inspo">${item.inspo || 'Eigener Plan'}</div>
-    </div>
-  `;
-}
-
-function render() {
-  const mainGrid = document.getElementById('main-ideas-grid');
-  const aiGrid = document.getElementById('ai-ideas-grid');
-  const aiLabel = document.getElementById('ai-results-label');
-  const staticLabel = document.getElementById('static-results-label');
-  const sectionTitle = document.getElementById('list-section-title');
-
-  if (currentView === 'all') {
-    aiLabel.style.display = aiGeneratedList.length ? 'flex' : 'none';
-    aiGrid.style.display = aiGeneratedList.length ? 'grid' : 'none';
-    staticLabel.style.display = 'flex';
-    sectionTitle.textContent = currentFormat === 'short' ? 'BASIS IDEENPOOL (SHORTS)' : 'BASIS IDEENPOOL (YOUTUBE)';
-    
-    // Render KI
-    aiGrid.innerHTML = aiGeneratedList.map(i => makeCardHTML(i, 'ai')).join('');
-    
-    // Render Basis
-    let basePool = currentFormat === 'short' ? baseShortIdeas : baseLongIdeas;
-    mainGrid.innerHTML = basePool.map(i => makeCardHTML(i, currentFormat === 'short' ? 'base_short' : 'base_long')).join('');
-
-  } else if (currentView === 'favorites') {
-    aiLabel.style.display = 'none';
-    aiGrid.style.display = 'none';
-    staticLabel.style.display = 'none';
-    
-    if(!favoriteList.length) {
-      mainGrid.innerHTML = `<div class="empty-state">Noch keine Favoriten angeheftet. Klicke bei einer Idee auf das Lesezeichen-Symbol (📌), um sie hier her zu schieben!</div>`;
-    } else {
-      mainGrid.innerHTML = favoriteList.map(i => makeCardHTML(i, 'fav')).join('');
-    }
-  } else if (currentView === 'archive') {
-    aiLabel.style.display = 'none';
-    aiGrid.style.display = 'none';
-    staticLabel.style.display = 'none';
-
-    if(!archiveList.length) {
-      mainGrid.innerHTML = `<div class="empty-state">Dein Archiv ist leer. Hier landen fertig produzierte oder verworfene Ideen.</div>`;
-    } else {
-      mainGrid.innerHTML = archiveList.map(i => makeCardHTML(i, 'archive')).join('');
-    }
-  }
-}
-
-// KI GENERATOR LOGIK (PROMPT MODUS)
-function generatePrompt() {
-  const keyword = document.getElementById('ai-prompt').value.trim();
-  const formatText = currentFormat === 'short' ? 'Kurzform (TikTok/Shorts)' : 'Langform (YouTube)';
-  
-  const promptText = `Du bist ein Social-Media-Experte für Furry- und VRChat-Content. Generiere 4 kreative, frische Video-Ideen für den deutschen Creator "Liro".
-Format: ${formatText}.
-${keyword ? `Fokus-Thema / Stichwort: "${keyword}"` : ''}
-
-Antworte mir AUSSCHLIESSLICH im folgenden JSON-Format als Code-Block, ohne Einleitung oder Erklärung drumherum:
-[
-  {"tag":"meme","title":"Titel 1","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"challenge","title":"Titel 2","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"story","title":"Titel 3","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung der Idee","inspo":"Inspiration"}
-]`;
-
-  document.getElementById('prompt-textarea').value = promptText;
-  document.getElementById('prompt-box').style.display = 'block';
-}
-
-function copyPrompt() {
-  const textarea = document.getElementById('prompt-textarea');
-  textarea.select();
-  document.execCommand('copy');
-  alert('Prompt kopiert! Füge ihn einfach im KI-Chat ein.');
-}
-
-function importAIContent() {
-  const val = document.getElementById('import-textarea').value.trim();
-  try {
-    const cleanJson = val.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(cleanJson);
-    
-    if(Array.isArray(parsed)) {
-      // IDs zuweisen
-      const newIdeas = parsed.map(item => ({
-        id: genId(),
-        tag: item.tag || 'meme',
-        title: item.title || 'KI Idee',
-        desc: item.desc || '',
-        inspo: item.inspo || 'KI-Generiert'
-      }));
-      
-      // Zur temporären Liste hinzufügen
-      aiGeneratedList = [...newIdeas, ...aiGeneratedList];
-      saveToLocalStorage();
-      
-      document.getElementById('import-textarea').value = '';
-      render();
-    } else {
-      alert('Das Format war nicht ganz korrekt. Bitte kopiere das komplette JSON-Array der KI.');
-    }
-  } catch(e) {
-    alert('Fehler beim Einlesen. Stelle sicher, dass du die eckigen Klammern [ ] mitkopiert hast.');
-  }
-}
-
-// Start
-updateBadges();
-render();
-</script>
-</body>
-</html>
+  <div class="section-title" id="ai-title
