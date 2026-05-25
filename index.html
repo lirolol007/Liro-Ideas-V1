@@ -3,595 +3,700 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liro Labs</title>
+<title>Liro – Idea Generator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0c;
-    --bg-card: #121214;
-    --bg-input: #18181c;
-    --border: rgba(255, 255, 255, 0.06);
-    --border-hover: rgba(255, 255, 255, 0.15);
-    --text-main: #ffffff;
-    --text-muted: #8e8e93;
-    --text-dim: #48484a;
-    
-    /* Glow-Farben */
-    --glow-red: rgba(255, 69, 58, 0.35);
-    --glow-blue: rgba(10, 132, 255, 0.5);
-    --glow-gold: rgba(255, 214, 10, 0.4);
-    --glow-green: rgba(48, 209, 88, 0.4);
-    --glow-purple: rgba(167, 139, 250, 0.3);
-    
-    --radius-apple: 12px;
+    --bg: #0d0d0f;
+    --bg2: #141416;
+    --bg3: #1c1c20;
+    --bg4: #242428;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #f0eeea;
+    --text2: #9b9894;
+    --text3: #5e5c5a;
+    --accent: #c8f060;
+    --accent2: #a8d040;
+    --accent-dim: rgba(200,240,96,0.12);
+    --accent-dim2: rgba(200,240,96,0.06);
+    --ai-color: #60d4f0;
+    --ai-dim: rgba(96,212,240,0.1);
+    --radius: 14px;
+    --radius-sm: 8px;
     --radius-pill: 999px;
-    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  html { scroll-behavior: smooth; }
+
   body {
     background: var(--bg);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
     line-height: 1.6;
     min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
   }
 
-  /* Flüssiger Maus-Glow */
-  #mouse-glow {
+  /* Noise overlay */
+  body::before {
+    content: '';
     position: fixed;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0) 70%);
-    top: -200px;
-    left: -200px;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none;
-    z-index: 9999;
-    transform: translate3d(0,0,0);
-    will-change: transform;
+    z-index: 0;
+    opacity: 0.4;
   }
 
-  .page { max-width: 800px; margin: 0 auto; padding: 60px 20px 100px; position: relative; z-index: 2; }
+  .page { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; padding: 0 24px 80px; }
 
-  /* Profile Header styled like Linktree */
-  .profile-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  /* Header mit neuem App-Brand-Layout */
+  header {
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--border);
     margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
   }
 
-  .avatar-container {
+  .brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* iOS App Icon Style */
+  .app-icon-container {
     position: relative;
-    margin-bottom: 16px;
+    width: 84px;
+    height: 84px;
+    flex-shrink: 0;
   }
 
-  .avatar {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.08);
+  .app-icon {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    background: #1c1c1e;
+    border-radius: 20px; /* iOS-artiger Radius für 84px Box */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.05);
   }
 
-  .logo-title {
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    color: var(--text-main);
-    margin-bottom: 4px;
-    box-shadow: none;
-    filter: drop-shadow(0 0 15px var(--glow-red));
+  /* Kleiner Online-Dot auf dem Icon */
+  .app-icon-container::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+  }
+
+  .logo-group { display: flex; flex-direction: column; gap: 4px; }
+
+  /* Logo-Schriftzug vergrößert */
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 52px; /* Vergrößert von 42px */
+    letter-spacing: -2px;
+    color: var(--text);
+    line-height: 1;
   }
 
   .logo-sub {
     font-size: 13px;
-    color: var(--text-muted);
+    color: var(--text3);
     font-weight: 400;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
-  /* Format Umschalter */
-  .tabs-wrapper {
+  .social-links { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+  .social-link {
     display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 32px;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border2);
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: all 0.2s;
+    background: var(--bg2);
+  }
+
+  .social-link:hover {
+    border-color: rgba(255,255,255,0.25);
+    color: var(--text);
+    background: var(--bg3);
+  }
+
+  .social-link svg { width: 14px; height: 14px; fill: currentColor; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 28px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 4px;
+    border-radius: var(--radius);
+    width: fit-content;
   }
 
   .tab-btn {
-    padding: 10px 20px;
-    border-radius: var(--radius-apple);
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    color: var(--text-muted);
-    font-family: inherit;
+    padding: 9px 20px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.2s;
+    white-space: nowrap;
   }
 
-  .tab-btn:hover {
-    color: var(--text-main);
-    border-color: var(--border-hover);
-    transform: translateY(-2px);
-  }
-  .tab-btn.tab-shorts:hover { box-shadow: 0 4px 15px rgba(10, 132, 255, 0.2); }
-  .tab-btn.tab-long:hover { box-shadow: 0 4px 15px rgba(255, 69, 58, 0.2); }
+  .tab-btn:hover { color: var(--text); background: var(--bg3); }
 
   .tab-btn.active {
-    background: var(--text-main);
-    color: var(--bg);
-    border-color: var(--text-main);
-    font-weight: 600;
+    background: var(--accent);
+    color: #0d0d0f;
+    font-weight: 700;
   }
 
-  /* Cleaner Prompt Generator Panel */
-  .generator-panel {
-    background: var(--bg-card);
+  /* AI Bar */
+  .ai-bar {
+    background: var(--bg2);
     border: 1px solid var(--border);
-    border-radius: var(--radius-apple);
-    padding: 24px;
+    border-radius: var(--radius);
+    padding: 20px 22px;
     margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
   }
 
-  .input-row {
+  .ai-bar::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ai-color), transparent);
+    opacity: 0.4;
+  }
+
+  .ai-bar-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .ai-badge-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ai-color);
+    background: var(--ai-dim);
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(96,212,240,0.2);
+  }
+
+  .ai-bar-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .ai-bar-desc { font-size: 12px; color: var(--text3); }
+
+  .ai-input-row {
     display: flex;
     gap: 10px;
     align-items: center;
     flex-wrap: wrap;
   }
 
-  .clean-input {
+  .ai-input {
     flex: 1;
-    min-width: 260px;
-    padding: 14px 16px;
-    background: var(--bg-input);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-apple);
-    color: var(--text-main);
-    font-family: inherit;
+    min-width: 200px;
+    padding: 10px 16px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
     font-size: 13px;
     outline: none;
-    transition: var(--transition);
-  }
-  .clean-input:focus { border-color: rgba(255, 255, 255, 0.2); }
-
-  /* Prompt Button: Weiss, wird Blau bei Hover, hebt sich an */
-  .gen-button {
-    padding: 14px 22px;
-    background: var(--text-main);
-    color: var(--bg);
-    border: none;
-    border-radius: var(--radius-apple);
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    white-space: nowrap;
+    transition: border-color 0.2s;
   }
 
-  .gen-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px var(--glow-blue);
-    background: #ffffff;
-  }
+  .ai-input::placeholder { color: var(--text3); }
+  .ai-input:focus { border-color: rgba(96,212,240,0.4); }
 
-  /* Prompt / Import Textfelder */
-  .box-container {
-    background: var(--bg-input);
-    border: 1px dashed var(--border-hover);
-    border-radius: var(--radius-apple);
-    padding: 16px;
-    margin-top: 16px;
-    display: none;
-  }
-  .box-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-  
-  .clean-textarea {
-    width: 100%; height: 70px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
-    border-radius: 8px; color: var(--text-muted); font-family: monospace; font-size: 11px; padding: 10px;
-    resize: none; margin-bottom: 10px; outline: none;
-  }
-  .clean-textarea::placeholder { color: var(--text-dim); }
-  #import-textarea { color: var(--text-main); }
-
-  .action-btn {
-    padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: var(--transition);
-  }
-  .action-btn:hover { transform: translateY(-1px); }
-
-  /* Workflow Navigation */
-  .workflow-nav {
+  .ai-gen-btn {
     display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 12px;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--accent);
+    color: #0d0d0f;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
   }
 
-  .nav-item {
+  .ai-gen-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+  .ai-gen-btn:active { transform: translateY(0); }
+  .ai-gen-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .ai-gen-btn svg { width: 15px; height: 15px; }
+
+  .ai-status {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--text3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 20px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .spinner {
+    width: 13px; height: 13px;
+    border: 1.5px solid var(--border2);
+    border-top-color: var(--ai-color);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  /* Filter bar */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .filter-label { font-size: 11px; color: var(--text3); font-weight: 500; letter-spacing: 0.06em; margin-right: 4px; }
+
+  .filter-btn {
+    padding: 5px 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .filter-btn:hover { border-color: var(--border2); color: var(--text); background: var(--bg3); }
+
+  .filter-btn.active {
+    background: var(--bg3);
+    border-color: var(--border2);
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .spacer { flex: 1; }
+
+  .shuffle-btn {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 14px;
-    border-radius: var(--radius-apple);
+    padding: 6px 14px;
     background: transparent;
-    border: 1px solid transparent;
-    color: var(--text-muted);
-    font-size: 13px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
     font-weight: 500;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.18s;
   }
-  .nav-item:hover { color: var(--text-main); transform: translateY(-2px); }
-  
-  /* Farb-Leuchten aus dem Wunschzettel */
-  .nav-all.active { background: rgba(255,255,255,0.04); color: var(--text-main); border-color: var(--border); }
-  .nav-fav.active { background: rgba(255, 214, 10, 0.05); color: #ffd60a; border-color: rgba(255, 214, 10, 0.2); }
-  .nav-done.active { background: rgba(48, 209, 88, 0.05); color: #30d158; border-color: rgba(48, 209, 88, 0.2); }
 
-  .nav-fav:hover { box-shadow: 0 0 15px var(--glow-gold); border-color: rgba(255, 214, 10, 0.3); }
-  .nav-done:hover { box-shadow: 0 0 15px var(--glow-green); border-color: rgba(48, 209, 88, 0.3); }
+  .shuffle-btn:hover { border-color: var(--border2); color: var(--text); background: var(--bg3); }
+  .shuffle-btn svg { width: 13px; height: 13px; }
 
-  .badge { font-size: 11px; background: var(--bg-input); padding: 1px 6px; border-radius: 6px; color: var(--text-muted); margin-left: 4px; }
-  .active .badge { background: rgba(255,255,255,0.1); color: inherit; }
+  /* Section label */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    margin-bottom: 14px;
+    margin-top: 8px;
+  }
 
-  /* Grids & Cards */
-  .section-title { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; margin: 24px 0 12px; text-transform: uppercase; }
-  .cards-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 24px; }
-  @media(min-width: 600px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+  .section-label-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Cards grid */
+  .ideas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
 
   .idea-card {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple);
-    padding: 20px; display: flex; flex-direction: column; gap: 10px; transition: var(--transition);
-  }
-  .idea-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
-  .idea-card.ai-style { border-color: rgba(10, 132, 255, 0.2); background: linear-gradient(to bottom right, var(--bg-card), rgba(10, 132, 255, 0.01)); }
-  .idea-card.archive-style { opacity: 0.5; }
-
-  .card-header { display: flex; justify-content: space-between; align-items: center; }
-  .card-tags { display: flex; gap: 6px; }
-  .card-tag { font-size: 9px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); font-weight: 700; background: rgba(255,255,255,0.05); padding: 2px 7px; border-radius: var(--radius-pill); }
-  .card-tag.ai-badge { background: rgba(10, 132, 255, 0.15); color: #0a84ff; }
-  
-  .card-actions { display: flex; gap: 4px; }
-  .icon-action-btn {
-    width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border); background: transparent;
-    color: var(--text-dim); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition);
-  }
-  .icon-action-btn:hover { color: var(--text-main); border-color: var(--border-hover); background: rgba(255,255,255,0.03); }
-  .icon-action-btn.active-fav { color: #ffd60a; border-color: rgba(255, 214, 10, 0.4); background: rgba(255, 214, 10, 0.08); }
-  .icon-action-btn.active-fav:hover { box-shadow: 0 0 10px var(--glow-gold); }
-
-  .card-title { font-size: 14.5px; font-weight: 600; color: var(--text-main); line-height: 1.4; }
-  .card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; flex: 1; }
-  .card-footer { font-size: 11px; color: var(--text-dim); padding-top: 8px; border-top: 1px solid var(--border); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-dim); border: 1px dashed var(--border); border-radius: var(--radius-apple); font-size: 13px; }
-
-  footer { margin-top: 80px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-dim); display: flex; justify-content: space-between; }
-  footer a { color: var(--text-dim); text-decoration: none; }
-</style>
-</head>
-<body>
-
-<div id="mouse-glow"></div>
-
-<div class="page">
-
-  <header class="profile-header">
-    <div class="avatar-container">
-      <img class="avatar" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150" alt="Liro Avatar">
-    </div>
-    <h1 class="logo-title">Liro Labs</h1>
-    <p class="logo-sub">Content Engine · VRChat &amp; Furry</p>
-  </header>
-
-  <div class="tabs-wrapper" id="format-container">
-    <button class="tab-btn tab-shorts active" id="btn-fmt-short" onclick="setFormat('short')">Kurzform (Shorts)</button>
-    <button class="tab-btn tab-long" id="btn-fmt-long" onclick="setFormat('long')">Langform (YouTube)</button>
-  </div>
-
-  <section class="generator-panel" id="generator-widget">
-    <div class="input-row">
-      <input class="clean-input" id="ai-prompt" placeholder='Stichwort eingeben (z.B. "Horror Welten", "Blackout")...' />
-      <button class="gen-button" onclick="generatePrompt()">1. Prompt erstellen</button>
-    </div>
-
-    <div class="box-container" id="prompt-box">
-      <div class="box-title" style="color: #0a84ff;">Kopiere diesen Text für deinen KI-Chat:</div>
-      <textarea class="clean-textarea" id="prompt-textarea" readonly></textarea>
-      <button class="action-btn" style="background:#ffffff; color:#000;" onclick="copyPrompt()">Text kopieren</button>
-    </div>
-
-    <div class="box-container" id="import-box" style="display: block; border-style: solid;">
-      <div class="box-title" style="color: #30d158;">2. Antwort der KI hier einfügen:</div>
-      <textarea class="clean-textarea" id="import-textarea" placeholder="Füge das generierte [ ] JSON hier ein..."></textarea>
-      <button class="action-btn" style="background:var(--text-main); color:var(--bg);" onclick="importAIContent()">Ideen einlesen</button>
-    </div>
-  </section>
-
-  <nav class="workflow-nav">
-    <button class="nav-item nav-all active" id="nav-all" onclick="setView('all')">Pool</button>
-    <button class="nav-item nav-fav" id="nav-fav" onclick="setView('favorites')">⭐ Favoriten <span class="badge" id="badge-fav">0</span></button>
-    <button class="nav-item nav-done" id="nav-done" onclick="setView('archive')">✅ Archiv <span class="badge" id="badge-done">0</span></button>
-  </nav>
-
-  <div class="section-title" id="ai-title" style="display:none;">Generierte KI-Ideen</div>
-  <div class="cards-grid" id="ai-grid" style="display:none;"></div>
-
-  <div class="section-title" id="pool-title">Basis Ideenpool</div>
-  <div class="cards-grid" id="main-grid"></div>
-
-  <footer>
-    <span>&copy; 2026 Liro Labs</span>
-    <a href="https://www.youtube.com/@Liro_LOL" target="_blank">@Liro_LOL</a>
-  </footer>
-
-</div>
-
-<script>
-// Flüssiger Maus-Glow
-const glow = document.getElementById('mouse-glow');
-document.addEventListener('mousemove', (e) => {
-  window.requestAnimationFrame(() => {
-    glow.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-  });
-});
-
-// Kuratierter Basis-Pool
-const baseShort = [
-  { id: 's1', tag:'meme', title:'POV: Jemand fragt ob Furries weird sind', desc:'Reagiere in Character als dein Fursona – absurd, selbstbewusst, witzig.', inspo:'Inspiration: EN VRChat Community' },
-  { id: 's2', tag:'challenge', title:'1 Stunde in VRChat ohne Sprechen', desc:'NPC-Challenge: Antworte nur durch Emotes und Gesten in Public Lobbies.', inspo:'Trend: Silent Challenges' },
-  { id: 's3', tag:'reaction', title:'Reagiere auf Furry-Stereotypen', desc:'Kommentiere kurze Clips mit viel Humor und Augenzwinkern.', inspo:'Format: React Shorts' }
-];
-const baseLong = [
-  { id: 'l1', tag:'story', title:'Mein Weg ins Fandom: Erste Erfahrungen', desc:'Ein ehrliches Storytime-Video über deine allerersten Schritte und Welten.', inspo:'Inspiration: Journey Videos' },
-  { id: 'l2', tag:'meme', title:'Best of VRChat Highlights', desc:'Compilation deiner witzigsten Erlebnisse in öffentlichen Instanzen.', inspo:'Format à la Lolathon' }
-];
-
-// App-Status
-let currentView = 'all'; 
-let currentFormat = 'short';
-
-let aiList = JSON.parse(localStorage.getItem('ll_ai') || '[]');
-let favList = JSON.parse(localStorage.getItem('ll_fav') || '[]');
-let archList = JSON.parse(localStorage.getItem('ll_arch') || '[]');
-
-function save() {
-  localStorage.setItem('ll_ai', JSON.stringify(aiList));
-  localStorage.setItem('ll_fav', JSON.stringify(favList));
-  localStorage.setItem('ll_arch', JSON.stringify(archList));
-  updateBadges();
-}
-
-function updateBadges() {
-  document.getElementById('badge-fav').textContent = favList.length;
-  document.getElementById('badge-done').textContent = archList.length;
-}
-
-function setView(view) {
-  currentView = view;
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('nav-' + (view === 'favorites' ? 'fav' : view === 'archive' ? 'done' : 'all')).classList.add('active');
-  
-  document.getElementById('format-container').style.display = view === 'all' ? 'flex' : 'none';
-  document.getElementById('generator-widget').style.display = view === 'all' ? 'block' : 'none';
-  
-  render();
-}
-
-function setFormat(fmt) {
-  currentFormat = fmt;
-  document.getElementById('btn-fmt-short').classList.toggle('active', fmt === 'short');
-  document.getElementById('btn-fmt-long').classList.toggle('active', fmt === 'long');
-  render();
-}
-
-// WORKFLOW FUNKTIONEN
-function toggleFav(id, origin) {
-  let item = findItem(id, origin);
-  if(!item) return;
-
-  const isFav = favList.some(f => f.id === id);
-  if(isFav) {
-    favList = favList.filter(f => f.id !== id);
-    if(item.isAi && !aiList.some(a => a.id === id) && currentView !== 'all') {
-      aiList.push(item);
-    }
-  } else {
-    if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
-    if(origin === 'arch') archList = archList.filter(a => a.id !== id);
-    favList.push(item);
-  }
-  save();
-  render();
-}
-
-function archiveItem(id, origin) {
-  let item = findItem(id, origin);
-  if(!item) return;
-
-  if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
-  if(origin === 'fav') favList = favList.filter(f => f.id !== id);
-
-  if(!archList.some(a => a.id === id)) archList.push(item);
-  save();
-  render();
-}
-
-function deletePermanent(id) {
-  archList = archList.filter(a => a.id !== id);
-  save();
-  render();
-}
-
-function findItem(id, origin) {
-  if(origin === 'base_short') return baseShort.find(i => i.id === id);
-  if(origin === 'base_long') return baseLong.find(i => i.id === id);
-  if(origin === 'ai') return aiList.find(i => i.id === id);
-  if(origin === 'fav') return favList.find(i => i.id === id);
-  if(origin === 'arch') return archList.find(i => i.id === id);
-  return null;
-}
-
-// CARDS GENERATOR
-function buildCardHTML(item, origin) {
-  const isFav = favList.some(f => f.id === item.id);
-  let buttons = '';
-
-  if(currentView === 'all') {
-    buttons = `
-      <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="toggleFav('${item.id}', '${origin}')" title="Favorisieren">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="archiveItem('${item.id}', '${origin}')" title="Archivieren">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      </button>
-    `;
-  } else if(currentView === 'favorites') {
-    buttons = `
-      <button class="icon-action-btn active-fav" onclick="toggleFav('${item.id}', 'fav')" title="Vom Plan entfernen">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="archiveItem('${item.id}', 'fav')" title="Als erledigt abhaken">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-      </button>
-    `;
-  } else if(currentView === 'archive') {
-    buttons = `
-      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'arch')" title="Wiederherstellen (Zu Favoriten)">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="deletePermanent('${item.id}')" title="Endgültig löschen" style="color:rgba(255,69,58,0.6)">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
-      </button>
-    `;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 18px 16px;
+    cursor: default;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: fadeIn 0.3s ease forwards;
   }
 
-  return `
-    <div class="idea-card ${item.isAi?'ai-style':''} ${currentView==='archive'?'archive-style':''}">
-      <div class="card-header">
-        <div class="card-tags">
-          <span class="card-tag">${item.tag}</span>
-          ${item.isAi ? '<span class="card-tag ai-badge">KI</span>' : ''}
-        </div>
-        <div class="card-actions">${buttons}</div>
-      </div>
-      <div class="card-title">${item.title}</div>
-      <div class="card-desc">${item.desc}</div>
-      <div class="card-footer">${item.inspo || 'Liro Labs Engine'}</div>
-    </div>
-  `;
-}
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-function render() {
-  const mainGrid = document.getElementById('main-grid');
-  const aiGrid = document.getElementById('ai-grid');
-  const aiTitle = document.getElementById('ai-title');
-  const poolTitle = document.getElementById('pool-title');
+  .idea-card:hover { border-color: var(--border2); background: var(--bg3); transform: translateY(-2px); }
 
-  if(currentView === 'all') {
-    poolTitle.style.display = 'block';
-    poolTitle.textContent = currentFormat === 'short' ? 'Basis-Ideenpool (Shorts)' : 'Basis-Ideenpool (YouTube)';
-    
-    // KI-Karten filtern/rendern
-    if(aiList.length) {
-      aiTitle.style.display = 'block';
-      aiGrid.style.display = 'grid';
-      aiGrid.innerHTML = aiList.map(i => buildCardHTML(i, 'ai')).join('');
-    } else {
-      aiTitle.style.display = 'none';
-      aiGrid.style.display = 'none';
-    }
+  .idea-card.ai-card { border-color: rgba(96,212,240,0.2); }
+  .idea-card.ai-card:hover { border-color: rgba(96,212,240,0.4); }
 
-    // Basis-Karten rendern
-    let base = currentFormat === 'short' ? baseShort : baseLong;
-    mainGrid.innerHTML = base.map(i => buildCardHTML(i, currentFormat === 'short' ? 'base_short' : 'base_long')).join('');
+  .idea-card.is-saved { border-color: rgba(200,240,96,0.3); }
+  .idea-card.is-saved:hover { border-color: rgba(200,240,96,0.5); }
 
-  } else {
-    aiTitle.style.display = 'none';
-    aiGrid.style.display = 'none';
-    poolTitle.style.display = 'none';
-
-    let listToRender = currentView === 'favorites' ? favList : archList;
-    if(!listToRender.length) {
-      mainGrid.innerHTML = `<div class="empty-state">${currentView === 'favorites' ? 'Noch keine Favoriten geplant. Klicke auf das Lesezeichen-Symbol (📌) bei deinen Ideen!' : 'Das Archiv ist leer.'}</div>`;
-    } else {
-      mainGrid.innerHTML = listToRender.map(i => buildCardHTML(i, currentView === 'favorites' ? 'fav' : 'arch')).join('');
-    }
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
   }
-}
 
-// PROMPT GENERATOR LOGIK
-function generatePrompt() {
-  const keyword = document.getElementById('ai-prompt').value.trim();
-  const formatText = currentFormat === 'short' ? 'Kurzform (TikTok/Shorts)' : 'Langform (YouTube)';
-  
-  const promptText = `Du bist ein Social-Media-Experte für Furry- und VRChat-Content. Generiere 4 kreative, frische Video-Ideen für den deutschen Creator "Liro".
-Format: ${formatText}.
-${keyword ? `Fokus-Thema / Stichwort: "${keyword}"` : ''}
+  .card-tags { display: flex; gap: 5px; flex-wrap: wrap; }
 
-Antworte mir AUSSCHLIESSLICH im folgenden JSON-Format als Code-Block, ohne Einleitung oder Erklärung drumherum:
-[
-  {"tag":"meme","title":"Titel 1","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"challenge","title":"Titel 2","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"story","title":"Titel 3","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung der Idee","inspo":"Inspiration"}
-]`;
-
-  document.getElementById('prompt-textarea').value = promptText;
-  document.getElementById('prompt-box').style.display = 'block';
-}
-
-function copyPrompt() {
-  const textarea = document.getElementById('prompt-textarea');
-  textarea.select();
-  document.execCommand('copy');
-  alert('Prompt kopiert! Füge ihn einfach im KI-Chat ein.');
-}
-
-function importAIContent() {
-  const val = document.getElementById('import-textarea').value.trim();
-  try {
-    const cleanJson = val.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(cleanJson);
-    
-    if(Array.isArray(parsed)) {
-      const newIdeas = parsed.map(item => ({
-        id: 'ai_' + Math.random().toString(36).substr(2, 9),
-        tag: item.tag || 'video',
-        title: item.title || 'KI Idee',
-        desc: item.desc || '',
-        inspo: item.inspo || 'KI Generiert',
-        isAi: true
-      }));
-      
-      aiList = [...newIdeas, ...aiList];
-      save();
-      document.getElementById('import-textarea').value = '';
-      render();
-    } else {
-      alert('Das Format war nicht ganz richtig. Stelle sicher, dass du das komplette Array kopiert hast.');
-    }
-  } catch(e) {
-    alert('Fehler beim Einlesen. Bitte vergewissere dich, dass du die eckigen Klammern [ ] mitkopiert hast.');
+  .tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 2px 9px;
+    border-radius: var(--radius-pill);
+    text-transform: uppercase;
   }
-}
 
-// Start
-save();
-render();
-</script>
-</body>
-</html>
+  .tag-meme { background: rgba(167,139,250,0.15); color: #c4b5fd; }
+  .tag-challenge { background: rgba(52,211,153,0.12); color: #6ee7b7; }
+  .tag-story { background: rgba(251,191,36,0.12); color: #fcd34d; }
+  .tag-collab { background: rgba(244,114,182,0.12); color: #f9a8d4; }
+  .tag-reaction { background: rgba(251,146,60,0.12); color: #fdba74; }
+  .tag-tutorial { background: rgba(52,211,153,0.1); color: #86efac; }
+  .tag-compilation { background: rgba(96,165,250,0.12); color: #93c5fd; }
+  .tag-trend { background: rgba(167,139,250,0.12); color: #d8b4fe; }
+
+  .tag-ai { background: rgba(96,212,240,0.12); color: var(--ai-color); }
+
+  .card-save-btn {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    color: var(--text3);
+  }
+
+  .card-save-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim2); }
+  .card-save-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+  .card-save-btn svg { width: 14px; height: 14px; }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.35;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.55;
+    flex: 1;
+  }
+
+  .card-inspo {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.4;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-inspo svg { width: 12px; height: 12px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Saved panel */
+  .saved-section {
+    margin-top: 40px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+  }
+
+  .saved-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .saved-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .saved-count {
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+  }
+
+  .clear-btn {
+    font-size: 12px;
+    color: var(--text3);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.2s;
+  }
+
+  .clear-btn:hover { color: var(--text2); }
+
+  .saved-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .saved-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--text);
+    transition: border-color 0.2s;
+  }
+
+  .saved-item:hover { border-color: var(--border2); }
+
+  .saved-item-text { flex: 1; line-height: 1.3; }
+  .saved-item-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .unsave-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text3);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    transition: all 0.2s;
+  }
+
+  .unsave-btn:hover { color: var(--text2); background: var(--bg4); }
+  .unsave-btn svg { width: 14px; height: 14px; }
+
+  /* Login overlay */
+  .login-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .login-box {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .login-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.6;
+  }
+
+  .login-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    letter-spacing: -1px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .login-sub {
+    font-size: 13px;
+    color: var(--text3);
+    margin-bottom: 32px;
+  }
+
+  .login-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--text2);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .login-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+    font-family: monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .login-input:focus { border-color: rgba(200,240,96,0.5); }
+  .login-input::placeholder { color: var(--text3); font-family: 'DM Sans', sans-serif; letter-spacing: 0; }
+
+  .login-hint {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .login-hint a { color: var(--text2); }
+
+  .login-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: #0d0d0f;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .login-btn:hover { background: var(--accent2); }
+  .login-btn:active { transform: scale(0.99); }
+
+  .login-error {
+    font-size: 12px;
+    color: #fdba74;
+    margin-top: 10px;
+    display: none;
+  }
+
+  .login-secure {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 20px;
+    font-size: 11px;
+    color: var(--text3);
+    justify-content: center;
+  }
+
+  .login-secure svg { width: 12px; height: 12px; }
+
+  /* Key indicator in header */
+  .key-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text3);
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .key-indicator:hover { border-color: var(--border2); color: var(--text2); }
+  .key-indicator svg { width: 1
