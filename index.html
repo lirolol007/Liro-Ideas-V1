@@ -1,0 +1,34 @@
+<div class="liro-container">
+    <h2>Liro Ideas 🦊🔥</h2>
+    <p>Wirf zwei Trends/Videos in den Mixer und erstelle genialen neuen Content!</p>
+    
+    <div class="input-group">
+        <label for="apiKey">Dein API Key:</label>
+        <input type="password" id="apiKey" placeholder="sk-...">
+    </div>
+
+    <div class="input-group">
+        <label for="insp1">Inspiration 1 (z.B. Rakurim pinkelt ins Waschbecken):</label>
+        <textarea id="insp1" placeholder="Was ist in Video 1 passiert? Wirre Situation, Meme, etc."></textarea>
+    </div>
+
+    <div class="input-group">
+        <label for="insp2">Inspiration 2 (z.B. Mathew wird auf der Straße komisch angesprochen):</label>
+        <textarea id="insp2" placeholder="Was ist in Video 2 passiert? Plot, Location, etc."></textarea>
+    </div>
+
+    <div class="input-group">
+        <label for="format">Format:</label>
+        <select id="format">
+            <option value="tiktok">TikTok / Short (Schnell, knackig, Punchline am Ende)</option>
+            <option value="youtube">YouTube Langform (Storytelling, Spannungsbogen, Video-Beschreibung)</option>
+        </select>
+    </div>
+
+    <button id="generateBtn" onclick="generateIdea()">Ideen fusionieren ✨</button>
+
+    <div id="outputBox" class="output-box hidden">
+        <h3>Generierte Content-Idee:</h3>
+        <div id="resultContent"></div>
+    </div>
+</div>
