@@ -377,7 +377,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
-    margin-bottom: 32px;
+    margin-bottom: 20px;
   }
   @media(min-width: 900px) {
     .feature-grid-2x2 { grid-template-columns: 1fr 1fr; }
@@ -395,6 +395,39 @@
   .select-clean {
     width: 100%; padding: 12px; background: var(--bg-input); border: 1px solid var(--border);
     color: var(--text-main); border-radius: 8px; font-family: inherit; font-size: 13px; outline: none; margin-bottom: 12px;
+  }
+
+  /* Live Links Box Style */
+  .live-scout-box {
+    background: rgba(167, 139, 250, 0.03);
+    border: 1px solid rgba(167, 139, 250, 0.15);
+    border-radius: var(--radius-apple);
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  .scout-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .scout-link-card {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-main);
+    font-size: 12px;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .scout-link-card:hover {
+    border-color: rgba(167, 139, 250, 0.4);
+    background: rgba(167, 139, 250, 0.05);
+    transform: translateY(-2px);
   }
 
   footer { margin-top: 80px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-dim); display: flex; justify-content: space-between; }
@@ -504,7 +537,7 @@
             
             <div class="box-title" style="color: #ff453a; border-top: 1px solid var(--border); padding-top: 16px;">2. KI-Ergebnis (Die Video-Struktur) hier speichern:</div>
             <textarea class="clean-textarea" id="umsetzung-input-textarea" style="height: 140px; color: var(--text-main);" placeholder="Füge die Antwort von ChatGPT/Gemini hier ein..."></textarea>
-            <button class="action-btn" style="background: #ff453a; color: #fff;" onclick="saveUmsetzungData()">Als Umsetzung speichern</button>
+            <button class="action-btn" style="background: #ff453a; color: #fff;" onclick="saveUmsetzungData()">Als Umsetzung保存</button>
           </div>
         </div>
       </div>
@@ -551,17 +584,27 @@
     <div id="radar-view-container" style="display: none;">
       <div class="section-title">🔮 Liro Labs Super-Creator Hub (VRChat Tools)</div>
       
+      <div class="live-scout-box">
+        <div class="box-title" style="color: #a78bfa; margin-bottom: 4px;">📍 Real-World Tracker (Wo du die echten Welten findest)</div>
+        <p style="color: var(--text-muted); font-size: 11px;">KIs können keine Live-Datenbanken auslesen. Nutze diese Plattformen parallel für die genauen Weltennamen:</p>
+        <div class="scout-links-grid">
+          <a class="scout-link-card" href="https://vrchat.com/home/worlds" target="_blank">🌐 VRChat Web-Dashboard (Trending-Tab)</a>
+          <a class="scout-link-card" href="https://vrcw.net/" target="_blank">🔍 VRCW (Beste externe Welten-Suche)</a>
+          <a class="scout-link-card" href="https://x.com/search?q=vrchat%20worlds" target="_blank">🐦 Twitter / X #VRChatWorlds Trend-Feed</a>
+        </div>
+      </div>
+
       <div class="feature-grid-2x2">
         
         <div class="feature-card-hub">
           <div>
-            <div class="box-title" style="color:#a78bfa;">🧭 VRChat Trend-Welten Radar</div>
-            <p style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">Generiert dir Such-Filter Prompts für die neusten VRChat-Welten Trends.</p>
+            <div class="box-title" style="color:#a78bfa;">🧭 VRChat Konzept- &amp; Such-Filter Radar</div>
+            <p style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">Erstellt dir präzise Filter-Keywords und Videoaufhänger statt gefälschter Weltennamen.</p>
             <select class="select-clean" id="radar-world-type">
-              <option value="Trending Horror Welten">Trending Horror-Welten (Schocker / Co-Op)</option>
-              <option value="Mini-Games & PvP">Mini-Games &amp; Community PvP Welten</option>
-              <option value="Optik-Porn & Chill">Optik-Porn &amp; Ästhetische Lobbies</option>
-              <option value="Absurde Japan-Welten">Absurde Meme- &amp; Japan-Welten</option>
+              <option value="Trending Horror Welten (Fokus: Jumpscares & Coop)">Horror (Schocker / Psychologisch / Co-Op)</option>
+              <option value="Mini-Games, PvP & Party-Lobbies">Events &amp; Community Mini-Games / PvP</option>
+              <option value="Optik-Porn, Cyberpunk & Chill-Lobbies">Ästhetik- &amp; High-End-Grafik-Welten</option>
+              <option value="Absurde Meme- &amp; Japan-Lobbies">Skurrile Nischen- &amp; Meme-Welten</option>
             </select>
           </div>
           <button class="gen-button" style="background:#a78bfa; color:#000; width:100%;" onclick="triggerWorldRadar()">Welt-Trend-Prompt kopieren</button>
@@ -584,7 +627,7 @@
           <div>
             <div class="box-title" style="color:#ff453a;">🎨 Avatar Thumbnail Regiebuch-Planer</div>
             <p style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">Verwandle dein Videothema in eine professionelle Foto-Anweisung für deinen Avatar.</p>
-            <input class="clean-input" style="width:100%; margin-bottom:12px;" id="radar-thumb-topic" placeholder="Z.B. 1 Stunde in Gefängnis-Welt eingesperrt..." />
+            <input class="clean-input" style="width:100%; margin-bottom:12px;" id="radar-thumb-topic" placeholder="Z.B. 1 Stunde in Gefängnis-Welt..." />
           </div>
           <button class="gen-button" style="background:#ff453a; color:#fff; width:100%;" onclick="triggerThumbnailDesigner()">Thumbnail-Regie Prompt kopieren</button>
         </div>
@@ -834,16 +877,19 @@ function exportTimestamps() {
   alert('Die Highlight- & Zitat-Liste wurde kopiert!');
 }
 
-// 4 NEUE MEGA CREATOR FEATURES LOGIK (PROMPT GENERATION)
+// FIX: KIs erfinden Namen. Neuer Prompt zwingt KI zu Such-Kombinationen & Konzepten!
 function triggerWorldRadar() {
   const type = document.getElementById('radar-world-type').value;
   document.getElementById('radar-box-title').textContent = "Ausgabe: Trend-Radar Prompt";
-  document.getElementById('radar-output-textarea').value = `Du bist Liros VRChat Scout. Scanne fiktiv den aktuellen englischsprachigen und deutschsprachigen Raum nach neuen Geheimtipps ab. Erstelle mir eine Liste von 3 brandneuen, absolut viralgehenden VRChat-Welten für das Thema "${type}". Gib mir für jede Welt den exakten Namen, eine kurze, extrem spannende Content-Zusammenfassung und eine Idee, was Liro dort tun soll.`;
+  document.getElementById('radar-output-textarea').value = `Du bist Liros Content-Strategist für VRChat. Da du keine Echtzeit-Welten-Datenbank auslesen kannst, erfinde KEINE fake Weltennamen! Generiere mir stattdessen 3 präzise Video-Konzepte und exakte Suchbegriffe/Tags für das Genre "${type}".
+Sag mir stattdessen im Detail:
+1. Nach welchen spezifischen Tags oder Begriffen (z.B. "Quest Cozy", "Coop Puzzles", "PVP Minigame") ich im VRChat Weltenmenü suchen soll.
+2. Welche Art von Video-Challenge Liro dort drehen soll (inklusive packender Hook).
+3. Wie er die Interaktion mit Lobbypublikum oder Freunden gestalten soll.`;
 }
 
 function triggerPersonaAmplifier() {
   const style = document.getElementById('radar-avatar-style').value;
-  document.getElementById('badge-fav'); 
   document.getElementById('radar-box-title').textContent = "Ausgabe: Avatar Persona Prompt";
   document.getElementById('radar-output-textarea').value = `Ich trage im nächsten VRChat Video/Stream den Avatar-Stil "${style}". Generiere mir 5 maßgeschneiderte, extrem lustige Pointen, Einzeller oder Interaktions-Challenges für öffentliche VRChat Lobbies (Public Instances), die perfekt zu dieser visuellen Rolle passen.`;
 }
