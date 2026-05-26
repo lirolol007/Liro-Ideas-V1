@@ -258,7 +258,7 @@
   }
   .action-btn:hover { transform: translateY(-1px); }
 
-  /* Navigation in der Sidebar */
+  /* Navigation in der Sidebar - NEUE SORTIERUNG */
   .workflow-nav {
     display: flex;
     flex-direction: column;
@@ -284,16 +284,14 @@
   
   .nav-all.active { background: rgba(255,255,255,0.05); color: var(--text-main); border-color: var(--border); }
   .nav-fav.active { background: rgba(255, 214, 10, 0.06); color: #ffd60a; border-color: rgba(255, 214, 10, 0.2); }
-  .nav-sichter.active { background: rgba(10, 132, 255, 0.06); color: #0a84ff; border-color: rgba(10, 132, 255, 0.2); }
   .nav-umsetzung.active { background: rgba(255, 69, 58, 0.06); color: #ff453a; border-color: rgba(255, 69, 58, 0.2); }
-  .nav-scanner.active { background: rgba(167, 139, 250, 0.06); color: #a78bfa; border-color: rgba(167, 139, 250, 0.2); }
   .nav-done.active { background: rgba(48, 209, 88, 0.06); color: #30d158; border-color: rgba(48, 209, 88, 0.2); }
+  .nav-sichter.active { background: rgba(10, 132, 255, 0.06); color: #0a84ff; border-color: rgba(10, 132, 255, 0.2); }
 
   .nav-fav:hover { box-shadow: 0 0 15px var(--glow-gold); }
-  .nav-sichter:hover { box-shadow: 0 0 15px var(--glow-blue); }
   .nav-umsetzung:hover { box-shadow: 0 0 15px var(--glow-red); }
-  .nav-scanner:hover { box-shadow: 0 0 15px var(--glow-purple); }
   .nav-done:hover { box-shadow: 0 0 15px var(--glow-green); }
+  .nav-sichter:hover { box-shadow: 0 0 15px var(--glow-blue); }
 
   .badge { font-size: 11px; background: var(--bg-input); padding: 2px 7px; border-radius: 6px; color: var(--text-muted); }
   .active .badge { background: rgba(255,255,255,0.1); color: inherit; }
@@ -389,19 +387,16 @@
         <span>⭐ Favoriten</span>
         <span class="badge" id="badge-fav">0</span>
       </button>
-      <button class="nav-item nav-sichter" id="nav-sichter" onclick="setView('sichter')">
-        <span>⏱️ Live-Sichter</span>
-      </button>
       <button class="nav-item nav-umsetzung" id="nav-umsetzung" onclick="setView('umsetzungen')">
         <span>🎬 Umsetzung</span>
         <span class="badge" id="badge-ums">0</span>
       </button>
-      <button class="nav-item nav-scanner" id="nav-scanner" onclick="setView('scanner')">
-        <span>🎙️ Clip-Decoder</span>
-      </button>
       <button class="nav-item nav-done" id="nav-done" onclick="setView('archive')">
         <span>✅ Archiv</span>
         <span class="badge" id="badge-done">0</span>
+      </button>
+      <button class="nav-item nav-sichter" id="nav-sichter" onclick="setView('sichter')">
+        <span>⏱️ Live-Sichter</span>
       </button>
     </nav>
   </aside>
@@ -466,28 +461,6 @@
             <textarea class="clean-textarea" id="umsetzung-input-textarea" style="height: 140px; color: var(--text-main);" placeholder="Füge die Antwort von ChatGPT/Gemini hier ein..."></textarea>
             <button class="action-btn" style="background: #ff453a; color: #fff;" onclick="saveUmsetzungData()">Als Umsetzung speichern</button>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="container-scanner" style="display: none;">
-      <div class="section-title">🎙️ Clip-Decoder: Highlight-Strukturierung</div>
-      <div class="generator-panel">
-        <p style="color: var(--text-muted); font-size:13px; margin-bottom: 20px;">
-          Gib hier die Stichpunkte, Zitate oder rohen Gedanken zu einer witzigen Szene oder einem Stream-Highlight ein. Das System wandelt deine unstrukturierten Notizen in einen hochpräzisen, emotionsbasierten Prompt um, aus dem ich dir perfekte Hooks und Short-Skripte baue.
-        </p>
-        
-        <div style="margin-bottom: 16px;">
-          <div class="box-title" style="color: var(--text-muted);">Deine rohen Clip-Notizen oder Zitate:</div>
-          <textarea class="clean-textarea" id="scanner-input-notes" style="height: 100px; color: var(--text-main); background: var(--bg-input);" placeholder="Z.B.: Ich habe mich erschrocken, weil ein riesiger Fux hinter dem Spiegel stand. Hab sarkastisch gesagt, dass es der dümmste Move seit 2024 war..."></textarea>
-        </div>
-
-        <button class="gen-button" style="background: var(--text-main); color: var(--bg); margin-bottom: 20px;" onclick="generateScannerPrompt()">Highlight-Prompt erstellen</button>
-
-        <div class="box-container" id="scanner-output-box" style="display:block; border-style:solid; border-color:var(--border);">
-          <div class="box-title" style="color: #0a84ff;">Generierter Präsisionsprompt für die KI (Gemini):</div>
-          <textarea class="clean-textarea" id="scanner-textarea" style="height: 160px; color:var(--text-main);" placeholder="Klicke oben auf den Button, nachdem du deine Notizen eingetragen hast... planetary" readonly></textarea>
-          <button class="action-btn" style="background:#0a84ff; color:#fff;" onclick="copyScannerPrompt()">Highlight-Prompt kopieren</button>
         </div>
       </div>
     </div>
@@ -596,12 +569,10 @@ function setPhase(phase) {
   if(phase === 1) {
     document.getElementById('container-phase1').style.display = 'block';
     document.getElementById('container-phase2').style.display = 'none';
-    document.getElementById('container-scanner').style.display = 'none';
     document.getElementById('sichter-view-container').style.display = 'none';
   } else {
     document.getElementById('container-phase1').style.display = 'none';
     document.getElementById('container-phase2').style.display = 'block';
-    document.getElementById('container-scanner').style.display = 'none';
     document.getElementById('sichter-view-container').style.display = 'none';
     renderBuilder();
   }
@@ -615,21 +586,13 @@ function setView(view) {
   if(view === 'favorites') targetId = 'nav-fav';
   if(view === 'sichter') targetId = 'nav-sichter';
   if(view === 'umsetzungen') targetId = 'nav-umsetzung';
-  if(view === 'scanner') targetId = 'nav-scanner';
   if(view === 'archive') targetId = 'nav-done';
   document.getElementById(targetId).classList.add('active');
   
-  if(view === 'scanner') {
+  if(view === 'sichter') {
     document.getElementById('phase-switcher-container').style.display = 'none';
     document.getElementById('container-phase1').style.display = 'none';
     document.getElementById('container-phase2').style.display = 'none';
-    document.getElementById('sichter-view-container').style.display = 'none';
-    document.getElementById('container-scanner').style.display = 'block';
-  } else if(view === 'sichter') {
-    document.getElementById('phase-switcher-container').style.display = 'none';
-    document.getElementById('container-phase1').style.display = 'none';
-    document.getElementById('container-phase2').style.display = 'none';
-    document.getElementById('container-scanner').style.display = 'none';
     document.getElementById('sichter-view-container').style.display = 'block';
     renderSichter();
   } else {
@@ -706,7 +669,7 @@ function pressBuzzer() {
   renderSichter();
 }
 
-// Spacebar Key-Schnittstelle
+// Spacebar Listener
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space' && currentView === 'sichter' && isTimerRunning) {
     if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
@@ -998,40 +961,6 @@ function saveUmsetzungData() {
   save();
   alert('Konzept erfolgreich im Tab "Umsetzung" gesichert!');
   setView('umsetzungen');
-}
-
-function generateScannerPrompt() {
-  const notes = document.getElementById('scanner-input-notes').value.trim();
-  if(!notes) {
-    alert('Bitte trage erst ein paar Stichpunkte oder Zitate zu deinem Highlight ein!');
-    return;
-  }
-
-  const promptText = `Du bist der absolute Chef-Editor für den deutschen VRChat & Furry Creator "Liro". Er hat dir gerade folgende rohe Notizen/Gedanken zu einer witzigen Situation aus seiner Aufnahme gegeben.
-
-ROHE CLIP-NOTIZEN / HIGHLIGHTS:
-"${notes}"
-
-DEINE AUFGABE:
-Analysiere diese Situation und strukturiere sie für ein virales Social-Media-Short. Extrahiere:
-1. Den optimalen HOOK (Was blenden wir in Sekunde 1 als Text ein?).
-2. Die ESSENZ (Warum ist die Situation witzig? Halte den trockenen, sarkastischen Vibe von Liro bei).
-3. Das EDITING-POTENZIAL (Welche Sound-Effekte, Zooms oder visuellen Einblendungen werten die Szene massiv auf?).
-
-Gib das Ergebnis kurz, knackig und direkt in Stichpunkten aus!`;
-
-  document.getElementById('scanner-textarea').value = promptText;
-}
-
-function copyScannerPrompt() {
-  const textarea = document.getElementById('scanner-textarea');
-  if(!textarea.value) {
-    alert('Bitte generiere erst den Prompt!');
-    return;
-  }
-  textarea.select();
-  document.execCommand('copy');
-  alert('Highlight-Prompt kopiert! Schicke ihn mir im Chat, damit ich dir das Short skripte.');
 }
 
 function generatePrompt() {
