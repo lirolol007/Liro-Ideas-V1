@@ -269,7 +269,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
-    white-space: nowrap;
+    white-space: white-space;
   }
 
   .gen-button:hover {
@@ -352,13 +352,15 @@
   .idea-card.umsetzung-style { border-color: rgba(255, 69, 58, 0.2); background: linear-gradient(to bottom right, var(--bg-card), rgba(255, 69, 58, 0.01)); }
   .idea-card.world-style { border-color: rgba(167, 139, 250, 0.2); background: linear-gradient(to bottom right, var(--bg-card), rgba(167, 139, 250, 0.01)); }
   .idea-card.archive-style { opacity: 0.5; }
+  .idea-card.priority-style { border-color: rgba(255, 69, 58, 0.5); box-shadow: 0 0 15px rgba(255, 69, 58, 0.1); }
 
   .card-header { display: flex; justify-content: space-between; align-items: center; }
-  .card-tags { display: flex; gap: 6px; }
+  .card-tags { display: flex; gap: 6px; align-items: center; }
   .card-tag { font-size: 9px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); font-weight: 700; background: rgba(255,255,255,0.05); padding: 2px 7px; border-radius: var(--radius-pill); }
   .card-tag.ai-badge { background: rgba(10, 132, 255, 0.15); color: #0a84ff; }
   .card-tag.u-badge { background: rgba(255, 69, 58, 0.15); color: #ff453a; }
   .card-tag.w-badge { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
+  .card-tag.priority-badge { background: rgba(255, 69, 58, 0.25); color: #ff453a; font-weight: 800; }
   
   .card-title { font-size: 15px; font-weight: 700; color: var(--text-main); }
   .card-desc { font-size: 13px; color: var(--text-muted); }
@@ -368,10 +370,12 @@
   .icon-action-btn {
     width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border); background: transparent;
     color: var(--text-dim); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition);
+    font-size: 12px;
   }
   .icon-action-btn:hover { color: var(--text-main); border-color: var(--border-hover); background: rgba(255,255,255,0.03); }
   .icon-action-btn.active-fav { color: #ffd60a; border-color: rgba(255, 214, 10, 0.4); background: rgba(255, 214, 10, 0.08); }
   .icon-action-btn.active-plan { color: #ff453a; border-color: rgba(255, 69, 58, 0.4); background: rgba(255, 69, 58, 0.08); }
+  .icon-action-btn.active-priority { color: #ff453a; border-color: rgba(255, 69, 58, 0.5); background: rgba(255, 69, 58, 0.15); }
 
   .vrc-search-link {
     display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #0a84ff; text-decoration: none; margin-top: 8px; font-weight: 600; transition: var(--transition);
@@ -380,8 +384,89 @@
 
   .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-dim); border: 1px dashed var(--border); border-radius: var(--radius-apple); font-size: 13px; }
 
-  .builder-layout { display: grid; grid-template-columns: 1fr; gap: 20px; min-width: 0; }
-  @media(min-width: 750px) { .builder-layout { grid-template-columns: 240px 1fr; } }
+  /* NEUES KANBAN PIPELINE BOARD FÜR PHASE 2 */
+  .pipeline-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    align-items: start;
+    margin-bottom: 32px;
+  }
+  .pipeline-column {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-apple);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 400px;
+  }
+  .pipeline-column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 4px;
+  }
+  .pipeline-column-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .pipeline-column-count {
+    font-size: 11px;
+    background: var(--bg-input);
+    color: var(--text-muted);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .pipeline-card {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: var(--transition);
+    position: relative;
+  }
+  .pipeline-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .pipeline-card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+  .pipeline-card-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    border-top: 1px solid rgba(255,255,255,0.03);
+    padding-top: 8px;
+  }
+  .pipeline-nav-btn {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .pipeline-nav-btn:hover {
+    color: var(--text-main);
+    border-color: var(--border-hover);
+    background: rgba(255,255,255,0.08);
+  }
+
+  .builder-layout { display: grid; grid-template-columns: 1fr; gap: 20px; min-width: 0; margin-top: 20px; }
   
   .selector-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple); padding: 16px; display: flex; flex-direction: column; gap: 8px; height: fit-content; min-width: 0; }
   .selector-item { padding: 10px 12px; border-radius: 8px; background: var(--bg-input); border: 1px solid transparent; color: var(--text-muted); cursor: pointer; text-align: left; font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: var(--transition); width: 100%; }
@@ -411,6 +496,8 @@
   .ts-input:focus { border-color: var(--border-hover); }
   .ts-del { background: transparent; border: none; color: rgba(255,69,58,0.6); cursor: pointer; font-size: 12px; }
   .ts-del:hover { color: #ff453a; }
+  .ts-send-pool { background: transparent; border: none; color: #30d158; cursor: pointer; font-size: 13px; font-weight: bold; margin-right: 6px; }
+  .ts-send-pool:hover { text-shadow: 0 0 8px var(--glow-green); }
 
   .feature-grid-2x2 {
     display: grid;
@@ -584,10 +671,46 @@
     </div>
 
     <div id="container-phase2" style="display: none;">
+      <div class="section-title">Visual Content Pipeline</div>
+      
+      <div class="pipeline-board">
+        <div class="pipeline-column">
+          <div class="pipeline-column-header">
+            <span class="pipeline-column-title" style="color:#0a84ff;">📥 Pool</span>
+            <span class="pipeline-column-count" id="count-pool">0</span>
+          </div>
+          <div id="col-pool-list" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <div class="pipeline-column">
+          <div class="pipeline-column-header">
+            <span class="pipeline-column-title" style="color:#a78bfa;">📝 Konzept</span>
+            <span class="pipeline-column-count" id="count-konzept">0</span>
+          </div>
+          <div id="col-konzept-list" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <div class="pipeline-column">
+          <div class="pipeline-column-header">
+            <span class="pipeline-column-title" style="color:#ff453a;">🎥 Produktion</span>
+            <span class="pipeline-column-count" id="count-prod">0</span>
+          </div>
+          <div id="col-prod-list" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <div class="pipeline-column">
+          <div class="pipeline-column-header">
+            <span class="pipeline-column-title" style="color:#30d158;">✅ Fertig</span>
+            <span class="pipeline-column-count" id="count-done">0</span>
+          </div>
+          <div id="col-done-list" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+      </div>
+
       <div class="section-title">Ideen-Verstärker &amp; Skript-Planer</div>
       <div class="builder-layout">
         <div class="selector-box">
-          <div class="box-title" style="color: var(--text-muted); margin-bottom: 4px;">Wähle eine Idee:</div>
+          <div class="box-title" style="color: var(--text-muted); margin-bottom: 4px;">Aktivierte Favoriten:</div>
           <div id="builder-favorites-list"></div>
         </div>
         <div class="builder-output">
@@ -631,7 +754,7 @@
             <tr>
               <th style="width: 100px;">Zeitstempel</th>
               <th>Was ist passiert? / Absurdes Chat-Zitat eintragen</th>
-              <th style="width: 40px;"></th>
+              <th style="width: 100px; text-align:right;">Optionen</th>
             </tr>
           </thead>
           <tbody id="timestamp-tbody">
@@ -702,7 +825,7 @@
 
     <footer>
       <span>© 2026 Liro Labs Dashboard</span>
-      <span>Engine v3.5 · Ready</span>
+      <span>Engine v4.0 · System Connected</span>
     </footer>
   </main>
 </div>
@@ -716,17 +839,17 @@ let currentPhase = 1;
 
 // Seed-Daten Ideen
 let baseIdeas = [
-  { id: 'id_1', tag: 'horror', title: '3 VRChat Welten, die dich nachts verfolgen', desc: 'Vorstellung von psychologischen Gruselwelten mit unerwarteten Jumpscares.', inspo: 'Eigene Recherche', format: 'short' },
-  { id: 'id_2', tag: 'meme', title: 'Wenn Furries Kochen auspacken', desc: 'Ein lustiges Zusammenschnitt-Video in einer Virtual Reality Kitchen-Sim-Welt.', inspo: 'Community Zitat', format: 'short' },
-  { id: 'id_3', tag: 'challenge', title: '24 Stunden stumm auf Public Lobbies', desc: 'Eine soziale Challenge: Interaktion nur über Gesten und Schilder.', inspo: 'Zuschauer Wunsch', format: 'long' },
-  { id: 'id_4', tag: 'story', title: 'Die versteckte Tragödie von Welt X', desc: 'Eine deep-dive Dokumentation über die Hintergrundgeschichte einer verlassenen VRChat Welt.', inspo: 'Reddit', format: 'long' }
+  { id: 'id_1', tag: 'horror', title: '3 VRChat Welten, die dich nachts verfolgen', desc: 'Vorstellung von psychologischen Gruselwelten mit unerwarteten Jumpscares.', inspo: 'Eigene Recherche', format: 'short', pipelineStatus: 'pool', isPriority: false },
+  { id: 'id_2', tag: 'meme', title: 'Wenn Furries Kochen auspacken', desc: 'Ein lustiges Zusammenschnitt-Video in einer Virtual Reality Kitchen-Sim-Welt.', inspo: 'Community Zitat', format: 'short', pipelineStatus: 'pool', isPriority: false },
+  { id: 'id_3', tag: 'challenge', title: '24 Stunden stumm auf Public Lobbies', desc: 'Eine soziale Challenge: Interaktion nur über Gesten und Schilder.', inspo: 'Zuschauer Wunsch', format: 'long', pipelineStatus: 'pool', isPriority: false },
+  { id: 'id_4', tag: 'story', title: 'Die versteckte Tragödie von Welt X', desc: 'Eine deep-dive Dokumentation über die Hintergrundgeschichte einer verlassenen VRChat Welt.', inspo: 'Reddit', format: 'long', pipelineStatus: 'pool', isPriority: false }
 ];
 
 // Seed-Daten Welten
 let baseWorlds = [
-  { id: 'wd_1', tag: 'world', title: 'The Devouring', desc: 'Kult Coop-Horror Kampagne mit über 5 Stunden Gameplay.', inspo: 'Kult Status', format: 'long' },
-  { id: 'wd_2', tag: 'world', title: 'Organism', desc: 'Surreale, gigantische Architektur-Welt für extreme Deep-Talks.', inspo: 'Trend', format: 'long' },
-  { id: 'wd_3', tag: 'world', title: 'Kitchen Cook', desc: 'Stressiges Mini-Game, perfekt für Chaos-Lobby-Gags.', inspo: 'Meme', format: 'short' }
+  { id: 'wd_1', tag: 'world', title: 'The Devouring', desc: 'Kult Coop-Horror Kampagne mit über 5 Stunden Gameplay.', inspo: 'Kult Status', format: 'long', pipelineStatus: 'pool', isPriority: false },
+  { id: 'wd_2', tag: 'world', title: 'Organism', desc: 'Surreale, gigantische Architektur-Welt für extreme Deep-Talks.', inspo: 'Trend', format: 'long', pipelineStatus: 'pool', isPriority: false },
+  { id: 'wd_3', tag: 'world', title: 'Kitchen Cook', desc: 'Stressiges Mini-Game, perfekt für Chaos-Lobby-Gags.', inspo: 'Meme', format: 'short', pipelineStatus: 'pool', isPriority: false }
 ];
 
 let aiList = [];
@@ -748,8 +871,27 @@ function load() {
   if(localFavs) favoriteIds = JSON.parse(localFavs);
   if(localUms) umsetzungData = JSON.parse(localUms);
   if(localDone) archivedIds = JSON.parse(localDone);
-  if(localWorlds) baseWorlds = JSON.parse(localWorlds);
-  if(localIdeas) baseIdeas = JSON.parse(localIdeas);
+  
+  if(localWorlds) {
+    baseWorlds = JSON.parse(localWorlds);
+  }
+  if(localIdeas) {
+    baseIdeas = JSON.parse(localIdeas);
+  }
+
+  // Rückwärtskompatibilität: Sicherstellen, dass alle Items ein Status- & Prio-Feld besitzen
+  baseIdeas.forEach(i => {
+    if(!i.pipelineStatus) i.pipelineStatus = 'pool';
+    if(i.isPriority === undefined) i.isPriority = false;
+  });
+  baseWorlds.forEach(w => {
+    if(!w.pipelineStatus) w.pipelineStatus = 'pool';
+    if(w.isPriority === undefined) w.isPriority = false;
+  });
+  aiList.forEach(a => {
+    if(!a.pipelineStatus) a.pipelineStatus = 'pool';
+    if(a.isPriority === undefined) a.isPriority = false;
+  });
 }
 
 function save() {
@@ -774,7 +916,6 @@ function setDashboardMode(mode) {
   document.getElementById('mode-ideas-btn').classList.toggle('active', mode === 'ideas');
   document.getElementById('mode-worlds-btn').classList.toggle('active', mode === 'worlds');
   
-  // UI-Texte anpassen
   const poolText = document.getElementById('nav-pool-text');
   const midText = document.getElementById('nav-mid-text');
   const poolTitle = document.getElementById('pool-title');
@@ -803,7 +944,6 @@ function setDashboardMode(mode) {
 function setView(view) {
   currentView = view;
   
-  // Navigation-Active Klassen umschalten
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   let targetId = 'nav-all';
   if(view === 'favorites') targetId = 'nav-fav';
@@ -813,14 +953,12 @@ function setView(view) {
   if(view === 'radar') targetId = 'nav-radar';
   document.getElementById(targetId).classList.add('active');
 
-  // Alle Haupt-Container erst verstecken
   document.getElementById('container-phase1').style.display = 'none';
   document.getElementById('container-phase2').style.display = 'none';
   document.getElementById('sichter-view-container').style.display = 'none';
   document.getElementById('radar-view-container').style.display = 'none';
   document.getElementById('phase-switcher-container').style.display = 'none';
 
-  // Format & Generator-Widget Sichtbarkeit basierend auf View steuern
   document.getElementById('format-container').style.display = (view === 'all' || view === 'favorites' || view === 'archive') ? 'flex' : 'none';
   document.getElementById('generator-split-view').style.display = (view === 'all') ? 'grid' : 'none';
 
@@ -832,7 +970,6 @@ function setView(view) {
     document.getElementById('phase-switcher-container').style.display = 'flex';
     setPhase(2);
   } else {
-    // all, favorites, archive
     document.getElementById('phase-switcher-container').style.display = 'flex';
     setPhase(1);
   }
@@ -850,6 +987,7 @@ function setPhase(phase) {
   } else {
     document.getElementById('container-phase1').style.display = 'none';
     document.getElementById('container-phase2').style.display = 'block';
+    renderPipelineBoard();
     renderBuilder();
   }
 }
@@ -859,6 +997,77 @@ function setFormat(fmt) {
   document.getElementById('btn-fmt-short').classList.toggle('active', fmt === 'short');
   document.getElementById('btn-fmt-long').classList.toggle('active', fmt === 'long');
   render();
+}
+
+// --- RENDERING PIPELINE BOARD (PHASE 2) ---
+function renderPipelineBoard() {
+  const columns = {
+    pool: document.getElementById('col-pool-list'),
+    konzept: document.getElementById('col-konzept-list'),
+    produktion: document.getElementById('col-prod-list'),
+    done: document.getElementById('col-done-list')
+  };
+
+  // Listen leeren
+  Object.keys(columns).forEach(k => columns[k].innerHTML = '');
+
+  // Alle verfügbaren Items holen
+  let combined = [...baseIdeas, ...baseWorlds, ...aiList];
+
+  // Zähler-Objekt initialisieren
+  let counts = { pool: 0, konzept: 0, produktion: 0, done: 0 };
+
+  combined.forEach(item => {
+    let status = item.pipelineStatus || 'pool';
+    if(counts[status] !== undefined) {
+      counts[status]++;
+      
+      const pCard = document.createElement('div');
+      pCard.className = 'pipeline-card';
+      if(item.isPriority) pCard.style.borderColor = 'rgba(255, 69, 58, 0.4)';
+      
+      let prefix = item.tag === 'world' ? '🌍' : '📁';
+      let formatBadge = item.format === 'short' ? '⚡ Short' : '📺 Long';
+      let prioStar = item.isPriority ? '🔥 ' : '';
+
+      pCard.innerHTML = `
+        <div class="pipeline-card-title">${prioStar}${prefix} ${item.title}</div>
+        <div style="font-size:11px; color:var(--text-muted);">${formatBadge} · ${item.tag}</div>
+        <div class="pipeline-card-nav">
+          <button class="pipeline-nav-btn" onclick="movePipelineStatus('${item.id}', 'prev')">←</button>
+          <button class="pipeline-nav-btn" style="color:var(--text-main);" onclick="openInBuilder('${item.id}', null)">🛠️ Ausbauen</button>
+          <button class="pipeline-nav-btn" onclick="movePipelineStatus('${item.id}', 'next')">→</button>
+        </div>
+      `;
+      columns[status].appendChild(pCard);
+    }
+  });
+
+  // Zähler-Badges befüllen
+  Object.keys(counts).forEach(k => {
+    document.getElementById(`count-${k}`).textContent = counts[k];
+    if(columns[k].children.length === 0) {
+      columns[k].innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-dim); font-size:12px;">Leer</div>`;
+    }
+  });
+}
+
+function movePipelineStatus(id, direction) {
+  let combined = [...baseIdeas, ...baseWorlds, ...aiList];
+  let item = combined.find(i => i.id === id);
+  if(!item) return;
+
+  const states = ['pool', 'konzept', 'produktion', 'done'];
+  let currentIdx = states.indexOf(item.pipelineStatus || 'pool');
+
+  if(direction === 'next' && currentIdx < states.length - 1) {
+    item.pipelineStatus = states[currentIdx + 1];
+  } else if(direction === 'prev' && currentIdx > 0) {
+    item.pipelineStatus = states[currentIdx - 1];
+  }
+
+  save();
+  renderPipelineBoard();
 }
 
 // --- RENDERING CARDS (PHASE 1) ---
@@ -874,7 +1083,6 @@ function render() {
 
   let sourcePool = (currentDashboardMode === 'worlds') ? baseWorlds : baseIdeas;
   
-  // Filter nach Tab/Ansicht & Format
   let filteredMain = sourcePool.filter(item => {
     if(currentView === 'favorites' && !favoriteIds.includes(item.id)) return false;
     if(currentView === 'archive' && !archivedIds.includes(item.id)) return false;
@@ -882,16 +1090,19 @@ function render() {
     return item.format === currentFormat;
   });
 
+  // Sortierung: Prio-Items (🔥) rücken im Pool nach ganz oben
+  filteredMain.sort((a, b) => (b.isPriority ? 1 : 0) - (a.isPriority ? 1 : 0));
+
   let filteredAi = aiList.filter(item => {
     if(currentDashboardMode === 'worlds' && item.tag !== 'world') return false;
     if(currentDashboardMode === 'ideas' && item.tag === 'world') return false;
     if(currentView === 'favorites' && !favoriteIds.includes(item.id)) return false;
     if(currentView === 'archive' && !archivedIds.includes(item.id)) return false;
     if(currentView === 'all' && archivedIds.includes(item.id)) return false;
-    return true; // KI-Importe ignorieren temporär das Format für maximale Flexibilität
+    return true;
   });
+  filteredAi.sort((a, b) => (b.isPriority ? 1 : 0) - (a.isPriority ? 1 : 0));
 
-  // Render KI-Pool
   if(filteredAi.length > 0 && currentView !== 'archive') {
     aiTitle.style.display = 'block';
     aiGrid.style.display = 'grid';
@@ -901,7 +1112,6 @@ function render() {
     aiGrid.style.display = 'none';
   }
 
-  // Render Basis-Pool
   if(filteredMain.length === 0 && filteredAi.length === 0) {
     mainGrid.innerHTML = `<div class="empty-state">Hier gibt es im Moment keine Einträge für das gewählte Format.</div>`;
   } else {
@@ -916,6 +1126,7 @@ function createCard(item) {
   if(umsetzungData[item.id]) card.classList.add('umsetzung-style');
   if(item.tag === 'world') card.classList.add('world-style');
   if(archivedIds.includes(item.id)) card.classList.add('archive-style');
+  if(item.isPriority) card.classList.add('priority-style');
 
   const isFav = favoriteIds.includes(item.id);
   const hasPlan = !!umsetzungData[item.id];
@@ -924,16 +1135,23 @@ function createCard(item) {
   if(item.isAi) tagBadge = `<span class="card-tag ai-badge">KI</span>`;
   if(item.tag === 'world') tagBadge = `<span class="card-tag w-badge">VRC Welt</span>`;
   if(hasPlan) tagBadge += ` <span class="card-tag u-badge">Geplant</span>`;
+  if(item.isPriority) tagBadge += ` <span class="card-tag priority-badge">🔥 PRIO</span>`;
 
   let worldSearchLink = '';
+  let worldSprossBtn = '';
+  
   if(item.tag === 'world' || currentDashboardMode === 'worlds') {
     worldSearchLink = `<a class="vrc-search-link" href="https://vrchat.com/home/search/${encodeURIComponent(item.title)}" target="_blank">🔍 In VRChat suchen</a>`;
+    // NEU: Ideen-Spross Button für Welten
+    worldSprossBtn = `<button class="icon-action-btn" onclick="sprossNewIdea('${item.id}', event)" title="Ideen-Spross schlagen (Verknüpfte Videoidee)">🌱</button>`;
   }
 
   card.innerHTML = `
     <div class="card-header">
       <div class="card-tags">${tagBadge}</div>
       <div class="card-actions">
+        <button class="icon-action-btn ${item.isPriority?'active-priority':''}" onclick="togglePriority('${item.id}', event)" title="Priorität umschalten">🔥</button>
+        ${worldSprossBtn}
         <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="toggleFav('${item.id}', event)">⭐</button>
         <button class="icon-action-btn ${hasPlan?'active-plan':''}" onclick="openInBuilder('${item.id}', event)" title="In Phase 2 ausbauen">🎬</button>
         <button class="icon-action-btn" onclick="toggleArchive('${item.id}', event)" title="Archivieren/Wiederherstellen">✓</button>
@@ -948,6 +1166,40 @@ function createCard(item) {
 }
 
 // --- ACTIONS ---
+function togglePriority(id, e) {
+  if(e) e.stopPropagation();
+  let combined = [...baseIdeas, ...baseWorlds, ...aiList];
+  let item = combined.find(i => i.id === id);
+  if(item) {
+    item.isPriority = !item.isPriority;
+    save();
+    render();
+    if(currentPhase === 2) renderPipelineBoard();
+  }
+}
+
+function sprossNewIdea(worldId, e) {
+  if(e) e.stopPropagation();
+  let world = baseWorlds.find(w => w.id === worldId) || aiList.find(w => w.id === worldId);
+  if(!world) return;
+
+  const newIdea = {
+    id: 'spross_' + Math.random().toString(36).substr(2, 9),
+    tag: 'story',
+    title: `Idee zu Welt: ${world.title}`,
+    desc: `Automatischer Geistesblitz basierend auf der VRC-Welt "${world.title}". Hier Skript-Konzept eintragen.`,
+    inspo: `Spross von ${world.title}`,
+    format: world.format,
+    pipelineStatus: 'pool',
+    isPriority: false
+  };
+
+  baseIdeas.unshift(newIdea);
+  save();
+  alert(`🌱 Ideen-Spross geschlagen!\nEine verknüpfte Videoidee wurde in deinem Ideenpool verankert.`);
+  render();
+}
+
 function toggleFav(id, e) {
   if(e) e.stopPropagation();
   const idx = favoriteIds.indexOf(id);
@@ -965,11 +1217,11 @@ function toggleArchive(id, e) {
   else archivedIds.push(id);
   save();
   render();
+  if(currentPhase === 2) renderPipelineBoard();
 }
 
 function openInBuilder(id, e) {
   if(e) e.stopPropagation();
-  // Sicherstellen, dass die Idee ein Favorit ist, um im Selektor aufzutauchen
   if(!favoriteIds.includes(id)) {
     favoriteIds.push(id);
     save();
@@ -1022,7 +1274,9 @@ function importAIContent() {
         desc: item.desc || '',
         inspo: item.inspo || 'KI Generiert',
         isAi: true,
-        format: currentFormat
+        format: currentFormat,
+        pipelineStatus: 'pool',
+        isPriority: false
       }));
       
       aiList = [...newIdeas, ...aiList];
@@ -1048,7 +1302,9 @@ function addManualWorld() {
     title: name,
     desc: desc || 'Manuell gesicherte VRChat Welt.',
     inspo: 'Live Scouting',
-    format: currentFormat
+    format: currentFormat,
+    pipelineStatus: 'pool',
+    isPriority: false
   };
   
   baseWorlds = [newWorld, ...baseWorlds];
@@ -1065,7 +1321,6 @@ function renderBuilder() {
   const listCont = document.getElementById('builder-favorites-list');
   listCont.innerHTML = '';
   
-  // Kombinierten Pool aus Favoriten suchen
   let allPossible = [...baseIdeas, ...baseWorlds, ...aiList];
   let favItems = allPossible.filter(item => favoriteIds.includes(item.id));
   
@@ -1096,7 +1351,6 @@ function renderBuilder() {
 function selectBuilderIdea(id) {
   selectedBuilderId = id;
   
-  // Aktiv-Klasse im Selektor anpassen
   document.querySelectorAll('.selector-item').forEach(btn => {
     if(btn.textContent.includes(id)) btn.classList.add('selected');
   });
@@ -1111,7 +1365,6 @@ function selectBuilderIdea(id) {
   document.getElementById('builder-display-title').textContent = item.title;
   document.getElementById('builder-display-desc').textContent = item.desc;
   
-  // Ausgebauten Konzept-Prompt befüllen
   const fmtText = item.format === 'short' ? 'ein packendes 60-Sekunden Short-Skript (inkl. Hook, Visuals, Sprechtext)' : 'ein strukturiertes YouTube Video-Skript (inkl. Intro-Hook, Spannungsbogen, Szenen-Aufbau)';
   
   document.getElementById('builder-textarea').value = `Nimm das folgende Video-Konzept und baue es zu einer vollwertigen Produktions-Struktur aus für: ${fmtText}.
@@ -1125,7 +1378,6 @@ Gib mir Folgendes aus:
 2. Das exakte Skript / Regie-Gerüst (Szenenbeschreibungen + Voiceover-Text).
 3. Eine Empfehlung für die perfekte Hintergrundmusik oder Sound-Atmosphäre.`;
 
-  // Bereits gespeicherte Umsetzungsdaten laden, falls vorhanden
   document.getElementById('umsetzung-input-textarea').value = umsetzungData[id] || '';
 }
 
@@ -1159,14 +1411,12 @@ function toggleTimer() {
   const buzzer = document.getElementById('btn-buzzer');
   
   if(timerInterval) {
-    // Stoppen
     clearInterval(timerInterval);
     timerInterval = null;
     btn.textContent = 'Stream Fortsetzen';
     btn.style.background = '#30d158';
     buzzer.disabled = true;
   } else {
-    // Starten
     timerInterval = setInterval(() => {
       timerSeconds++;
       document.getElementById('stream-timer').textContent = formatTime(timerSeconds);
@@ -1205,16 +1455,44 @@ function pressBuzzer() {
   if(emptyRow) tbody.innerHTML = '';
   
   const curTime = formatTime(timerSeconds);
+  const rowId = 'row_' + Date.now();
   const tr = document.createElement('tr');
+  tr.id = rowId;
   tr.innerHTML = `
     <td class="ts-time">${curTime}</td>
     <td><input class="ts-input" placeholder="Zuschauer-Zitat oder Highlight eintragen..." /></td>
-    <td><button class="ts-del" onclick="this.closest('tr').remove(); checkEmptySichter();">✕</button></td>
+    <td style="text-align:right; white-space:nowrap;">
+      <button class="ts-send-pool" onclick="sendHighlightToPool('${rowId}')" title="Direkt in den Ideenpool übernehmen">📥 Pool</button>
+      <button class="ts-del" onclick="document.getElementById('${rowId}').remove(); checkEmptySichter();">✕</button>
+    </td>
   `;
   tbody.appendChild(tr);
   
-  // Input sofort fokussieren für flüssiges Tippen während des Streams
   tr.querySelector('.ts-input').focus();
+}
+
+// NEUE FUNKTION: Sendet einen markierten Stream-Moment live als Karte in die Ideen-Pipeline
+function sendHighlightToPool(rowId) {
+  const row = document.getElementById(rowId);
+  if(!row) return;
+
+  const timestamp = row.querySelector('.ts-time').textContent;
+  const note = row.querySelector('.ts-input').value.trim() || "Unbenanntes Stream-Highlight";
+
+  const newStreamIdea = {
+    id: 'stream_gen_' + Math.random().toString(36).substr(2, 9),
+    tag: 'meme',
+    title: `Highlight [${timestamp}]`,
+    desc: `${note} (Aufgezeichnet im Live-Sichter bei Stream-Time ${timestamp})`,
+    inspo: 'Live-Stream Sichter',
+    format: 'short', // Highlights eignen sich perfekt für Shorts/TikToks
+    pipelineStatus: 'pool',
+    isPriority: false
+  };
+
+  baseIdeas.unshift(newStreamIdea);
+  save();
+  alert(`📥 Gefunden!\nDer Stream-Moment wurde erfolgreich als unberührte Karte in deinen Ideen-Pool eingespeist.`);
 }
 
 function checkEmptySichter() {
@@ -1239,7 +1517,6 @@ function exportTimestamps() {
   alert('Highlight-Liste in Zwischenablage kopiert! Bereit für deinen Videoschnitt.');
 }
 
-// Leertasten-Event für den Live-Buzzer
 window.addEventListener('keydown', (e) => {
   if(e.code === 'Space' && timerInterval && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
     e.preventDefault();
