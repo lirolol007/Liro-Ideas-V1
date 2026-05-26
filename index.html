@@ -116,7 +116,7 @@
     letter-spacing: -0.01em;
   }
 
-  /* Modus Umschalter (Ideen vs Welten) */
+  /* Modus Umschalter */
   .mode-wrapper {
     display: flex;
     gap: 8px;
@@ -184,7 +184,6 @@
     border: 1px solid var(--border);
   }
 
-  /* Split Layouts */
   .panel-split-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -195,7 +194,6 @@
     .panel-split-grid { grid-template-columns: 1fr 1fr; }
   }
 
-  /* Format Umschalter */
   .tabs-wrapper {
     display: flex;
     justify-content: flex-start;
@@ -302,7 +300,6 @@
   }
   .action-btn:hover { transform: translateY(-1px); }
 
-  /* Navigation in der Sidebar */
   .workflow-nav {
     display: flex;
     flex-direction: column;
@@ -342,7 +339,6 @@
   .badge { font-size: 11px; background: var(--bg-input); padding: 2px 7px; border-radius: 6px; color: var(--text-muted); }
   .active .badge { background: rgba(255,255,255,0.1); color: inherit; }
 
-  /* Grids & Cards */
   .section-title { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; margin: 0 0 16px; text-transform: uppercase; }
   .cards-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 32px; }
   @media(min-width: 780px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -384,7 +380,6 @@
 
   .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-dim); border: 1px dashed var(--border); border-radius: var(--radius-apple); font-size: 13px; }
 
-  /* Builder */
   .builder-layout { display: grid; grid-template-columns: 1fr; gap: 20px; min-width: 0; }
   @media(min-width: 750px) { .builder-layout { grid-template-columns: 240px 1fr; } }
   
@@ -395,7 +390,6 @@
 
   .builder-output { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple); padding: 24px; min-width: 0; }
 
-  /* Sichter Panel Styles */
   .sichter-panel {
     background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple); padding: 24px; margin-bottom: 32px;
   }
@@ -631,6 +625,7 @@
           <div class="box-title" style="color: var(--text-main); margin: 0;">Gelistete Stream-Momente &amp; Zitate</div>
           <button class="action-btn" style="background: #ffffff; color: #000; font-size: 11px;" onclick="exportTimestamps()">Liste für Short-Skripte kopieren</button>
         </div>
+
         <table class="timestamp-table">
           <thead>
             <tr>
@@ -648,7 +643,6 @@
 
     <div id="radar-view-container" style="display: none;">
       <div class="section-title">🔮 Liro Labs Super-Creator Hub (VRChat Tools)</div>
-      
       <div class="live-scout-box">
         <div class="box-title" style="color: #a78bfa; margin-bottom: 4px;">📍 Quick Tracker Links (Ein Klick zu echten Welten)</div>
         <p style="color: var(--text-muted); font-size: 11px;">Falls du manuell stöbern willst, bringen dich diese Links ohne Umwege zu den echten Trends:</p>
@@ -684,149 +678,164 @@
               <option value="Edgy Anime Boy (Unnahbar, Cool)">Edgy Anime Boy (Mysteriös, cool)</option>
             </select>
           </div>
-          <button class="gen-button" style="background:#ffd60a; color:#000; width:100%;" onclick="triggerPersonaAmplifier()">Avatar-Skript Prompt kopieren</button>
+          <button class="gen-button" style="background:#ffd60a; color:#000; width:100%;" onclick="triggerPersonaAmplifier()">Avatar Persona Prompt kopieren</button>
         </div>
+      </div>
 
-        <div class="feature-card-hub">
+      <div class="feature-grid-2x2">
+        <div class="feature-card-hub" style="grid-column: 1 / -1;">
           <div>
-            <div class="box-title" style="color:#ff453a;">🎨 Avatar Thumbnail Regiebuch-Planer</div>
-            <p style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">Verwandle dein Videothema in eine professionelle Foto-Anweisung für deinen Avatar.</p>
-            <input class="clean-input" style="width:100%; margin-bottom:12px;" id="radar-thumb-topic" placeholder="Z.B. 1 Stunde in Gefängnis-Welt..." />
+            <div class="box-title" style="color:#ff453a;">🎨 Clickbait Thumbnail-Regisseur</div>
+            <p style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">Erstellt ein detailliertes Regiebuch für VRChat Avatare, Posing und Thumbnail-Hintergründe.</p>
+            <input class="clean-input" id="radar-thumb-topic" style="width:100%; margin-bottom:12px;" placeholder="Grobes Video-Thema (z.B. Ich wurde in VRChat gejagt)...">
           </div>
-          <button class="gen-button" style="background:#ff453a; color:#fff; width:100%;" onclick="triggerThumbnailDesigner()">Thumbnail-Regie Prompt kopieren</button>
+          <button class="gen-button" style="background:#ff453a; color:#fff; width:100%;" onclick="triggerThumbnailDesigner()">Thumbnail Prompt kopieren</button>
         </div>
+      </div>
 
-        <div class="feature-card-hub" style="background:var(--bg-input); border-style:dashed;">
-          <div>
-            <div class="box-title" style="color: #0a84ff;" id="radar-box-title">Hub-Prompt-Output</div>
-            <textarea class="clean-textarea" style="height:110px;" id="radar-output-textarea" placeholder="Wähle links ein Creator-Feature aus. Der passende Spezial-Prompt erscheint sofort hier..." readonly></textarea>
-          </div>
-          <button class="action-btn" style="background:#0a84ff; color:#fff; width:100%;" onclick="copyRadarOutput()">Kopieren &amp; in KI einfügen</button>
-        </div>
+      <div class="box-container" id="radar-output-box" style="margin-top:20px;">
+        <div class="box-title" id="radar-box-title" style="color:#ffffff;">Ausgabe</div>
+        <textarea class="clean-textarea" id="radar-output-textarea" style="height:120px;" readonly></textarea>
+        <button class="action-btn" style="background:#ffffff; color:#000;" onclick="copyRadarOutput()">In Zwischenablage kopieren</button>
       </div>
     </div>
 
     <footer>
-      <span>&copy; 2026 Liro Labs</span>
-      <a href="https://www.youtube.com/@Liro_LOL" target="_blank">@Liro_LOL</a>
+      <span>© 2026 Liro Labs Dashboard</span>
+      <span>Engine v3.5 · Ready</span>
     </footer>
   </main>
-
 </div>
 
 <script>
-// Maus-Glow
-const glow = document.getElementById('mouse-glow');
-document.addEventListener('mousemove', (e) => {
-  window.requestAnimationFrame(() => {
-    glow.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-  });
-});
-
-// Basis-Pool Daten für Ideen
-const baseShort = [
-  { id: 's1', tag:'meme', title:'POV: Jemand fragt ob Furries weird sind', desc:'Reagiere in Character als dein Fursona – absurd, selbstbewusst, witzig.', inspo:'Inspiration: EN VRChat Community' },
-  { id: 's2', tag:'challenge', title:'1 Stunde in VRChat ohne Sprechen', desc:'NPC-Challenge: Antworte nur durch Emotes und Gesten in Public Lobbies.', inspo:'Trend: Silent Challenges' },
-  { id: 's3', tag:'reaction', title:'Reagiere auf Furry-Stereotypen', desc:'Kommentiere kurze Clips mit viel Humor und Augenzwinkern.', inspo:'Format: React Shorts' }
-];
-const baseLong = [
-  { id: 'l1', tag:'story', title:'Mein Weg ins Fandom: Erste Erfahrungen', desc:'Ein ehrliches Storytime-Video über deine allerersten Schritte und Welten.', inspo:'Inspiration: Journey Videos' },
-  { id: 'l2', tag:'meme', title:'Best of VRChat Highlights', desc:'Compilation deiner witzigsten Erlebnisse in öffentlichen Instanzen.', inspo:'Format à la Lolathon' }
-];
-
-// Basis-Pool Daten für Welten (Falls lokaler Speicher leer ist)
-const defaultWorlds = [
-  { id: 'w_def1', tag:'horror', title:'The Devouring', desc:'Der absolute Gold-Standard für VRChat Horror-Kampagnen. Extrem gruselig, ca. 5-6 Stunden Gameplay.', inspo:'Klassiker', isWorld: true },
-  { id: 'w_def2', tag:'game', title:'Pop Death Run', desc:'Absurd spaßiges Minispiel im Stil eines Hindernisparcours. Perfekt für Chaos im Stream.', inspo:'Trend', isWorld: true },
-  { id: 'w_def3', tag:'chill', title:'Yayoi Summer Night', desc:'Wunderschöne, japanische Sommernacht mit genialen Lichteffekten. Top für Deep Talks.', inspo:'Ästhetik', isWorld: true }
-];
-
-// Zustands-Variablen
-let dbMode = 'ideas'; // 'ideas' oder 'worlds'
-let currentView = 'all'; 
-let currentFormat = 'short';
+// --- DATEN & STATE ---
+let currentDashboardMode = 'ideas'; // 'ideas' oder 'worlds'
+let currentView = 'all';           // 'all', 'favorites', 'umsetzungen', 'archive', 'sichter', 'radar'
+let currentFormat = 'short';       // 'short' oder 'long'
 let currentPhase = 1;
-let selectedBuilderItemId = null;
 
-// Speicher-Listen laden
-let aiList = JSON.parse(localStorage.getItem('ll_ai') || '[]');
-let favList = JSON.parse(localStorage.getItem('ll_fav') || '[]');
-let archList = JSON.parse(localStorage.getItem('ll_arch') || '[]');
-let umsList = JSON.parse(localStorage.getItem('ll_ums') || '[]'); 
-let timestampList = JSON.parse(localStorage.getItem('ll_timestamps') || '[]');
+// Seed-Daten Ideen
+let baseIdeas = [
+  { id: 'id_1', tag: 'horror', title: '3 VRChat Welten, die dich nachts verfolgen', desc: 'Vorstellung von psychologischen Gruselwelten mit unerwarteten Jumpscares.', inspo: 'Eigene Recherche', format: 'short' },
+  { id: 'id_2', tag: 'meme', title: 'Wenn Furries Kochen auspacken', desc: 'Ein lustiges Zusammenschnitt-Video in einer Virtual Reality Kitchen-Sim-Welt.', inspo: 'Community Zitat', format: 'short' },
+  { id: 'id_3', tag: 'challenge', title: '24 Stunden stumm auf Public Lobbies', desc: 'Eine soziale Challenge: Interaktion nur über Gesten und Schilder.', inspo: 'Zuschauer Wunsch', format: 'long' },
+  { id: 'id_4', tag: 'story', title: 'Die versteckte Tragödie von Welt X', desc: 'Eine deep-dive Dokumentation über die Hintergrundgeschichte einer verlassenen VRChat Welt.', inspo: 'Reddit', format: 'long' }
+];
 
-// Eigene Listen für Welten-Modus
-let worldsPoolList = JSON.parse(localStorage.getItem('ll_worlds_pool') || '[]');
-let worldsFavList = JSON.parse(localStorage.getItem('ll_worlds_fav') || '[]');
-let worldsPlanList = JSON.parse(localStorage.getItem('ll_worlds_plan') || '[]');
-let worldsArchList = JSON.parse(localStorage.getItem('ll_worlds_arch') || '[]');
+// Seed-Daten Welten
+let baseWorlds = [
+  { id: 'wd_1', tag: 'world', title: 'The Devouring', desc: 'Kult Coop-Horror Kampagne mit über 5 Stunden Gameplay.', inspo: 'Kult Status', format: 'long' },
+  { id: 'wd_2', tag: 'world', title: 'Organism', desc: 'Surreale, gigantische Architektur-Welt für extreme Deep-Talks.', inspo: 'Trend', format: 'long' },
+  { id: 'wd_3', tag: 'world', title: 'Kitchen Cook', desc: 'Stressiges Mini-Game, perfekt für Chaos-Lobby-Gags.', inspo: 'Meme', format: 'short' }
+];
 
-// Falls der Weltenpool komplett leer ist, Standardwelten einfügen
-if(worldsPoolList.length === 0 && worldsFavList.length === 0 && worldsPlanList.length === 0 && worldsArchList.length === 0) {
-  worldsPoolList = [...defaultWorlds];
+let aiList = [];
+let favoriteIds = [];
+let umsetzungData = {}; // id -> text
+let archivedIds = [];
+let selectedBuilderId = null;
+
+// --- INITIALISIERUNG & SPEICHERUNG ---
+function load() {
+  const localAi = localStorage.getItem('liro_aiList');
+  const localFavs = localStorage.getItem('liro_favs');
+  const localUms = localStorage.getItem('liro_ums');
+  const localDone = localStorage.getItem('liro_done');
+  const localWorlds = localStorage.getItem('liro_worlds');
+  const localIdeas = localStorage.getItem('liro_ideas');
+  
+  if(localAi) aiList = JSON.parse(localAi);
+  if(localFavs) favoriteIds = JSON.parse(localFavs);
+  if(localUms) umsetzungData = JSON.parse(localUms);
+  if(localDone) archivedIds = JSON.parse(localDone);
+  if(localWorlds) baseWorlds = JSON.parse(localWorlds);
+  if(localIdeas) baseIdeas = JSON.parse(localIdeas);
 }
 
-// Timer Variablen
-let timerInterval = null;
-let startTime = 0;
-let elapsedTime = 0;
-let isTimerRunning = false;
-
 function save() {
-  localStorage.setItem('ll_ai', JSON.stringify(aiList));
-  localStorage.setItem('ll_fav', JSON.stringify(favList));
-  localStorage.setItem('ll_arch', JSON.stringify(archList));
-  localStorage.setItem('ll_ums', JSON.stringify(umsList));
-  localStorage.setItem('ll_timestamps', JSON.stringify(timestampList));
-
-  localStorage.setItem('ll_worlds_pool', JSON.stringify(worldsPoolList));
-  localStorage.setItem('ll_worlds_fav', JSON.stringify(worldsFavList));
-  localStorage.setItem('ll_worlds_plan', JSON.stringify(worldsPlanList));
-  localStorage.setItem('ll_worlds_arch', JSON.stringify(worldsArchList));
-
+  localStorage.setItem('liro_aiList', JSON.stringify(aiList));
+  localStorage.setItem('liro_favs', JSON.stringify(favoriteIds));
+  localStorage.setItem('liro_ums', JSON.stringify(umsetzungData));
+  localStorage.setItem('liro_done', JSON.stringify(archivedIds));
+  localStorage.setItem('liro_worlds', JSON.stringify(baseWorlds));
+  localStorage.setItem('liro_ideas', JSON.stringify(baseIdeas));
   updateBadges();
 }
 
 function updateBadges() {
-  if (dbMode === 'ideas') {
-    document.getElementById('badge-fav').textContent = favList.length;
-    document.getElementById('badge-ums').textContent = umsList.length;
-    document.getElementById('badge-done').textContent = archList.length;
-  } else {
-    document.getElementById('badge-fav').textContent = worldsFavList.length;
-    document.getElementById('badge-ums').textContent = worldsPlanList.length;
-    document.getElementById('badge-done').textContent = worldsArchList.length;
-  }
+  document.getElementById('badge-fav').textContent = favoriteIds.length;
+  document.getElementById('badge-ums').textContent = Object.keys(umsetzungData).length;
+  document.getElementById('badge-done').textContent = archivedIds.length;
 }
 
-// Umschalten zwischen Ideen-Modus und Welten-Modus
+// --- MODUS & ANSICHTEN ---
 function setDashboardMode(mode) {
-  dbMode = mode;
+  currentDashboardMode = mode;
   document.getElementById('mode-ideas-btn').classList.toggle('active', mode === 'ideas');
   document.getElementById('mode-worlds-btn').classList.toggle('active', mode === 'worlds');
-
-  // Sidebar Beschriftungen anpassen
-  if (mode === 'ideas') {
-    document.getElementById('nav-pool-text').textContent = "📁 Ideen-Pool";
-    document.getElementById('nav-mid-text').textContent = "🎬 Umsetzung";
-    document.getElementById('phase-switcher-container').style.style = 'flex';
-    document.getElementById('ideas-generator-ui').style.display = 'block';
-    document.getElementById('ideas-import-ui').style.display = 'block';
-    document.getElementById('worlds-generator-ui').style.display = 'none';
-    document.getElementById('worlds-quick-ui').style.display = 'none';
-  } else {
-    document.getElementById('nav-pool-text').textContent = "🌍 Welten-Pool";
-    document.getElementById('nav-mid-text').textContent = "🎥 In Planung";
-    document.getElementById('phase-switcher-container').style.display = 'none';
+  
+  // UI-Texte anpassen
+  const poolText = document.getElementById('nav-pool-text');
+  const midText = document.getElementById('nav-mid-text');
+  const poolTitle = document.getElementById('pool-title');
+  
+  if(mode === 'worlds') {
+    poolText.textContent = '🌍 Welten-Pool';
+    midText.textContent = '🎬 Welten-Planer';
+    poolTitle.textContent = 'Basis Weltenpool';
     document.getElementById('ideas-generator-ui').style.display = 'none';
-    document.getElementById('ideas-import-ui').style.display = 'none';
     document.getElementById('worlds-generator-ui').style.display = 'block';
+    document.getElementById('ideas-import-ui').style.display = 'none';
     document.getElementById('worlds-quick-ui').style.display = 'block';
-    if(currentPhase === 2) setPhase(1);
+  } else {
+    poolText.textContent = '📁 Ideen-Pool';
+    midText.textContent = '🎬 Umsetzung';
+    poolTitle.textContent = 'Basis Ideenpool';
+    document.getElementById('ideas-generator-ui').style.display = 'block';
+    document.getElementById('worlds-generator-ui').style.display = 'none';
+    document.getElementById('ideas-import-ui').style.display = 'block';
+    document.getElementById('worlds-quick-ui').style.display = 'none';
   }
-
-  updateBadges();
+  
   render();
+}
+
+function setView(view) {
+  currentView = view;
+  
+  // Navigation-Active Klassen umschalten
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  let targetId = 'nav-all';
+  if(view === 'favorites') targetId = 'nav-fav';
+  if(view === 'umsetzungen') targetId = 'nav-umsetzung';
+  if(view === 'archive') targetId = 'nav-done';
+  if(view === 'sichter') targetId = 'nav-sichter';
+  if(view === 'radar') targetId = 'nav-radar';
+  document.getElementById(targetId).classList.add('active');
+
+  // Alle Haupt-Container erst verstecken
+  document.getElementById('container-phase1').style.display = 'none';
+  document.getElementById('container-phase2').style.display = 'none';
+  document.getElementById('sichter-view-container').style.display = 'none';
+  document.getElementById('radar-view-container').style.display = 'none';
+  document.getElementById('phase-switcher-container').style.display = 'none';
+
+  // Format & Generator-Widget Sichtbarkeit basierend auf View steuern
+  document.getElementById('format-container').style.display = (view === 'all' || view === 'favorites' || view === 'archive') ? 'flex' : 'none';
+  document.getElementById('generator-split-view').style.display = (view === 'all') ? 'grid' : 'none';
+
+  if(view === 'sichter') {
+    document.getElementById('sichter-view-container').style.display = 'block';
+  } else if(view === 'radar') {
+    document.getElementById('radar-view-container').style.display = 'block';
+  } else if(view === 'umsetzungen') {
+    document.getElementById('phase-switcher-container').style.display = 'flex';
+    setPhase(2);
+  } else {
+    // all, favorites, archive
+    document.getElementById('phase-switcher-container').style.display = 'flex';
+    setPhase(1);
+  }
 }
 
 function setPhase(phase) {
@@ -837,53 +846,11 @@ function setPhase(phase) {
   if(phase === 1) {
     document.getElementById('container-phase1').style.display = 'block';
     document.getElementById('container-phase2').style.display = 'none';
-    document.getElementById('sichter-view-container').style.display = 'none';
-    document.getElementById('radar-view-container').style.display = 'none';
+    render();
   } else {
     document.getElementById('container-phase1').style.display = 'none';
     document.getElementById('container-phase2').style.display = 'block';
-    document.getElementById('sichter-view-container').style.display = 'none';
-    document.getElementById('radar-view-container').style.display = 'none';
     renderBuilder();
-  }
-}
-
-function setView(view) {
-  currentView = view;
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  
-  let targetId = 'nav-all';
-  if(view === 'favorites') targetId = 'nav-fav';
-  if(view === 'sichter') targetId = 'nav-sichter';
-  if(view === 'umsetzungen') targetId = 'nav-umsetzung';
-  if(view === 'archive') targetId = 'nav-done';
-  if(view === 'radar') targetId = 'nav-radar';
-  document.getElementById(targetId).classList.add('active');
-  
-  const phaseBar = document.getElementById('phase-switcher-container');
-  if(view === 'archive' || view === 'umsetzungen' || view === 'sichter' || view === 'radar' || dbMode === 'worlds') {
-    phaseBar.style.display = 'none';
-  } else {
-    phaseBar.style.display = 'flex';
-  }
-
-  if(view === 'sichter') {
-    document.getElementById('container-phase1').style.display = 'none';
-    document.getElementById('container-phase2').style.display = 'none';
-    document.getElementById('radar-view-container').style.display = 'none';
-    document.getElementById('sichter-view-container').style.display = 'block';
-    renderSichter();
-  } else if(view === 'radar') {
-    document.getElementById('container-phase1').style.display = 'none';
-    document.getElementById('container-phase2').style.display = 'none';
-    document.getElementById('sichter-view-container').style.display = 'none';
-    document.getElementById('radar-view-container').style.display = 'block';
-  } else {
-    if (dbMode === 'ideas') setPhase(1);
-    document.getElementById('format-container').style.display = (view === 'all' && dbMode === 'ideas') ? 'flex' : 'none';
-    document.getElementById('generator-split-view').style.display = view === 'all' ? 'grid' : 'none';
-    document.getElementById('radar-view-container').style.display = 'none';
-    render();
   }
 }
 
@@ -894,543 +861,140 @@ function setFormat(fmt) {
   render();
 }
 
-// Manuelle Welten hinzufügen
-function addManualWorld() {
-  const nameInput = document.getElementById('manual-world-name');
-  const descInput = document.getElementById('manual-world-desc');
-  const name = nameInput.value.trim();
-  const desc = descInput.value.trim();
-
-  if(!name) {
-    alert('Bitte gib zumindest den Namen der Welt ein!');
-    return;
-  }
-
-  const newWorld = {
-    id: 'w_' + Math.random().toString(36).substr(2, 9),
-    tag: 'VRC Welt',
-    title: name,
-    desc: desc || 'Keine Beschreibung hinterlegt.',
-    inspo: 'Manuell gesichert',
-    isWorld: true
-  };
-
-  worldsPoolList.unshift(newWorld);
-  save();
-  nameInput.value = '';
-  descInput.value = '';
-  render();
-}
-
-// Welten Logik (Favorisieren, Planen, Archivieren)
-function handleWorldAction(id, action, origin) {
-  let world = null;
-  
-  // Suchen und aus altem Array entfernen
-  if (origin === 'pool') {
-    world = worldsPoolList.find(w => w.id === id);
-    if(action !== 'fav' && action !== 'plan') worldsPoolList = worldsPoolList.filter(w => w.id !== id);
-  } else if (origin === 'fav') {
-    world = worldsFavList.find(w => w.id === id);
-    worldsFavList = worldsFavList.filter(w => w.id !== id);
-  } else if (origin === 'plan') {
-    world = worldsPlanList.find(w => w.id === id);
-    worldsPlanList = worldsPlanList.filter(w => w.id !== id);
-  } else if (origin === 'arch') {
-    world = worldsArchList.find(w => w.id === id);
-    worldsArchList = worldsArchList.filter(w => w.id !== id);
-  }
-
-  if(!world) return;
-
-  // In neues Array schieben
-  if (action === 'fav') {
-    const exists = worldsFavList.some(w => w.id === id);
-    if (exists) {
-      worldsFavList = worldsFavList.filter(w => w.id !== id);
-    } else {
-      worldsFavList.push(world);
-    }
-  } else if (action === 'plan') {
-    const exists = worldsPlanList.some(w => w.id === id);
-    if (exists) {
-      worldsPlanList = worldsPlanList.filter(w => w.id !== id);
-      if(!worldsPoolList.some(w => w.id === id)) worldsPoolList.unshift(world);
-    } else {
-      worldsPlanList.push(world);
-    }
-  } else if (action === 'arch') {
-    worldsArchList.push(world);
-  } else if (action === 'pool') {
-    if(!worldsPoolList.some(w => w.id === id)) worldsPoolList.unshift(world);
-  } else if (action === 'delete') {
-    // Permanent gelöscht aus Archiv
-  }
-
-  save();
-  render();
-}
-
-
-// Ideen Workflow Logik
-function toggleFav(id, origin) {
-  let item = findItem(id, origin);
-  if(!item) return;
-
-  const isFav = favList.some(f => f.id === id);
-  if(isFav) {
-    favList = favList.filter(f => f.id !== id);
-    if(item.isAi && !aiList.some(a => a.id === id) && currentView !== 'all') {
-      aiList.push(item);
-    }
-    if(selectedBuilderItemId === id) selectedBuilderItemId = null;
-  } else {
-    if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
-    if(origin === 'arch') archList = archList.filter(a => a.id !== id);
-    if(origin === 'ums') umsList = umsList.filter(u => u.id !== id);
-    favList.push(item);
-  }
-  save();
-  render();
-}
-
-function archiveItem(id, origin) {
-  let item = findItem(id, origin);
-  if(!item) return;
-
-  if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
-  if(origin === 'fav') favList = favList.filter(f => f.id !== id);
-  if(origin === 'ums') umsList = umsList.filter(u => u.id !== id);
-
-  if(!archList.some(a => a.id === id)) archList.push(item);
-  if(selectedBuilderItemId === id) selectedBuilderItemId = null;
-  save();
-  render();
-}
-
-function deletePermanent(id) {
-  archList = archList.filter(a => a.id !== id);
-  save();
-  render();
-}
-
-function findItem(id, origin) {
-  if(origin === 'base_short') return baseShort.find(i => i.id === id);
-  if(origin === 'base_long') return baseLong.find(i => i.id === id);
-  if(origin === 'ai') return aiList.find(i => i.id === id);
-  if(origin === 'fav') return favList.find(i => i.id === id);
-  if(origin === 'arch') return archList.find(i => i.id === id);
-  if(origin === 'ums') return umsList.find(i => i.id === id);
-  return null;
-}
-
-// DYNAMISCHES RENDERN DER KARTEN (IDEEN VS WELTEN)
-function buildCardHTML(item, origin) {
-  // WELTEN-KARTEN HTML
-  if (item.isWorld) {
-    const isFav = worldsFavList.some(w => w.id === item.id);
-    const isPlan = worldsPlanList.some(w => w.id === item.id);
-    let buttons = '';
-
-    if (currentView === 'all') {
-      buttons = `
-        <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="handleWorldAction('${item.id}', 'fav', 'pool')" title="Favorisieren">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        </button>
-        <button class="icon-action-btn ${isPlan?'active-plan':''}" onclick="handleWorldAction('${item.id}', 'plan', 'pool')" title="Für ein Video einplanen">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-        </button>
-        <button class="icon-action-btn" onclick="handleWorldAction('${item.id}', 'arch', 'pool')" title="Ins Archiv legen">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-        </button>
-      `;
-    } else if (currentView === 'favorites') {
-      buttons = `
-        <button class="icon-action-btn active-fav" onclick="handleWorldAction('${item.id}', 'fav', 'fav')" title="Aus Favoriten entfernen">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        </button>
-      `;
-    } else if (currentView === 'umsetzungen') {
-      buttons = `
-        <button class="icon-action-btn active-plan" onclick="handleWorldAction('${item.id}', 'plan', 'plan')" title="Planung aufheben">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-        </button>
-        <button class="icon-action-btn" onclick="handleWorldAction('${item.id}', 'arch', 'plan')" title="Video erledigt! Ab ins Archiv">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-        </button>
-      `;
-    } else if (currentView === 'archive') {
-      buttons = `
-        <button class="icon-action-btn" onclick="handleWorldAction('${item.id}', 'pool', 'arch')" title="Zurück in den Pool werfen">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-        </button>
-        <button class="icon-action-btn" onclick="handleWorldAction('${item.id}', 'delete', 'arch')" title="Permanent löschen" style="color:rgba(255,69,58,0.6)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
-        </button>
-      `;
-    }
-
-    const encWorldName = encodeURIComponent(item.title);
-
-    return `
-      <div class="idea-card world-style ${currentView==='archive'?'archive-style':''}">
-        <div class="card-header">
-          <div class="card-tags">
-            <span class="card-tag w-badge">🌍 ${item.tag}</span>
-          </div>
-          <div class="card-actions">${buttons}</div>
-        </div>
-        <div class="card-title">${item.title}</div>
-        <div class="card-desc">${item.desc}</div>
-        <a class="vrc-search-link" href="https://vrchat.com/home/search/${encWorldName}" target="_blank">🔗 VRChat Web-Suche öffnen</a>
-        <div class="card-footer">${item.inspo || 'Liro Worlds Hub'}</div>
-      </div>
-    `;
-  }
-
-  // STANDARD IDEEN-KARTEN HTML
-  const isFav = favList.some(f => f.id === item.id);
-  let buttons = '';
-
-  if(currentView === 'all') {
-    buttons = `
-      <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="toggleFav('${item.id}', '${origin}')" title="Favorisieren">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="archiveItem('${item.id}', '${origin}')" title="Archivieren">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      </button>
-    `;
-  } else if(currentView === 'favorites') {
-    buttons = `
-      <button class="icon-action-btn active-fav" onclick="toggleFav('${item.id}', 'fav')" title="Entfernen">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="archiveItem('${item.id}', 'fav')" title="Abhaken">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-      </button>
-    `;
-  } else if(currentView === 'umsetzungen') {
-    buttons = `
-      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'ums')" title="Zurücklegen">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="archiveItem('${item.id}', 'ums')" title="Ins Archiv legen">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      </button>
-    `;
-  } else if(currentView === 'archive') {
-    buttons = `
-      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'arch')" title="Wiederherstellen">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="deletePermanent('${item.id}')" title="Permanent löschen" style="color:rgba(255,69,58,0.6)">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
-      </button>
-    `;
-  }
-
-  return `
-    <div class="idea-card ${item.isAi?'ai-style':''} ${item.isUmsetzung?'umsetzung-style':''} ${currentView==='archive'?'archive-style':''}">
-      <div class="card-header">
-        <div class="card-tags">
-          <span class="card-tag">${item.tag}</span>
-          ${item.isAi ? '<span class="card-tag ai-badge">KI</span>' : ''}
-          ${item.isUmsetzung ? '<span class="card-tag u-badge">Konzept</span>' : ''}
-        </div>
-        <div class="card-actions">${buttons}</div>
-      </div>
-      <div class="card-title">${item.title}</div>
-      <div class="card-desc">${item.desc}</div>
-      <div class="card-footer">${item.inspo || 'Liro Labs Engine'}</div>
-    </div>
-  `;
-}
-
+// --- RENDERING CARDS (PHASE 1) ---
 function render() {
+  if(currentPhase !== 1) return;
+
   const mainGrid = document.getElementById('main-grid');
   const aiGrid = document.getElementById('ai-grid');
   const aiTitle = document.getElementById('ai-title');
-  const poolTitle = document.getElementById('pool-title');
+  
+  mainGrid.innerHTML = '';
+  aiGrid.innerHTML = '';
 
-  // RENDER-LOGIK FÜR WELTEN-MODUS
-  if (dbMode === 'worlds') {
-    aiTitle.style.display = 'none';
-    aiGrid.style.display = 'none';
-    poolTitle.style.display = 'block';
+  let sourcePool = (currentDashboardMode === 'worlds') ? baseWorlds : baseIdeas;
+  
+  // Filter nach Tab/Ansicht & Format
+  let filteredMain = sourcePool.filter(item => {
+    if(currentView === 'favorites' && !favoriteIds.includes(item.id)) return false;
+    if(currentView === 'archive' && !archivedIds.includes(item.id)) return false;
+    if(currentView === 'all' && archivedIds.includes(item.id)) return false;
+    return item.format === currentFormat;
+  });
 
-    if (currentView === 'all') {
-      poolTitle.textContent = "Gespeicherte Welten-Sammlung";
-      if(!worldsPoolList.length) {
-        mainGrid.innerHTML = `<div class="empty-state">Noch keine Welten gesichert. Nutze das linke Feld, um deine Entdeckungen einzutragen!</div>`;
-      } else {
-        mainGrid.innerHTML = worldsPoolList.map(w => buildCardHTML(w, 'pool')).join('');
-      }
-    } else {
-      poolTitle.style.display = 'none';
-      let targetList = [];
-      let emptyMsg = '';
-      if(currentView === 'favorites') { targetList = worldsFavList; emptyMsg = 'Keine Favoriten-Welten markiert.'; }
-      if(currentView === 'umsetzungen') { targetList = worldsPlanList; emptyMsg = 'Keine Welten für anstehende Videos eingeplant.'; }
-      if(currentView === 'archive') { targetList = worldsArchList; emptyMsg = 'Das Welten-Archiv ist leer.'; }
+  let filteredAi = aiList.filter(item => {
+    if(currentDashboardMode === 'worlds' && item.tag !== 'world') return false;
+    if(currentDashboardMode === 'ideas' && item.tag === 'world') return false;
+    if(currentView === 'favorites' && !favoriteIds.includes(item.id)) return false;
+    if(currentView === 'archive' && !archivedIds.includes(item.id)) return false;
+    if(currentView === 'all' && archivedIds.includes(item.id)) return false;
+    return true; // KI-Importe ignorieren temporär das Format für maximale Flexibilität
+  });
 
-      if(!targetList.length) {
-        mainGrid.innerHTML = `<div class="empty-state">${emptyMsg}</div>`;
-      } else {
-        mainGrid.innerHTML = targetList.map(w => buildCardHTML(w, currentView === 'favorites'?'fav':currentView==='umsetzungen'?'plan':'arch')).join('');
-      }
-    }
-    return;
-  }
-
-  // RENDER-LOGIK FÜR IDEEN-MODUS
-  if(currentView === 'all') {
-    poolTitle.style.display = 'block';
-    poolTitle.textContent = currentFormat === 'short' ? 'Basis-Ideenpool (Shorts)' : 'Basis-Ideenpool (YouTube)';
-    
-    if(aiList.length) {
-      aiTitle.style.display = 'block';
-      aiGrid.style.display = 'grid';
-      aiGrid.innerHTML = aiList.map(i => buildCardHTML(i, 'ai')).join('');
-    } else {
-      aiTitle.style.display = 'none';
-      aiGrid.style.display = 'none';
-    }
-
-    let base = currentFormat === 'short' ? baseShort : baseLong;
-    mainGrid.innerHTML = base.map(i => buildCardHTML(i, currentFormat === 'short' ? 'base_short' : 'base_long')).join('');
-
+  // Render KI-Pool
+  if(filteredAi.length > 0 && currentView !== 'archive') {
+    aiTitle.style.display = 'block';
+    aiGrid.style.display = 'grid';
+    filteredAi.forEach(item => aiGrid.appendChild(createCard(item)));
   } else {
     aiTitle.style.display = 'none';
     aiGrid.style.display = 'none';
-    poolTitle.style.display = 'none';
-
-    let listToRender = [];
-    if(currentView === 'favorites') listToRender = favList;
-    if(currentView === 'umsetzungen') listToRender = umsList;
-    if(currentView === 'archive') listToRender = archList;
-
-    if(!listToRender.length) {
-      let msg = 'Das Archiv ist leer.';
-      if(currentView === 'favorites') msg = 'Noch keine Favoriten geplant.';
-      if(currentView === 'umsetzungen') msg = 'Hier sind noch keine Skripte gespeichert.';
-      mainGrid.innerHTML = `<div class="empty-state">${msg}</div>`;
-    } else {
-      mainGrid.innerHTML = listToRender.map(i => buildCardHTML(i, currentView === 'favorites' ? 'fav' : currentView === 'umsetzungen' ? 'ums' : 'arch')).join('');
-    }
   }
-}
 
-// Sichter & Live Timer Funktionen
-function toggleTimer() {
-  const btn = document.getElementById('btn-toggle-timer');
-  const buzzer = document.getElementById('btn-buzzer');
-  
-  if(!isTimerRunning) {
-    startTime = Date.now() - elapsedTime;
-    timerInterval = setInterval(updateTimerDisplay, 1000);
-    isTimerRunning = true;
-    btn.textContent = "Stream Pausieren";
-    btn.style.background = "#ff453a";
-    buzzer.removeAttribute('disabled');
+  // Render Basis-Pool
+  if(filteredMain.length === 0 && filteredAi.length === 0) {
+    mainGrid.innerHTML = `<div class="empty-state">Hier gibt es im Moment keine Einträge für das gewählte Format.</div>`;
   } else {
-    clearInterval(timerInterval);
-    elapsedTime = Date.now() - startTime;
-    isTimerRunning = false;
-    btn.textContent = "Stream Fortsetzen";
-    btn.style.background = "#30d158";
-    buzzer.setAttribute('disabled', 'true');
+    filteredMain.forEach(item => mainGrid.appendChild(createCard(item)));
   }
 }
 
-function resetTimer() {
-  clearInterval(timerInterval);
-  elapsedTime = 0;
-  isTimerRunning = false;
-  document.getElementById('stream-timer').textContent = "00:00:00";
-  document.getElementById('btn-toggle-timer').textContent = "Stream Starten";
-  document.getElementById('btn-toggle-timer').style.background = "#30d158";
-  document.getElementById('btn-buzzer').setAttribute('disabled', 'true');
+function createCard(item) {
+  const card = document.createElement('div');
+  card.className = 'idea-card';
+  if(item.isAi) card.classList.add('ai-style');
+  if(umsetzungData[item.id]) card.classList.add('umsetzung-style');
+  if(item.tag === 'world') card.classList.add('world-style');
+  if(archivedIds.includes(item.id)) card.classList.add('archive-style');
+
+  const isFav = favoriteIds.includes(item.id);
+  const hasPlan = !!umsetzungData[item.id];
+
+  let tagBadge = `<span class="card-tag">${item.tag}</span>`;
+  if(item.isAi) tagBadge = `<span class="card-tag ai-badge">KI</span>`;
+  if(item.tag === 'world') tagBadge = `<span class="card-tag w-badge">VRC Welt</span>`;
+  if(hasPlan) tagBadge += ` <span class="card-tag u-badge">Geplant</span>`;
+
+  let worldSearchLink = '';
+  if(item.tag === 'world' || currentDashboardMode === 'worlds') {
+    worldSearchLink = `<a class="vrc-search-link" href="https://vrchat.com/home/search/${encodeURIComponent(item.title)}" target="_blank">🔍 In VRChat suchen</a>`;
+  }
+
+  card.innerHTML = `
+    <div class="card-header">
+      <div class="card-tags">${tagBadge}</div>
+      <div class="card-actions">
+        <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="toggleFav('${item.id}', event)">⭐</button>
+        <button class="icon-action-btn ${hasPlan?'active-plan':''}" onclick="openInBuilder('${item.id}', event)" title="In Phase 2 ausbauen">🎬</button>
+        <button class="icon-action-btn" onclick="toggleArchive('${item.id}', event)" title="Archivieren/Wiederherstellen">✓</button>
+      </div>
+    </div>
+    <div class="card-title">${item.title}</div>
+    <div class="card-desc">${item.desc}</div>
+    ${worldSearchLink}
+    <div class="card-footer">Inspiration: ${item.inspo}</div>
+  `;
+  return card;
 }
 
-function updateTimerDisplay() {
-  elapsedTime = Date.now() - startTime;
-  document.getElementById('stream-timer').textContent = formatTime(elapsedTime);
-}
-
-function formatTime(ms) {
-  let totalSecs = Math.floor(ms / 1000);
-  let hrs = Math.floor(totalSecs / 3600);
-  let mins = Math.floor((totalSecs % 3600) / 60);
-  let secs = totalSecs % 60;
-  return `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-}
-
-function pressBuzzer() {
-  if(!isTimerRunning) return;
-  let formattedTime = formatTime(Date.now() - startTime);
-  
-  timestampList.unshift({
-    id: 'ts_' + Math.random().toString(36).substr(2, 9),
-    time: formattedTime,
-    note: ''
-  });
+// --- ACTIONS ---
+function toggleFav(id, e) {
+  if(e) e.stopPropagation();
+  const idx = favoriteIds.indexOf(id);
+  if(idx > -1) favoriteIds.splice(idx, 1);
+  else favoriteIds.push(id);
   save();
-  renderSichter();
+  render();
+  if(currentPhase === 2) renderBuilder();
 }
 
-document.addEventListener('keydown', (e) => {
-  if (e.code === 'Space' && currentView === 'sichter' && isTimerRunning) {
-    if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-      e.preventDefault();
-      pressBuzzer();
-    }
-  }
-});
-
-function deleteTimestamp(id) {
-  timestampList = timestampList.filter(t => t.id !== id);
+function toggleArchive(id, e) {
+  if(e) e.stopPropagation();
+  const idx = archivedIds.indexOf(id);
+  if(idx > -1) archivedIds.splice(idx, 1);
+  else archivedIds.push(id);
   save();
-  renderSichter();
+  render();
 }
 
-function updateNote(id, value) {
-  let item = timestampList.find(t => t.id === id);
-  if(item) {
-    item.note = value;
-    localStorage.setItem('ll_timestamps', JSON.stringify(timestampList));
+function openInBuilder(id, e) {
+  if(e) e.stopPropagation();
+  // Sicherstellen, dass die Idee ein Favorit ist, um im Selektor aufzutauchen
+  if(!favoriteIds.includes(id)) {
+    favoriteIds.push(id);
+    save();
   }
-}
-
-function renderSichter() {
-  const tbody = document.getElementById('timestamp-tbody');
-  if(!timestampList.length) {
-    tbody.innerHTML = `<tr><td colspan="3" class="empty-state" style="padding: 20px 0; border: none;">Noch keine Highlights markiert. Starte den Timer und buzzere!</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = timestampList.map(t => `
-    <tr>
-      <td class="ts-time">${t.time}</td>
-      <td><input class="ts-input" type="text" placeholder="Z.B. Zuschauer sagt Satz X..." value="${t.note}" onchange="updateNote('${t.id}', this.value)"></td>
-      <td><button class="ts-del" onclick="deleteTimestamp('${t.id}')">✕</button></td>
-    </tr>
-  `).join('');
-}
-
-function exportTimestamps() {
-  if(!timestampList.length) {
-    alert('Deine Liste ist noch leer!');
-    return;
-  }
-  let copyString = `Hier sind die Highlights aus Liros Live-Stream:\n\n`;
-  timestampList.forEach(t => {
-    copyString += `- [${t.time}] Notiz: ${t.note || 'Highlight'}\n`;
-  });
-  navigator.clipboard.writeText(copyString);
-  alert('Die Highlight-Liste wurde kopiert!');
-}
-
-// Builder / Phasen-Planer Funktionen
-function renderBuilder() {
-  const listContainer = document.getElementById('builder-favorites-list');
-  if(favList.length === 0) {
-    listContainer.innerHTML = '<div style="color:var(--text-dim); font-size:12px; text-align:center; padding:10px;">Keine Favoriten aktiv.</div>';
-    document.getElementById('builder-empty-notice').style.display = 'block';
-    document.getElementById('builder-content').style.display = 'none';
-    return;
-  }
-
-  listContainer.innerHTML = favList.map(item => `
-    <button class="selector-item ${selectedBuilderItemId === item.id ? 'selected' : ''}" onclick="selectBuilderItem('${item.id}')">
-      [${item.tag.toUpperCase()}] ${item.title}
-    </button>
-  `).join('');
-
-  if(selectedBuilderItemId) {
-    const activeItem = favList.find(f => f.id === selectedBuilderItemId);
-    if(activeItem) {
-      document.getElementById('builder-empty-notice').style.display = 'none';
-      document.getElementById('builder-content').style.display = 'block';
-      document.getElementById('builder-display-title').textContent = activeItem.title;
-      document.getElementById('builder-display-desc').textContent = activeItem.desc;
-      document.getElementById('umsetzung-input-textarea').value = ''; 
-      
-      document.getElementById('builder-textarea').value = `Nimm diese Video-Idee für den deutschen Creator "Liro" (VRChat / Furry Content Engine) und baue sie zu einem klaren, sofort umsetzbaren Konzept aus.
-
-PROJEKT-DATEN:
-- Titel: "${activeItem.title}"
-- Kategorie: ${activeItem.tag}
-- Grund-Idee: ${activeItem.desc}
-
-AUFGABE:
-Erkläre stark, aber extrem strukturiert in prägnanten STICHPUNKTEN, wie man dieses Video umsetzt. Nutze folgendes Raster:
-
-1. HOOK (Die ersten 3 Sekunden): Wie catchen wir den Zuschauer sofort?
-2. MULTI-LEVEL STRUCT: Welche 3-4 logischen Schritte/Szenen klappern wir im Video ab?
-3. POINTE / OUTRO: Wie endet das Video mit maximaler Wirkung?
-4. CREATOR-TIPP: Ein geheimer Kniff für VRChat, um die Qualität zu verdoppeln.`;
-      return;
-    }
-  }
-  document.getElementById('builder-empty-notice').style.display = 'block';
-  document.getElementById('builder-content').style.display = 'none';
-}
-
-function selectBuilderItem(id) {
-  selectedBuilderItemId = id;
-  renderBuilder();
-}
-
-function copyBuilderPrompt() {
-  const textarea = document.getElementById('builder-textarea');
-  textarea.select();
-  document.execCommand('copy');
-  alert('Konzept-Prompt kopiert!');
-}
-
-function saveUmsetzungData() {
-  const textContent = document.getElementById('umsetzung-input-textarea').value.trim();
-  if(!textContent) {
-    alert('Bitte füge erst den Text ein!');
-    return;
-  }
-  const activeItem = favList.find(f => f.id === selectedBuilderItemId);
-  if(!activeItem) return;
-
-  const newUmsetzung = {
-    id: 'ums_' + Math.random().toString(36).substr(2, 9),
-    tag: activeItem.tag,
-    title: `Umsetzung: ${activeItem.title}`,
-    desc: textContent, 
-    inspo: activeItem.inspo || 'Liro Labs Engine',
-    isUmsetzung: true
-  };
-
-  umsList.unshift(newUmsetzung); 
-  favList = favList.filter(f => f.id !== selectedBuilderItemId);
-  selectedBuilderItemId = null;
-  save();
-  alert('Konzept erfolgreich im Tab "Umsetzung" gesichert!');
+  selectedBuilderId = id;
   setView('umsetzungen');
 }
 
-// KI Ideen-Prompter
+// --- GENERATOR PHASE 1 ---
 function generatePrompt() {
-  const keyword = document.getElementById('ai-prompt').value.trim();
-  const formatText = currentFormat === 'short' ? 'Kurzform (TikTok/Shorts)' : 'Langform (YouTube)';
+  const kw = document.getElementById('ai-prompt').value.trim();
+  if(!kw) { alert('Bitte gib zuerst ein Stichwort oder Thema ein!'); return; }
   
-  const promptText = `Du bist ein Social-Media-Experte für Furry- und VRChat-Content. Generiere 4 kreative, frische Video-Ideen für den deutschen Creator "Liro".
-Format: ${formatText}.
-${keyword ? `Fokus-Thema / Stichwort: "${keyword}"` : ''}
+  const formatText = currentFormat === 'short' ? 'Kurzvideos (TikToks/Shorts, unter 60 Sek mit extrem starker Hook)' : 'ausführliche YouTube Videos (Langform, packendes Storytelling)';
+  
+  const promptText = `Agiere als mein genialer VRChat & Furry YouTube-Content-Strategie-Assistent.
+Erstelle mir ein valides JSON-Array bestehend aus genau 4 frischen, kreativen Video-Ideen für das Format: ${formatText}.
+Das Thema/Stichwort lautet: "${kw}".
 
-WICHTIGSTE REGEL FÜR DIE WELTEN: Nenne NUR existierende, echte VRChat-Welten mit ihrem exakten Suchnamen, damit Liro sie ohne Aufwand sofort in-game finden kann.
-
-Antworte mir AUSSCHLIESSLICH im folgenden JSON-Format als Code-Block:
+Ganz wichtig: Antworte AUSSCHLIESSLICH im folgenden minifizierten JSON-Format als Code-Block:
 [
-  {"tag":"meme","title":"Titel 1","desc":"Beschreibung","inspo":"Inspiration"},
-  {"tag":"challenge","title":"Titel 2","desc":"Beschreibung","inspo":"Inspiration"},
-  {"tag":"story","title":"Titel 3","desc":"Beschreibung","inspo":"Inspiration"},
-  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung","inspo":"Inspiration"}
+  {"tag":"meme","title":"Titel 1","desc":"Beschreibung der Idee","inspo":"Inspiration"},
+  {"tag":"challenge","title":"Titel 2","desc":"Beschreibung der Idee","inspo":"Inspiration"},
+  {"tag":"story","title":"Titel 3","desc":"Beschreibung der Idee","inspo":"Inspiration"},
+  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung der Idee","inspo":"Inspiration"}
 ]`;
 
   document.getElementById('prompt-textarea').value = promptText;
@@ -1441,7 +1005,7 @@ function copyPrompt() {
   const textarea = document.getElementById('prompt-textarea');
   textarea.select();
   document.execCommand('copy');
-  alert('Prompt kopiert!');
+  alert('Prompt kopiert! Füge ihn einfach im KI-Chat ein.');
 }
 
 function importAIContent() {
@@ -1449,6 +1013,7 @@ function importAIContent() {
   try {
     const cleanJson = val.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(cleanJson);
+    
     if(Array.isArray(parsed)) {
       const newIdeas = parsed.map(item => ({
         id: 'ai_' + Math.random().toString(36).substr(2, 9),
@@ -1456,34 +1021,246 @@ function importAIContent() {
         title: item.title || 'KI Idee',
         desc: item.desc || '',
         inspo: item.inspo || 'KI Generiert',
-        isAi: true
+        isAi: true,
+        format: currentFormat
       }));
+      
       aiList = [...newIdeas, ...aiList];
       save();
       document.getElementById('import-textarea').value = '';
       render();
     } else {
-      alert('Formatfehler.');
+      alert('Das Format war nicht ganz richtig. Stelle sicher, dass du das komplette Array [ ] kopiert hast.');
     }
   } catch(e) {
-    alert('Fehler beim Einlesen.');
+    alert('Fehler beim Einlesen. Stelle sicher, dass du den Text sauber als JSON formatiert hast.');
   }
 }
 
-// Hub-X Automationen
+function addManualWorld() {
+  const name = document.getElementById('manual-world-name').value.trim();
+  const desc = document.getElementById('manual-world-desc').value.trim();
+  if(!name) { alert('Bitte gib mindestens einen Welten-Namen ein!'); return; }
+  
+  const newWorld = {
+    id: 'wd_m_' + Math.random().toString(36).substr(2, 9),
+    tag: 'world',
+    title: name,
+    desc: desc || 'Manuell gesicherte VRChat Welt.',
+    inspo: 'Live Scouting',
+    format: currentFormat
+  };
+  
+  baseWorlds = [newWorld, ...baseWorlds];
+  save();
+  
+  document.getElementById('manual-world-name').value = '';
+  document.getElementById('manual-world-desc').value = '';
+  render();
+  alert('Welt erfolgreich im Pool gesichert!');
+}
+
+// --- PHASE 2: BUILDER LOGIK ---
+function renderBuilder() {
+  const listCont = document.getElementById('builder-favorites-list');
+  listCont.innerHTML = '';
+  
+  // Kombinierten Pool aus Favoriten suchen
+  let allPossible = [...baseIdeas, ...baseWorlds, ...aiList];
+  let favItems = allPossible.filter(item => favoriteIds.includes(item.id));
+  
+  if(favItems.length === 0) {
+    listCont.innerHTML = `<p style="color:var(--text-dim); font-size:11px; text-align:center; padding:10px;">Keine Favoriten vorhanden.</p>`;
+    document.getElementById('builder-empty-notice').style.display = 'block';
+    document.getElementById('builder-content').style.display = 'none';
+    return;
+  }
+  
+  favItems.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'selector-item';
+    if(selectedBuilderId === item.id) btn.classList.add('selected');
+    btn.textContent = `${item.tag === 'world'?'🌍':'📁'} ${item.title}`;
+    btn.onclick = () => selectBuilderIdea(item.id);
+    listCont.appendChild(btn);
+  });
+  
+  if(selectedBuilderId) {
+    selectBuilderIdea(selectedBuilderId);
+  } else {
+    document.getElementById('builder-empty-notice').style.display = 'block';
+    document.getElementById('builder-content').style.display = 'none';
+  }
+}
+
+function selectBuilderIdea(id) {
+  selectedBuilderId = id;
+  
+  // Aktiv-Klasse im Selektor anpassen
+  document.querySelectorAll('.selector-item').forEach(btn => {
+    if(btn.textContent.includes(id)) btn.classList.add('selected');
+  });
+
+  let allPossible = [...baseIdeas, ...baseWorlds, ...aiList];
+  let item = allPossible.find(i => i.id === id);
+  if(!item) return;
+  
+  document.getElementById('builder-empty-notice').style.display = 'none';
+  document.getElementById('builder-content').style.display = 'block';
+  
+  document.getElementById('builder-display-title').textContent = item.title;
+  document.getElementById('builder-display-desc').textContent = item.desc;
+  
+  // Ausgebauten Konzept-Prompt befüllen
+  const fmtText = item.format === 'short' ? 'ein packendes 60-Sekunden Short-Skript (inkl. Hook, Visuals, Sprechtext)' : 'ein strukturiertes YouTube Video-Skript (inkl. Intro-Hook, Spannungsbogen, Szenen-Aufbau)';
+  
+  document.getElementById('builder-textarea').value = `Nimm das folgende Video-Konzept und baue es zu einer vollwertigen Produktions-Struktur aus für: ${fmtText}.
+
+Konzept-Titel: "${item.title}"
+Konzept-Beschreibung: "${item.desc}"
+Modus/Typ: ${item.tag}
+
+Gib mir Folgendes aus:
+1. Eine Liste mit 3 extrem klickstarken Titel-Optionen.
+2. Das exakte Skript / Regie-Gerüst (Szenenbeschreibungen + Voiceover-Text).
+3. Eine Empfehlung für die perfekte Hintergrundmusik oder Sound-Atmosphäre.`;
+
+  // Bereits gespeicherte Umsetzungsdaten laden, falls vorhanden
+  document.getElementById('umsetzung-input-textarea').value = umsetzungData[id] || '';
+}
+
+function copyBuilderPrompt() {
+  const ta = document.getElementById('builder-textarea');
+  ta.select();
+  document.execCommand('copy');
+  alert('Konzept-Prompt kopiert!');
+}
+
+function saveUmsetzungData() {
+  if(!selectedBuilderId) return;
+  const val = document.getElementById('umsetzung-input-textarea').value.trim();
+  
+  if(!val) {
+    delete umsetzungData[selectedBuilderId];
+  } else {
+    umsetzungData[selectedBuilderId] = val;
+  }
+  
+  save();
+  alert('Umsetzungs-Skript erfolgreich gesichert! Das Icon im Ideenpool leuchtet nun Rot.');
+}
+
+// --- TIMESTAMPS / LIVE-SICHTER ---
+let timerInterval = null;
+let timerSeconds = 0;
+
+function toggleTimer() {
+  const btn = document.getElementById('btn-toggle-timer');
+  const buzzer = document.getElementById('btn-buzzer');
+  
+  if(timerInterval) {
+    // Stoppen
+    clearInterval(timerInterval);
+    timerInterval = null;
+    btn.textContent = 'Stream Fortsetzen';
+    btn.style.background = '#30d158';
+    buzzer.disabled = true;
+  } else {
+    // Starten
+    timerInterval = setInterval(() => {
+      timerSeconds++;
+      document.getElementById('stream-timer').textContent = formatTime(timerSeconds);
+    }, 1000);
+    btn.textContent = 'Stream Pausieren';
+    btn.style.background = '#ff453a';
+    buzzer.disabled = false;
+  }
+}
+
+function resetTimer() {
+  if(confirm('Möchtest du den Timer und alle ungesicherten Live-Highlights zurücksetzen?')) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerSeconds = 0;
+    document.getElementById('stream-timer').textContent = '00:00:00';
+    document.getElementById('btn-toggle-timer').textContent = 'Stream Starten';
+    document.getElementById('btn-toggle-timer').style.background = '#30d158';
+    document.getElementById('btn-buzzer').disabled = true;
+    document.getElementById('timestamp-tbody').innerHTML = `<tr><td colspan="3" class="empty-state" style="padding: 20px 0; border: none;">Noch keine Highlights markiert. Starte den Timer und buzzere!</td></tr>`;
+  }
+}
+
+function formatTime(totalSeconds) {
+  const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+  const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+  const secs = String(totalSeconds % 60).padStart(2, '0');
+  return `${hrs}:${mins}:${secs}`;
+}
+
+function pressBuzzer() {
+  if(!timerInterval) return;
+  
+  const tbody = document.getElementById('timestamp-tbody');
+  const emptyRow = tbody.querySelector('.empty-state');
+  if(emptyRow) tbody.innerHTML = '';
+  
+  const curTime = formatTime(timerSeconds);
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="ts-time">${curTime}</td>
+    <td><input class="ts-input" placeholder="Zuschauer-Zitat oder Highlight eintragen..." /></td>
+    <td><button class="ts-del" onclick="this.closest('tr').remove(); checkEmptySichter();">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  
+  // Input sofort fokussieren für flüssiges Tippen während des Streams
+  tr.querySelector('.ts-input').focus();
+}
+
+function checkEmptySichter() {
+  const tbody = document.getElementById('timestamp-tbody');
+  if(tbody.children.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="3" class="empty-state" style="padding: 20px 0; border: none;">Noch keine Highlights markiert. Starte den Timer und buzzere!</td></tr>`;
+  }
+}
+
+function exportTimestamps() {
+  const inputs = document.querySelectorAll('.ts-input');
+  const times = document.querySelectorAll('.ts-time');
+  if(inputs.length === 0) { alert('Keine Markierungen zum Exportieren da!'); return; }
+  
+  let textOut = "🎬 STREAM HIGHLIGHTS & ZITATE:\n";
+  inputs.forEach((input, i) => {
+    const val = input.value.trim() || "Unbenanntes Highlight";
+    textOut += `[${times[i].textContent}] - ${val}\n`;
+  });
+  
+  navigator.clipboard.writeText(textOut);
+  alert('Highlight-Liste in Zwischenablage kopiert! Bereit für deinen Videoschnitt.');
+}
+
+// Leertasten-Event für den Live-Buzzer
+window.addEventListener('keydown', (e) => {
+  if(e.code === 'Space' && timerInterval && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    pressBuzzer();
+  }
+});
+
+// --- HUB PROMPTS ---
 function triggerWorldRadar() {
-  const type = document.getElementById('radar-world-type').value;
-  document.getElementById('radar-box-title').textContent = "Ausgabe: Trend-Radar Prompt";
-  document.getElementById('radar-output-textarea').value = `Du bist Liros Content-Strategist für VRChat. Generiere 3 maßgeschneiderte Video-Konzepte für die VRChat-Kategorie "${type}".
-1. Nenne ihm pro Konzept mindestens einen weltbekannten, existierenden ECHTEN Weltennamen, den er sofort eintippen kann.
-2. Nenne den EXAKTEN Suchnamen für das VRChat-Suchfeld.
-3. Schreibe eine super kurze Video-Challenge (inklusive packender Hook für Shorts) dazu.`;
+  const selectedType = document.getElementById('radar-world-type').value;
+  document.getElementById('radar-box-title').textContent = "Ausgabe: VRChat Welten-Radar Prompt";
+  document.getElementById('radar-output-textarea').value = `Ich suche nach frischen oder legendären VRChat-Welten für mein nächstes Video. Kategorie: "${selectedType}".
+Nenne mir 3 genaue Weltennamen, die exakte Ingame-Suchanfrage und liefere mir zu jeder Welt eine spannende Storyline / Video-Hook für ein Video.`;
+  document.getElementById('radar-output-box').style.display = 'block';
 }
 
 function triggerPersonaAmplifier() {
   const style = document.getElementById('radar-avatar-style').value;
   document.getElementById('radar-box-title').textContent = "Ausgabe: Avatar Persona Prompt";
   document.getElementById('radar-output-textarea').value = `Ich trage im nächsten VRChat Video den Avatar-Stil "${style}". Generiere mir 5 maßgeschneiderte Gags oder Interaktions-Challenges für öffentliche VRChat Lobbies.`;
+  document.getElementById('radar-output-box').style.display = 'block';
 }
 
 function triggerThumbnailDesigner() {
@@ -1491,6 +1268,7 @@ function triggerThumbnailDesigner() {
   if(!topic) { alert('Bitte gib zuerst ein ungefähres Thema ein!'); return; }
   document.getElementById('radar-box-title').textContent = "Ausgabe: Thumbnail-Regiebuch Prompt";
   document.getElementById('radar-output-textarea').value = `Ich plane ein VRChat Video mit dem Thema: "${topic}". Erstelle mir ein professionelles Regiebuch für mein Thumbnail (Posing, Licht, Text-Hook).`;
+  document.getElementById('radar-output-box').style.display = 'block';
 }
 
 function copyRadarOutput() {
@@ -1500,9 +1278,17 @@ function copyRadarOutput() {
   alert('Spezial-Prompt kopiert!');
 }
 
-// Initialer Start
-save();
+// --- MAUS GLOW EFFEKT ---
+const glow = document.getElementById('mouse-glow');
+window.addEventListener('mousemove', (e) => {
+  glow.style.transform = `translate3d(${e.clientX - 200}px, ${e.clientY - 200}px, 0)`;
+});
+
+// App Start
+load();
+updateBadges();
 render();
 </script>
+
 </body>
 </html>
