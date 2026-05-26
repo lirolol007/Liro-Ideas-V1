@@ -59,7 +59,7 @@
   /* Layout mit Sidebar (Links) */
   .app-container {
     display: flex;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 40px 20px 100px;
     gap: 32px;
@@ -68,7 +68,7 @@
   }
 
   .sidebar {
-    width: 240px;
+    width: 260px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -118,7 +118,7 @@
     letter-spacing: -0.01em;
   }
 
-  /* Phasen Umschalter */
+  /* Phasen Umschalter (Dynamisch ein/ausblendbar) */
   .phase-wrapper {
     display: flex;
     gap: 8px;
@@ -148,6 +148,17 @@
     color: var(--text-main);
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     border: 1px solid var(--border);
+  }
+
+  /* Split Layouts um Übereinander-Stapeln zu verhindern */
+  .panel-split-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  @media(min-width: 1000px) {
+    .panel-split-grid { grid-template-columns: 1fr 1fr; }
   }
 
   /* Format Umschalter */
@@ -191,7 +202,6 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-apple);
     padding: 24px;
-    margin-bottom: 32px;
   }
 
   .input-row {
@@ -203,7 +213,7 @@
 
   .clean-input {
     flex: 1;
-    min-width: 260px;
+    min-width: 200px;
     padding: 14px 16px;
     background: var(--bg-input);
     border: 1px solid var(--border);
@@ -258,7 +268,7 @@
   }
   .action-btn:hover { transform: translateY(-1px); }
 
-  /* Navigation in der Sidebar - NEUE SORTIERUNG */
+  /* Navigation in der Sidebar */
   .workflow-nav {
     display: flex;
     flex-direction: column;
@@ -287,11 +297,13 @@
   .nav-umsetzung.active { background: rgba(255, 69, 58, 0.06); color: #ff453a; border-color: rgba(255, 69, 58, 0.2); }
   .nav-done.active { background: rgba(48, 209, 88, 0.06); color: #30d158; border-color: rgba(48, 209, 88, 0.2); }
   .nav-sichter.active { background: rgba(10, 132, 255, 0.06); color: #0a84ff; border-color: rgba(10, 132, 255, 0.2); }
+  .nav-radar.active { background: rgba(167, 139, 250, 0.06); color: #a78bfa; border-color: rgba(167, 139, 250, 0.2); }
 
   .nav-fav:hover { box-shadow: 0 0 15px var(--glow-gold); }
   .nav-umsetzung:hover { box-shadow: 0 0 15px var(--glow-red); }
   .nav-done:hover { box-shadow: 0 0 15px var(--glow-green); }
   .nav-sichter:hover { box-shadow: 0 0 15px var(--glow-blue); }
+  .nav-radar:hover { box-shadow: 0 0 15px var(--glow-purple); }
 
   .badge { font-size: 11px; background: var(--bg-input); padding: 2px 7px; border-radius: 6px; color: var(--text-muted); }
   .active .badge { background: rgba(255,255,255,0.1); color: inherit; }
@@ -360,6 +372,31 @@
   .ts-del { background: transparent; border: none; color: rgba(255,69,58,0.6); cursor: pointer; font-size: 12px; }
   .ts-del:hover { color: #ff453a; }
 
+  /* Grid für neue Features */
+  .feature-grid-2x2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  @media(min-width: 900px) {
+    .feature-grid-2x2 { grid-template-columns: 1fr 1fr; }
+  }
+
+  .feature-card-hub {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-apple);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .select-clean {
+    width: 100%; padding: 12px; background: var(--bg-input); border: 1px solid var(--border);
+    color: var(--text-main); border-radius: 8px; font-family: inherit; font-size: 13px; outline: none; margin-bottom: 12px;
+  }
+
   footer { margin-top: 80px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-dim); display: flex; justify-content: space-between; }
   footer a { color: var(--text-dim); text-decoration: none; }
 </style>
@@ -398,6 +435,9 @@
       <button class="nav-item nav-sichter" id="nav-sichter" onclick="setView('sichter')">
         <span>⏱️ Live-Sichter</span>
       </button>
+      <button class="nav-item nav-radar" id="nav-radar" onclick="setView('radar')">
+        <span>🔮 Creator Hub-X</span>
+      </button>
     </nav>
   </aside>
 
@@ -414,24 +454,29 @@
         <button class="tab-btn tab-long" id="btn-fmt-long" onclick="setFormat('long')">Langform (YouTube)</button>
       </div>
 
-      <section class="generator-panel" id="generator-widget">
-        <div class="input-row">
-          <input class="clean-input" id="ai-prompt" placeholder='Stichwort eingeben (z.B. "Horror Welten", "Blackout")...' />
-          <button class="gen-button" onclick="generatePrompt()">1. Prompt erstellen</button>
-        </div>
+      <div class="panel-split-grid" id="generator-split-view">
+        <section class="generator-panel">
+          <div class="box-title" style="color: #0a84ff; margin-bottom:12px;">1. Ideen-Generator</div>
+          <div class="input-row">
+            <input class="clean-input" id="ai-prompt" placeholder='Stichwort (z.B. "Horror Welten", "Blackout")...' />
+            <button class="gen-button" onclick="generatePrompt()">Prompt erstellen</button>
+          </div>
 
-        <div class="box-container" id="prompt-box">
-          <div class="box-title" style="color: #0a84ff;">Kopiere diesen Text für deinen KI-Chat:</div>
-          <textarea class="clean-textarea" id="prompt-textarea" readonly></textarea>
-          <button class="action-btn" style="background:#ffffff; color:#000;" onclick="copyPrompt()">Text kopieren</button>
-        </div>
+          <div class="box-container" id="prompt-box">
+            <div class="box-title" style="color: #0a84ff;">Kopiere diesen Text für deinen KI-Chat:</div>
+            <textarea class="clean-textarea" id="prompt-textarea" readonly></textarea>
+            <button class="action-btn" style="background:#ffffff; color:#000;" onclick="copyPrompt()">Text kopieren</button>
+          </div>
+        </section>
 
-        <div class="box-container" id="import-box" style="display: block; border-style: solid;">
-          <div class="box-title" style="color: #30d158;">2. Antwort der KI hier einfügen:</div>
-          <textarea class="clean-textarea" id="import-textarea" placeholder="Füge das generierte [ ] JSON hier ein..."></textarea>
-          <button class="action-btn" style="background:var(--text-main); color:var(--bg);" onclick="importAIContent()">Ideen einlesen</button>
-        </div>
-      </section>
+        <section class="generator-panel">
+          <div class="box-title" style="color: #30d158; margin-bottom:12px;">2. KI-Antwort importieren</div>
+          <div class="input-row" style="display:block;">
+            <textarea class="clean-textarea" id="import-textarea" style="height:48px; margin-bottom:10px;" placeholder="Füge das generierte [ ] JSON hier ein..."></textarea>
+            <button class="gen-button" style="width:100%;" onclick="importAIContent()">Ideen einlesen</button>
+          </div>
+        </section>
+      </div>
 
       <div class="section-title" id="ai-title" style="display:none;">Generierte KI-Ideen</div>
       <div class="cards-grid" id="ai-grid" style="display:none;"></div>
@@ -454,7 +499,7 @@
             <p id="builder-display-desc" style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Beschreibung</p>
             
             <div class="box-title" style="color: #a78bfa;">1. Kopiere diesen Konzept-Prompt für die KI:</div>
-            <textarea class="clean-textarea" id="builder-textarea" style="height: 140px; color: var(--text-main planetary);" readonly></textarea>
+            <textarea class="clean-textarea" id="builder-textarea" style="height: 140px; color: var(--text-main);" readonly></textarea>
             <button class="action-btn" style="background: #a78bfa; color: #000; margin-bottom: 24px;" onclick="copyBuilderPrompt()">Konzept-Prompt kopieren</button>
             
             <div class="box-title" style="color: #ff453a; border-top: 1px solid var(--border); padding-top: 16px;">2. KI-Ergebnis (Die Video-Struktur) hier speichern:</div>
@@ -469,7 +514,7 @@
       <div class="section-title">⏱️ Live Highlight Sichter (TikTok Stream)</div>
       <div class="sichter-panel">
         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 16px;">
-          Starte den Timer exakt in dem Moment, in dem deine Stream-Aufnahme beginnt. Klicke bei einem witzigen Moment oder einer interessanten Zuschauerfrage einfach auf den großen blauen Button (oder drücke die <kbd>Leertaste</kbd>), um die Sekunde ohne Stress zu sichern!
+          Starte den Timer parallel zur Stream-Aufnahme. Klicke bei Highlights oder verrückten Zuschauer-Zitaten den Buzzer (oder drücke <kbd>Leertaste</kbd>).
         </p>
 
         <div class="timer-display" id="stream-timer">00:00:00</div>
@@ -479,18 +524,18 @@
           <button class="action-btn" style="background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border);" onclick="resetTimer()">Reset</button>
         </div>
 
-        <button class="buzzer-btn" id="btn-buzzer" onclick="pressBuzzer()" disabled>💥 Highlight jetzt sichern (Leertaste)</button>
+        <button class="buzzer-btn" id="btn-buzzer" onclick="pressBuzzer()" disabled>💥 Highlight / Chat-Zitat sichern (Leertaste)</button>
 
         <div style="margin-top: 32px; display: flex; justify-content: space-between; align-items: center;">
-          <div class="box-title" style="color: var(--text-main); margin: 0;">Gelistete Stream-Momente</div>
-          <button class="action-btn" style="background: #ffffff; color: #000; font-size: 11px;" onclick="exportTimestamps()">Liste für KI kopieren</button>
+          <div class="box-title" style="color: var(--text-main); margin: 0;">Gelistete Stream-Momente &amp; Zitate</div>
+          <button class="action-btn" style="background: #ffffff; color: #000; font-size: 11px;" onclick="exportTimestamps()">Liste für Short-Skripte kopieren</button>
         </div>
 
         <table class="timestamp-table">
           <thead>
             <tr>
               <th style="width: 100px;">Zeitstempel</th>
-              <th>Notiz / Was ist passiert? (Optional ausfüllen)</th>
+              <th>Was ist passiert? / Absurdes Chat-Zitat eintragen</th>
               <th style="width: 40px;"></th>
             </tr>
           </thead>
@@ -500,6 +545,58 @@
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <div id="radar-view-container" style="display: none;">
+      <div class="section-title">🔮 Liro Labs Super-Creator Hub (VRChat Tools)</div>
+      
+      <div class="feature-grid-2x2">
+        
+        <div class="feature-card-hub">
+          <div>
+            <div class="box-title" style="color:#a78bfa;">🧭 VRChat Trend-Welten Radar</div>
+            <p style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">Generiert dir Such-Filter Prompts für die neusten VRChat-Welten Trends.</p>
+            <select class="select-clean" id="radar-world-type">
+              <option value="Trending Horror Welten">Trending Horror-Welten (Schocker / Co-Op)</option>
+              <option value="Mini-Games & PvP">Mini-Games &amp; Community PvP Welten</option>
+              <option value="Optik-Porn & Chill">Optik-Porn &amp; Ästhetische Lobbies</option>
+              <option value="Absurde Japan-Welten">Absurde Meme- &amp; Japan-Welten</option>
+            </select>
+          </div>
+          <button class="gen-button" style="background:#a78bfa; color:#000; width:100%;" onclick="triggerWorldRadar()">Welt-Trend-Prompt kopieren</button>
+        </div>
+
+        <div class="feature-card-hub">
+          <div>
+            <div class="box-title" style="color:#ffd60a;">🎭 Avatar &amp; In-Character Pointen-Generator</div>
+            <p style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">Passend zu deinem aktuellen Avatar-Stil Lobby-Gags &amp; Challenges erstellen.</p>
+            <select class="select-clean" id="radar-avatar-style">
+              <option value="Chaos Wolf (Frech, Laut, Trollig)">Chaos-Wolf (Frech, laut, trollig)</option>
+              <option value="Süßer kleiner Fennek (Niedlich, verwirrt, schüchtern)">Süßer Fennek (Cute, überfordert)</option>
+              <option value="Edgy Anime Boy (Unnahbar, Cool)">Edgy Anime Boy (Mysteriös, cool)</option>
+            </select>
+          </div>
+          <button class="gen-button" style="background:#ffd60a; color:#000; width:100%;" onclick="triggerPersonaAmplifier()">Avatar-Skript Prompt kopieren</button>
+        </div>
+
+        <div class="feature-card-hub">
+          <div>
+            <div class="box-title" style="color:#ff453a;">🎨 Avatar Thumbnail Regiebuch-Planer</div>
+            <p style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">Verwandle dein Videothema in eine professionelle Foto-Anweisung für deinen Avatar.</p>
+            <input class="clean-input" style="width:100%; margin-bottom:12px;" id="radar-thumb-topic" placeholder="Z.B. 1 Stunde in Gefängnis-Welt eingesperrt..." />
+          </div>
+          <button class="gen-button" style="background:#ff453a; color:#fff; width:100%;" onclick="triggerThumbnailDesigner()">Thumbnail-Regie Prompt kopieren</button>
+        </div>
+
+        <div class="feature-card-hub" style="background:var(--bg-input); border-style:dashed;">
+          <div>
+            <div class="box-title" style="color: #0a84ff;" id="radar-box-title">Hub-Prompt-Output</div>
+            <textarea class="clean-textarea" style="height:110px;" id="radar-output-textarea" placeholder="Wähle links ein Creator-Feature aus. Der passende Spezial-Prompt erscheint sofort hier..." readonly></textarea>
+          </div>
+          <button class="action-btn" style="background:#0a84ff; color:#fff; width:100%;" onclick="copyRadarOutput()">Kopieren &amp; in KI einfügen</button>
+        </div>
+
       </div>
     </div>
 
@@ -540,7 +637,6 @@ let archList = JSON.parse(localStorage.getItem('ll_arch') || '[]');
 let umsList = JSON.parse(localStorage.getItem('ll_ums') || '[]'); 
 let timestampList = JSON.parse(localStorage.getItem('ll_timestamps') || '[]');
 
-// Sichter-Timer Variablen
 let timerInterval = null;
 let startTime = 0;
 let elapsedTime = 0;
@@ -570,10 +666,12 @@ function setPhase(phase) {
     document.getElementById('container-phase1').style.display = 'block';
     document.getElementById('container-phase2').style.display = 'none';
     document.getElementById('sichter-view-container').style.display = 'none';
+    document.getElementById('radar-view-container').style.display = 'none';
   } else {
     document.getElementById('container-phase1').style.display = 'none';
     document.getElementById('container-phase2').style.display = 'block';
     document.getElementById('sichter-view-container').style.display = 'none';
+    document.getElementById('radar-view-container').style.display = 'none';
     renderBuilder();
   }
 }
@@ -587,19 +685,33 @@ function setView(view) {
   if(view === 'sichter') targetId = 'nav-sichter';
   if(view === 'umsetzungen') targetId = 'nav-umsetzung';
   if(view === 'archive') targetId = 'nav-done';
+  if(view === 'radar') targetId = 'nav-radar';
   document.getElementById(targetId).classList.add('active');
   
+  // DYNAMISCHES AUSBLENDEN DER PHASEN-LEISTE
+  const phaseBar = document.getElementById('phase-switcher-container');
+  if(view === 'archive' || view === 'umsetzungen' || view === 'sichter' || view === 'radar') {
+    phaseBar.style.display = 'none';
+  } else {
+    phaseBar.style.display = 'flex';
+  }
+
   if(view === 'sichter') {
-    document.getElementById('phase-switcher-container').style.display = 'none';
     document.getElementById('container-phase1').style.display = 'none';
     document.getElementById('container-phase2').style.display = 'none';
+    document.getElementById('radar-view-container').style.display = 'none';
     document.getElementById('sichter-view-container').style.display = 'block';
     renderSichter();
+  } else if(view === 'radar') {
+    document.getElementById('container-phase1').style.display = 'none';
+    document.getElementById('container-phase2').style.display = 'none';
+    document.getElementById('sichter-view-container').style.display = 'none';
+    document.getElementById('radar-view-container').style.display = 'block';
   } else {
-    document.getElementById('phase-switcher-container').style.display = 'flex';
     setPhase(1);
     document.getElementById('format-container').style.display = view === 'all' ? 'flex' : 'none';
-    document.getElementById('generator-widget').style.display = view === 'all' ? 'block' : 'none';
+    document.getElementById('generator-split-view').style.display = view === 'all' ? 'grid' : 'none';
+    document.getElementById('radar-view-container').style.display = 'none';
     render();
   }
 }
@@ -669,7 +781,6 @@ function pressBuzzer() {
   renderSichter();
 }
 
-// Spacebar Listener
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space' && currentView === 'sichter' && isTimerRunning) {
     if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
@@ -696,14 +807,14 @@ function updateNote(id, value) {
 function renderSichter() {
   const tbody = document.getElementById('timestamp-tbody');
   if(!timestampList.length) {
-    tbody.innerHTML = `<tr><td colspan="3" class="empty-state" style="padding:20px 0; border:none;">Noch keine Highlights markiert. Starte den Timer und buzzere!</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="3" class="empty-state" style="padding: 20px 0; border: none;">Noch keine Highlights markiert. Starte den Timer und buzzere!</td></tr>`;
     return;
   }
   
   tbody.innerHTML = timestampList.map(t => `
     <tr>
       <td class="ts-time">${t.time}</td>
-      <td><input class="ts-input" type="text" placeholder="Z.B.: Gute Antwort auf Zuschauerfrage..." value="${t.note}" onchange="updateNote('${t.id}', this.value)"></td>
+      <td><input class="ts-input" type="text" placeholder="Z.B. Zuschauer sagt Satz X / Legendärer Lobby-Moment..." value="${t.note}" onchange="updateNote('${t.id}', this.value)"></td>
       <td><button class="ts-del" onclick="deleteTimestamp('${t.id}')">✕</button></td>
     </tr>
   `).join('');
@@ -714,16 +825,54 @@ function exportTimestamps() {
     alert('Deine Liste ist noch leer!');
     return;
   }
-  let copyString = `Hier sind die echten Timestamps aus Liros TikTok-Stream. Hilf mir, daraus fesselnde Short-Konzepte zu bauen:\n\n`;
+  let copyString = `Hier sind die echten Highlights und Chat-Momente aus Liros Live-Stream. Hilf mir, daraus fesselnde, virale Kurzvideos / Reaction-Shorts zu skripten:\n\n`;
   timestampList.forEach(t => {
-    copyString += `- [${t.time}] Notiz: ${t.note || 'Unbenanntes Highlight'}\n`;
+    copyString += `- [${t.time}] Highlight-Zitaten-Notiz: ${t.note || 'Auffälliger Moment'}\n`;
   });
   
   navigator.clipboard.writeText(copyString);
-  alert('Die Highlight-Liste wurde kopiert! Schicke sie mir im Chat, um virale Hooks dafür zu entwickeln.');
+  alert('Die Highlight- & Zitat-Liste wurde kopiert!');
 }
 
-// Globaler Workflow
+// 4 NEUE MEGA CREATOR FEATURES LOGIK (PROMPT GENERATION)
+function triggerWorldRadar() {
+  const type = document.getElementById('radar-world-type').value;
+  document.getElementById('radar-box-title').textContent = "Ausgabe: Trend-Radar Prompt";
+  document.getElementById('radar-output-textarea').value = `Du bist Liros VRChat Scout. Scanne fiktiv den aktuellen englischsprachigen und deutschsprachigen Raum nach neuen Geheimtipps ab. Erstelle mir eine Liste von 3 brandneuen, absolut viralgehenden VRChat-Welten für das Thema "${type}". Gib mir für jede Welt den exakten Namen, eine kurze, extrem spannende Content-Zusammenfassung und eine Idee, was Liro dort tun soll.`;
+}
+
+function triggerPersonaAmplifier() {
+  const style = document.getElementById('radar-avatar-style').value;
+  document.getElementById('badge-fav'); 
+  document.getElementById('radar-box-title').textContent = "Ausgabe: Avatar Persona Prompt";
+  document.getElementById('radar-output-textarea').value = `Ich trage im nächsten VRChat Video/Stream den Avatar-Stil "${style}". Generiere mir 5 maßgeschneiderte, extrem lustige Pointen, Einzeller oder Interaktions-Challenges für öffentliche VRChat Lobbies (Public Instances), die perfekt zu dieser visuellen Rolle passen.`;
+}
+
+function triggerThumbnailDesigner() {
+  const topic = document.getElementById('radar-thumb-topic').value.trim();
+  if(!topic) {
+    alert('Bitte gib zuerst ein ungefähres Thema ein!');
+    return;
+  }
+  document.getElementById('radar-box-title').textContent = "Ausgabe: Thumbnail-Regiebuch Prompt";
+  document.getElementById('radar-output-textarea').value = `Ich plane ein VRChat Video mit dem Thema: "${topic}". Erstelle mir ein professionelles, exaktes Regiebuch für mein YouTube/TikTok Thumbnail. Ich brauche:
+1. Posing- & Mimik-Anweisung für meinen Furry-Avatar.
+2. Hintergrund- und Lichtstimmungs-Tipps für die VRChat Welt.
+3. Die perfekte Text-Hook (maximal 3 fette Wörter) mit Farbempfehlung.`;
+}
+
+function copyRadarOutput() {
+  const txt = document.getElementById('radar-output-textarea').value;
+  if(!txt) {
+    alert('Generiere erst einen Prompt!');
+    return;
+  }
+  navigator.clipboard.writeText(txt);
+  alert('Spezial-Prompt kopiert! Ab damit in die KI.');
+}
+
+
+// Globaler Workflow (Cards & Listen)
 function toggleFav(id, origin) {
   let item = findItem(id, origin);
   if(!item) return;
@@ -916,7 +1065,7 @@ Erkläre stark, aber extrem strukturiert in prägnanten STICHPUNKTEN, wie man di
 1. HOOK (Die ersten 3 Sekunden): Wie catchen wir den Zuschauer sofort?
 2. MULTI-LEVEL STRUCT: Welche 3-4 logischen Schritte/Szenen klappern wir im Video ab?
 3. POINTE / OUTRO: Wie endet das Video mit maximaler Wirkung?
-4. CREATOR-TIPP: Ein geheimer Kniff für VRChat, um die Qualität zu verdoppeln. planetary`;
+4. CREATOR-TIPP: Ein geheimer Kniff für VRChat, um die Qualität zu verdoppeln.`;
       return;
     }
   }
@@ -972,11 +1121,11 @@ Format: ${formatText}.
 ${keyword ? `Fokus-Thema / Stichwort: "${keyword}"` : ''}
 
 Antworte mir AUSSCHLIESSLICH im folgenden JSON-Format als Code-Block:
- planetary[
+[
   {"tag":"meme","title":"Titel 1","desc":"Beschreibung","inspo":"Inspiration"},
   {"tag":"challenge","title":"Titel 2","desc":"Beschreibung","inspo":"Inspiration"},
   {"tag":"story","title":"Titel 3","desc":"Beschreibung","inspo":"Inspiration"},
-  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung planetary","inspo":"Inspiration"}
+  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung","inspo":"Inspiration"}
 ]`;
 
   document.getElementById('prompt-textarea').value = promptText;
