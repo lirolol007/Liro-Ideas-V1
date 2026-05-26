@@ -40,6 +40,7 @@
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
+    display: flex;
   }
 
   /* Flüssiger Maus-Glow */
@@ -56,9 +57,32 @@
     will-change: transform;
   }
 
-  .page { max-width: 800px; margin: 0 auto; padding: 60px 20px 100px; position: relative; z-index: 2; }
+  /* Linke Sidebar */
+  .sidebar {
+    width: 280px;
+    height: 100vh;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
 
-  /* Profile Header styled like Linktree */
+  /* Hauptinhalt rechts */
+  .main-content {
+    margin-left: 280px;
+    flex: 1;
+    max-width: 900px;
+    padding: 60px 40px 100px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Profile Header in Sidebar */
   .profile-header {
     display: flex;
     flex-direction: column;
@@ -73,36 +97,69 @@
   }
 
   .avatar {
-    width: 95px;
-    height: 95px;
+    width: 85px;
+    height: 85px;
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.08);
     object-fit: cover;
     background: #1c1c1e;
   }
 
-  /* Hier ist die fette, vergrößerte Schrift mit feurigem Gaming-Glow */
   .logo-title {
-    font-size: 54px;
+    font-size: 26px;
     font-weight: 800;
     letter-spacing: -0.05em;
     color: var(--text-main);
     margin-bottom: 4px;
     line-height: 1.1;
-    filter: drop-shadow(0 0 25px var(--glow-red));
   }
 
   .logo-sub {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-muted);
     font-weight: 400;
     letter-spacing: -0.01em;
   }
 
-  /* Format Umschalter */
+  /* Vertikale Navigation in Sidebar */
+  .workflow-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    justify-content:间;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: var(--radius-apple);
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: var(--transition);
+    width: 100%;
+  }
+  .nav-item:hover { color: var(--text-main); background: rgba(255,255,255,0.02); }
+  
+  .nav-all.active { background: rgba(255,255,255,0.04); color: var(--text-main); border-color: var(--border); }
+  .nav-fav.active { background: rgba(255, 214, 10, 0.05); color: #ffd60a; border-color: rgba(255, 214, 10, 0.2); }
+  .nav-sichter.active { background: rgba(10, 132, 255, 0.06); color: #0a84ff; border-color: rgba(10, 132, 255, 0.2); }
+  .nav-done.active { background: rgba(48, 209, 88, 0.05); color: #30d158; border-color: rgba(48, 209, 88, 0.2); }
+
+  .badge { font-size: 11px; background: var(--bg-input); padding: 1px 6px; border-radius: 6px; color: var(--text-muted); margin-left: auto; }
+  .active .badge { background: rgba(255,255,255,0.1); color: inherit; }
+
+  /* Format Umschalter oben im Content */
   .tabs-wrapper {
     display: flex;
-    justify-content: center;
     gap: 8px;
     margin-bottom: 32px;
   }
@@ -123,10 +180,7 @@
   .tab-btn:hover {
     color: var(--text-main);
     border-color: var(--border-hover);
-    transform: translateY(-2px);
   }
-  .tab-btn.tab-shorts:hover { box-shadow: 0 4px 15px rgba(10, 132, 255, 0.2); }
-  .tab-btn.tab-long:hover { box-shadow: 0 4px 15px rgba(255, 69, 58, 0.2); }
 
   .tab-btn.active {
     background: var(--text-main);
@@ -135,7 +189,7 @@
     font-weight: 600;
   }
 
-  /* Cleaner Prompt Generator Panel */
+  /* Panels & Inputs */
   .generator-panel {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -166,7 +220,6 @@
   }
   .clean-input:focus { border-color: rgba(255, 255, 255, 0.2); }
 
-  /* Prompt Button */
   .gen-button {
     padding: 14px 22px;
     background: var(--text-main);
@@ -180,14 +233,8 @@
     transition: var(--transition);
     white-space: nowrap;
   }
+  .gen-button:hover { transform: translateY(-2px); background: #ffffff; }
 
-  .gen-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px var(--glow-blue);
-    background: #ffffff;
-  }
-
-  /* Prompt / Import Textfelder */
   .box-container {
     background: var(--bg-input);
     border: 1px dashed var(--border-hover);
@@ -203,51 +250,11 @@
     border-radius: 8px; color: var(--text-muted); font-family: monospace; font-size: 11px; padding: 10px;
     resize: none; margin-bottom: 10px; outline: none;
   }
-  .clean-textarea::placeholder { color: var(--text-dim); }
-  #import-textarea { color: var(--text-main); }
-
+  
   .action-btn {
     padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: var(--transition);
   }
   .action-btn:hover { transform: translateY(-1px); }
-
-  /* Workflow Navigation */
-  .workflow-nav {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 12px;
-    flex-wrap: wrap;
-  }
-
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    border-radius: var(--radius-apple);
-    background: transparent;
-    border: 1px solid transparent;
-    color: var(--text-muted);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
-  }
-  .nav-item:hover { color: var(--text-main); transform: translateY(-2px); }
-  
-  .nav-all.active { background: rgba(255,255,255,0.04); color: var(--text-main); border-color: var(--border); }
-  .nav-fav.active { background: rgba(255, 214, 10, 0.05); color: #ffd60a; border-color: rgba(255, 214, 10, 0.2); }
-  .nav-sichter.active { background: rgba(10, 132, 255, 0.06); color: #0a84ff; border-color: rgba(10, 132, 255, 0.2); }
-  .nav-done.active { background: rgba(48, 209, 88, 0.05); color: #30d158; border-color: rgba(48, 209, 88, 0.2); }
-
-  .nav-fav:hover { box-shadow: 0 0 15px var(--glow-gold); border-color: rgba(255, 214, 10, 0.3); }
-  .nav-sichter:hover { box-shadow: 0 0 15px var(--glow-blue); border-color: rgba(10, 132, 255, 0.3); }
-  .nav-done:hover { box-shadow: 0 0 15px var(--glow-green); border-color: rgba(48, 209, 88, 0.3); }
-
-  .badge { font-size: 11px; background: var(--bg-input); padding: 1px 6px; border-radius: 6px; color: var(--text-muted); margin-left: 4px; }
-  .active .badge { background: rgba(255,255,255,0.1); color: inherit; }
 
   /* Grids & Cards */
   .section-title { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.08em; margin: 24px 0 12px; text-transform: uppercase; }
@@ -258,8 +265,8 @@
     background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple);
     padding: 20px; display: flex; flex-direction: column; gap: 10px; transition: var(--transition);
   }
-  .idea-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
-  .idea-card.ai-style { border-color: rgba(10, 132, 255, 0.2); background: linear-gradient(to bottom right, var(--bg-card), rgba(10, 132, 255, 0.01)); }
+  .idea-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+  .idea-card.ai-style { border-color: rgba(10, 132, 255, 0.2); }
   .idea-card.archive-style { opacity: 0.5; }
 
   .card-header { display: flex; justify-content: space-between; align-items: center; }
@@ -272,7 +279,7 @@
     width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border); background: transparent;
     color: var(--text-dim); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition);
   }
-  .icon-action-btn:hover { color: var(--text-main); border-color: var(--border-hover); background: rgba(255,255,255,0.03); }
+  .icon-action-btn:hover { color: var(--text-main); border-color: var(--border-hover); }
   .icon-action-btn.active-fav { color: #ffd60a; border-color: rgba(255, 214, 10, 0.4); background: rgba(255, 214, 10, 0.08); }
 
   .card-title { font-size: 14.5px; font-weight: 600; color: var(--text-main); line-height: 1.4; }
@@ -281,7 +288,7 @@
 
   .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-dim); border: 1px dashed var(--border); border-radius: var(--radius-apple); font-size: 13px; }
 
-  /* Sichter-Spezifische Styles */
+  /* Sichter Panel Styles */
   .sichter-panel {
     background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple); padding: 24px; margin-bottom: 32px;
   }
@@ -290,13 +297,13 @@
   }
   .sichter-controls { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; }
   .buzzer-btn {
-    width: 100%; padding: 20px; background: linear-gradient(135deg, #0a84ff, #0056b3); color: #fff; border: none; border-radius: var(--radius-apple); font-size: 16px; font-weight: 700; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 15px rgba(10, 132, 255, 0.3); text-transform: uppercase; letter-spacing: 0.05em;
+    width: 100%; padding: 20px; background: linear-gradient(135deg, #0a84ff, #0056b3); color: #fff; border: none; border-radius: var(--radius-apple); font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition); text-transform: uppercase; letter-spacing: 0.05em;
   }
-  .buzzer-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px var(--glow-blue); }
+  .buzzer-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--glow-blue); }
   .buzzer-btn:active { transform: translateY(1px); }
   
   .timestamp-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
-  .timestamp-table th { text-align: left; font-size: 11px; color: var(--text-dim); uppercase; padding: 8px; border-bottom: 1px solid var(--border); }
+  .timestamp-table th { text-align: left; font-size: 11px; color: var(--text-dim); text-transform: uppercase; padding: 8px; border-bottom: 1px solid var(--border); }
   .timestamp-table td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.02); vertical-align: middle; }
   .ts-time { font-family: monospace; font-weight: 700; color: #0a84ff; font-size: 14px; }
   .ts-input { width: 100%; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); padding: 6px 10px; border-radius: 6px; font-family: inherit; font-size: 12px; outline: none; }
@@ -312,14 +319,13 @@
 
 <div id="mouse-glow"></div>
 
-<div class="page">
-
+<aside class="sidebar">
   <header class="profile-header">
     <div class="avatar-container">
       <img class="avatar" src="Bild LOL oderso.jpg" alt="Liro Avatar">
     </div>
     <h1 class="logo-title">Liro Labs</h1>
-    <p class="logo-sub">Content Engine · VRChat &amp; Furry</p>
+    <p class="logo-sub">Content Engine · VRChat</p>
   </header>
 
   <nav class="workflow-nav">
@@ -328,6 +334,9 @@
     <button class="nav-item nav-sichter" id="nav-sichter" onclick="setView('sichter')">⏱️ Live-Sichter</button>
     <button class="nav-item nav-done" id="nav-done" onclick="setView('archive')">✅ Archiv <span class="badge" id="badge-done">0</span></button>
   </nav>
+</aside>
+
+<main class="main-content">
 
   <div id="main-view-container">
     <div class="tabs-wrapper" id="format-container">
@@ -386,7 +395,7 @@
         <thead>
           <tr>
             <th style="width: 100px;">Zeitstempel</th>
-            <th>Notiz / Was ist passiert? (Optional nach dem Stream ausfüllen)</th>
+            <th>Notiz / Was ist passiert? (Optional ausfüllen)</th>
             <th style="width: 40px;"></th>
           </tr>
         </thead>
@@ -404,7 +413,7 @@
     <a href="https://www.youtube.com/@Liro_LOL" target="_blank">@Liro_LOL</a>
   </footer>
 
-</div>
+</main>
 
 <script>
 // Flüssiger Maus-Glow
@@ -484,7 +493,7 @@ function setFormat(fmt) {
   render();
 }
 
-// TIMER SCHALTUNG
+// Sichter Zeitberechnung
 function toggleTimer() {
   const btn = document.getElementById('btn-toggle-timer');
   const buzzer = document.getElementById('btn-buzzer');
@@ -529,7 +538,7 @@ function formatTime(ms) {
   return `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
 }
 
-// BUZZER MECHANIK
+// Buzzer Logik
 function pressBuzzer() {
   if(!isTimerRunning) return;
   let formattedTime = formatTime(Date.now() - startTime);
@@ -543,7 +552,7 @@ function pressBuzzer() {
   renderSichter();
 }
 
-// Globaler Spacebar Listener für stressfreies Sichern
+// Spacebar Listener
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space' && currentView === 'sichter' && isTimerRunning) {
     if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
@@ -577,7 +586,7 @@ function renderSichter() {
   tbody.innerHTML = timestampList.map(t => `
     <tr>
       <td class="ts-time">${t.time}</td>
-      <td><input class="ts-input" type="text" placeholder="Z.B.: Lustige Antwort auf Frage zu Furry-Fandom..." value="${t.note}" onchange="updateNote('${t.id}', this.value)"></td>
+      <td><input class="ts-input" type="text" placeholder="Z.B.: Gute Antwort auf Zuschauerfrage..." value="${t.note}" onchange="updateNote('${t.id}', this.value)"></td>
       <td><button class="ts-del" onclick="deleteTimestamp('${t.id}')">✕</button></td>
     </tr>
   `).join('');
@@ -597,7 +606,7 @@ function exportTimestamps() {
   alert('Die Highlight-Liste wurde kopiert! Schicke sie mir im Chat, um virale Hooks dafür zu entwickeln.');
 }
 
-// WORKFLOW FUNKTIONEN (POOL & FAVORITEN)
+// Workflow Steuerungen
 function toggleFav(id, origin) {
   let item = findItem(id, origin);
   if(!item) return;
@@ -644,7 +653,6 @@ function findItem(id, origin) {
   return null;
 }
 
-// CARDS HTML BUILDER
 function buildCardHTML(item, origin) {
   const isFav = favList.some(f => f.id === item.id);
   let buttons = '';
@@ -669,7 +677,7 @@ function buildCardHTML(item, origin) {
     `;
   } else if(currentView === 'archive') {
     buttons = `
-      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'arch')" title="Wiederherstellen (Zu Favoriten)">
+      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'arch')" title="Wiederherstellen">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       </button>
       <button class="icon-action-btn" onclick="deletePermanent('${item.id}')" title="Endgültig löschen" style="color:rgba(255,69,58,0.6)">
@@ -723,28 +731,28 @@ function render() {
 
     let listToRender = currentView === 'favorites' ? favList : archList;
     if(!listToRender.length) {
-      mainGrid.innerHTML = `<div class="empty-state">${currentView === 'favorites' ? 'Noch keine Favoriten geplant. Klicke auf das Lesezeichen-Symbol bei deinen Ideen!' : 'Das Archiv ist leer.'}</div>`;
+      mainGrid.innerHTML = `<div class="empty-state">${currentView === 'favorites' ? 'Noch keine Favoriten geplant.' : 'Das Archiv ist leer.'}</div>`;
     } else {
       mainGrid.innerHTML = listToRender.map(i => buildCardHTML(i, currentView === 'favorites' ? 'fav' : 'arch')).join('');
     }
   }
 }
 
-// PROMPT GENERATOR LOGIK
+// Prompt Generation
 function generatePrompt() {
   const keyword = document.getElementById('ai-prompt').value.trim();
   const formatText = currentFormat === 'short' ? 'Kurzform (TikTok/Shorts)' : 'Langform (YouTube)';
   
-  const promptText = `Du bist ein Social-Media-Experte für Furry- und VRChat-Content. Generiere 4 kreative, frische Video-Ideen für den deutschen Creator "Liro".
+  const promptText = `Du bist ein Social-Media-Experte für Furry- und VRChat-Content. Generiere 4 kreative Video-Ideen für "Liro".
 Format: ${formatText}.
-${keyword ? `Fokus-Thema / Stichwort: "${keyword}"` : ''}
+${keyword ? `Fokus-Thema: "${keyword}"` : ''}
 
-Antworte mir AUSSCHLIESSLICH im folgenden JSON-Format als Code-Block, ohne Einleitung oder Erklärung drumherum:
+Antworte mir AUSSCHLIESSLICH im folgenden JSON-Format als Code-Block:
 [
-  {"tag":"meme","title":"Titel 1","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"challenge","title":"Titel 2","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"story","title":"Titel 3","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung der Idee","inspo":"Inspiration"}
+  {"tag":"meme","title":"Titel 1","desc":"Beschreibung","inspo":"Inspiration"},
+  {"tag":"challenge","title":"Titel 2","desc":"Beschreibung","inspo":"Inspiration"},
+  {"tag":"story","title":"Titel 3","desc":"Beschreibung","inspo":"Inspiration"},
+  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung","inspo":"Inspiration"}
 ]`;
 
   document.getElementById('prompt-textarea').value = promptText;
@@ -755,7 +763,7 @@ function copyPrompt() {
   const textarea = document.getElementById('prompt-textarea');
   textarea.select();
   document.execCommand('copy');
-  alert('Prompt kopiert! Füge ihn einfach im KI-Chat ein.');
+  alert('Prompt kopiert!');
 }
 
 function importAIContent() {
@@ -763,7 +771,6 @@ function importAIContent() {
   try {
     const cleanJson = val.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(cleanJson);
-    
     if(Array.isArray(parsed)) {
       const newIdeas = parsed.map(item => ({
         id: 'ai_' + Math.random().toString(36).substr(2, 9),
@@ -773,7 +780,6 @@ function importAIContent() {
         inspo: item.inspo || 'KI Generiert',
         isAi: true
       }));
-      
       aiList = [...newIdeas, ...aiList];
       save();
       document.getElementById('import-textarea').value = '';
@@ -786,7 +792,7 @@ function importAIContent() {
   }
 }
 
-// Start
+// Init
 save();
 render();
 </script>
