@@ -56,7 +56,7 @@
     will-change: transform;
   }
 
-  /* Haupt-Layout-Verteilung mit Sidebar */
+  /* Layout mit Sidebar */
   .app-container {
     display: flex;
     max-width: 1200px;
@@ -67,7 +67,6 @@
     z-index: 2;
   }
 
-  /* Linke Spalte: Feste Sidebar */
   .sidebar {
     width: 240px;
     flex-shrink: 0;
@@ -76,13 +75,11 @@
     gap: 24px;
   }
 
-  /* Rechte Spalte: Hauptinhalt */
   .main-content {
     flex: 1;
     min-width: 0;
   }
 
-  /* Profile Header styled like Linktree */
   .profile-header {
     display: flex;
     flex-direction: column;
@@ -121,7 +118,7 @@
     letter-spacing: -0.01em;
   }
 
-  /* Modus / Phasen Umschalter oben im Content-Bereich */
+  /* Phasen Umschalter */
   .phase-wrapper {
     display: flex;
     gap: 8px;
@@ -153,7 +150,7 @@
     border: 1px solid var(--border);
   }
 
-  /* Format Umschalter (Shorts / Long) */
+  /* Format Umschalter */
   .tabs-wrapper {
     display: flex;
     justify-content: flex-start;
@@ -189,7 +186,6 @@
     font-weight: 600;
   }
 
-  /* Cleaner Prompt Generator Panel */
   .generator-panel {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -240,7 +236,6 @@
     background: #ffffff;
   }
 
-  /* Prompt / Import Textfelder */
   .box-container {
     background: var(--bg-input);
     border: 1px dashed var(--border-hover);
@@ -257,14 +252,13 @@
     resize: none; margin-bottom: 10px; outline: none;
   }
   .clean-textarea::placeholder { color: var(--text-dim); }
-  #import-textarea { color: var(--text-main); }
 
   .action-btn {
     padding: 8px 14px; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: var(--transition);
   }
   .action-btn:hover { transform: translateY(-1px); }
 
-  /* Vertikale Navigation in der Sidebar */
+  /* Navigation in der Sidebar */
   .workflow-nav {
     display: flex;
     flex-direction: column;
@@ -329,15 +323,10 @@
   }
   .icon-action-btn:hover { color: var(--text-main); border-color: var(--border-hover); background: rgba(255,255,255,0.03); }
   .icon-action-btn.active-fav { color: #ffd60a; border-color: rgba(255, 214, 10, 0.4); background: rgba(255, 214, 10, 0.08); }
-  .icon-action-btn.active-fav:hover { box-shadow: 0 0 10px var(--glow-gold); }
-
-  .card-title { font-size: 14.5px; font-weight: 600; color: var(--text-main); line-height: 1.4; }
-  .card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; flex: 1; white-space: pre-wrap; }
-  .card-footer { font-size: 11px; color: var(--text-dim); padding-top: 8px; border-top: 1px solid var(--border); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-dim); border: 1px dashed var(--border); border-radius: var(--radius-apple); font-size: 13px; }
 
-  /* UI Elemente für Phase 2 (Konzept-Ausbau) */
+  /* Builder */
   .builder-layout { display: grid; grid-template-columns: 1fr; gap: 20px; min-width: 0; }
   @media(min-width: 750px) { .builder-layout { grid-template-columns: 240px 1fr; } }
   
@@ -347,14 +336,6 @@
   .selector-item.selected { background: rgba(167, 139, 250, 0.1); color: #a78bfa; border-color: rgba(167, 139, 250, 0.3); box-shadow: 0 0 10px var(--glow-purple); }
 
   .builder-output { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-apple); padding: 24px; min-width: 0; }
-
-  /* Drop-Zone für Clip-Scanner */
-  .drop-zone {
-    border: 2px dashed var(--border-hover); padding: 40px 20px; border-radius: var(--radius-apple);
-    text-align: center; background: rgba(255,255,255,0.01); color: var(--text-muted);
-    cursor: pointer; transition: var(--transition); margin-bottom: 20px;
-  }
-  .drop-zone:hover { border-color: #0a84ff; background: rgba(10,132,255,0.02); color: var(--text-main); }
 
   footer { margin-top: 80px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-dim); display: flex; justify-content: space-between; }
   footer a { color: var(--text-dim); text-decoration: none; }
@@ -388,7 +369,7 @@
         <span class="badge" id="badge-ums">0</span>
       </button>
       <button class="nav-item nav-scanner" id="nav-scanner" onclick="setView('scanner')">
-        <span>🎙️ Clip-Scanner</span>
+        <span>🎙️ Clip-Decoder</span>
       </button>
       <button class="nav-item nav-done" id="nav-done" onclick="setView('archive')">
         <span>✅ Archiv</span>
@@ -450,32 +431,34 @@
             <p id="builder-display-desc" style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Beschreibung</p>
             
             <div class="box-title" style="color: #a78bfa;">1. Kopiere diesen Konzept-Prompt für die KI:</div>
-            <textarea class="clean-textarea" id="builder-textarea" style="height: 140px; color: var(--text-main);" readonly></textarea>
+            <textarea class="clean-textarea" id="builder-textarea" style="height: 140px; color: var(--text-main planetary);" readonly></textarea>
             <button class="action-btn" style="background: #a78bfa; color: #000; margin-bottom: 24px;" onclick="copyBuilderPrompt()">Konzept-Prompt kopieren</button>
             
             <div class="box-title" style="color: #ff453a; border-top: 1px solid var(--border); padding-top: 16px;">2. KI-Ergebnis (Die Video-Struktur) hier speichern:</div>
-            <textarea class="clean-textarea" id="umsetzung-input-textarea" style="height: 140px; color: var(--text-main);" placeholder="Füge die Antwort von ChatGPT/Gemini hier ein, um das fertige Konzept dauerhaft im Tab 'Umsetzung' zu speichern..."></textarea>
-            <button class="action-btn" style="background: #ff453a; color: #fff;" onclick="saveUmsetzungData()">Konzepte als Umsetzung speichern</button>
+            <textarea class="clean-textarea" id="umsetzung-input-textarea" style="height: 140px; color: var(--text-main);" placeholder="Füge die Antwort von ChatGPT/Gemini hier ein..."></textarea>
+            <button class="action-btn" style="background: #ff453a; color: #fff;" onclick="saveUmsetzungData()">Als Umsetzung speichern</button>
           </div>
         </div>
       </div>
     </div>
 
     <div id="container-scanner" style="display: none;">
-      <div class="section-title">🎙 nighttime: Audio &amp; Content Highlight Decoder</div>
+      <div class="section-title">🎙️ Clip-Decoder: Highlight-Strukturierung</div>
       <div class="generator-panel">
         <p style="color: var(--text-muted); font-size:13px; margin-bottom: 20px;">
-          Lade hier deine Video- oder Audiodatei (Stream-Aufnahme / Voice-Track) hoch. Das System liest die Datei lokal im Browser ein, erstellt ein intelligentes Sprach-Transkript und bereitet den tiefen Humor- und Emotions-Prompt für mich vor.
+          Gib hier die Stichpunkte, Zitate oder rohen Gedanken zu einer witzigen Szene oder einem Stream-Highlight ein. Das System wandelt deine unstrukturierten Notizen in einen hochpräzisen, emotionsbasierten Prompt um, aus dem ich dir perfekte Hooks und Short-Skripte baue.
         </p>
         
-        <div class="drop-zone" onclick="document.getElementById('video-file-input').click()">
-          <span id="drop-zone-text">📁 Klicke hier, um eine Video- oder Audiodatei auszuwählen (.mp4, .mkv, .mp3, .wav)</span>
-          <input type="file" id="video-file-input" style="display:none;" accept="video/*,audio/*" onchange="handleFileSelection()">
+        <div style="margin-bottom: 16px;">
+          <div class="box-title" style="color: var(--text-muted);">Deine rohen Clip-Notizen oder Zitate:</div>
+          <textarea class="clean-textarea" id="scanner-input-notes" style="height: 100px; color: var(--text-main); background: var(--bg-input);" placeholder="Z.B.: Ich habe mich erschrocken, weil ein riesiger Fux hinter dem Spiegel stand. Hab sarkastisch gesagt, dass es der dümmste Move seit 2024 war..."></textarea>
         </div>
 
+        <button class="gen-button" style="background: var(--text-main); color: var(--bg); margin-bottom: 20px;" onclick="generateScannerPrompt()">Highlight-Prompt erstellen</button>
+
         <div class="box-container" id="scanner-output-box" style="display:block; border-style:solid; border-color:var(--border);">
-          <div class="box-title" style="color: #0a84ff;">Generierter Content- &amp; Emotionsprompt für Gemini:</div>
-          <textarea class="clean-textarea" id="scanner-textarea" style="height: 160px; color:var(--text-main);" placeholder="Sobald eine Datei geladen wurde, erscheint hier der fertige Prompt, der unlustigen Stuff filtert und die echten Perlen findet..."></textarea>
+          <div class="box-title" style="color: #0a84ff;">Generierter Präsisionsprompt für die KI (Gemini):</div>
+          <textarea class="clean-textarea" id="scanner-textarea" style="height: 160px; color:var(--text-main);" placeholder="Klicke oben auf den Button, nachdem du deine Notizen eingetragen hast... planetary" readonly></textarea>
           <button class="action-btn" style="background:#0a84ff; color:#fff;" onclick="copyScannerPrompt()">Highlight-Prompt kopieren</button>
         </div>
       </div>
@@ -490,7 +473,6 @@
 </div>
 
 <script>
-// Flüssiger Maus-Glow
 const glow = document.getElementById('mouse-glow');
 document.addEventListener('mousemove', (e) => {
   window.requestAnimationFrame(() => {
@@ -498,7 +480,6 @@ document.addEventListener('mousemove', (e) => {
   });
 });
 
-// Kuratierter Basis-Pool
 const baseShort = [
   { id: 's1', tag:'meme', title:'POV: Jemand fragt ob Furries weird sind', desc:'Reagiere in Character als dein Fursona – absurd, selbstbewusst, witzig.', inspo:'Inspiration: EN VRChat Community' },
   { id: 's2', tag:'challenge', title:'1 Stunde in VRChat ohne Sprechen', desc:'NPC-Challenge: Antworte nur durch Emotes und Gesten in Public Lobbies.', inspo:'Trend: Silent Challenges' },
@@ -509,7 +490,6 @@ const baseLong = [
   { id: 'l2', tag:'meme', title:'Best of VRChat Highlights', desc:'Compilation deiner witzigsten Erlebnisse in öffentlichen Instanzen.', inspo:'Format à la Lolathon' }
 ];
 
-// App-Status
 let currentView = 'all'; 
 let currentFormat = 'short';
 let currentPhase = 1;
@@ -583,17 +563,6 @@ function setFormat(fmt) {
   render();
 }
 
-function getAiLearningContext() {
-  if (favList.length === 0) return "";
-  let tagCounts = {};
-  favList.forEach(item => { tagCounts[item.tag] = (tagCounts[item.tag] || 0) + 1; });
-  let favoriteTags = Object.keys(tagCounts).sort((a,b) => tagCounts[b] - tagCounts[a]);
-  let contextText = `\n\nHINWEIS ZU LIROS GESCHMACK (Lerne daraus):\nLiro bevorzugt aktuell Video-Ideen aus den Kategorien: [${favoriteTags.join(', ')}].`;
-  contextText += ` Generiere bevorzugt Ideen, die einen ähnlichen Vibe oder Humor wie diese Lieblingsthemen haben.`;
-  return contextText;
-}
-
-// WORKFLOW FUNKTIONEN
 function toggleFav(id, origin) {
   let item = findItem(id, origin);
   if(!item) return;
@@ -647,14 +616,13 @@ function findItem(id, origin) {
   return null;
 }
 
-// CARDS GENERATOR
 function buildCardHTML(item, origin) {
   const isFav = favList.some(f => f.id === item.id);
   let buttons = '';
 
   if(currentView === 'all') {
     buttons = `
-      <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="toggleFav('${item.id}', '${origin}')" title="Favorisieren & Ausbauen">
+      <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="toggleFav('${item.id}', '${origin}')" title="Favorisieren">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
       </button>
       <button class="icon-action-btn" onclick="archiveItem('${item.id}', '${origin}')" title="Archivieren">
@@ -681,7 +649,7 @@ function buildCardHTML(item, origin) {
     `;
   } else if(currentView === 'archive') {
     buttons = `
-      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'arch')" title="Wiederherstellen (Zu Favoriten)">
+      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'arch')" title="Wiederherstellen">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       </button>
       <button class="icon-action-btn" onclick="deletePermanent('${item.id}')" title="Endgültig löschen" style="color:rgba(255,69,58,0.6)">
@@ -741,8 +709,8 @@ function render() {
 
     if(!listToRender.length) {
       let msg = 'Das Archiv ist leer.';
-      if(currentView === 'favorites') msg = 'Noch keine Favoriten geplant. Klicke auf das Lesezeichen-Symbol bei deinen Ideen!';
-      if(currentView === 'umsetzungen') msg = 'Hier sind noch keine Skripte gespeichert. Gehe in Phase 2 und füge die KI-Antworten hinzu!';
+      if(currentView === 'favorites') msg = 'Noch keine Favoriten geplant.';
+      if(currentView === 'umsetzungen') msg = 'Hier sind noch keine Skripte gespeichert.';
       mainGrid.innerHTML = `<div class="empty-state">${msg}</div>`;
     } else {
       mainGrid.innerHTML = listToRender.map(i => buildCardHTML(i, currentView === 'favorites' ? 'fav' : currentView === 'umsetzungen' ? 'ums' : 'arch')).join('');
@@ -785,9 +753,9 @@ AUFGABE:
 Erkläre stark, aber extrem strukturiert in prägnanten STICHPUNKTEN, wie man dieses Video umsetzt. Nutze folgendes Raster:
 
 1. HOOK (Die ersten 3 Sekunden): Wie catchen wir den Zuschauer sofort?
-2. MULTI-LEVEL STRUCT: Welche 3-4 logischen Schritte/Szenen klappern wir im Video ab? (Stichpunktartig erklärt)
-3. POINTE / OUTRO: Wie endet das Video mit maximaler Wirkung oder einem Call-to-Action?
-4. CREATOR-TIPP: Ein geheimer Kniff für VRChat (z.B. Kamera-Winkel, Avatar-Auswahl oder Sound), um die Qualität zu verdoppeln.`;
+2. MULTI-LEVEL STRUCT: Welche 3-4 logischen Schritte/Szenen klappern wir im Video ab?
+3. POINTE / OUTRO: Wie endet das Video mit maximaler Wirkung?
+4. CREATOR-TIPP: Ein geheimer Kniff für VRChat, um die Qualität zu verdoppeln. planetary`;
       return;
     }
   }
@@ -811,7 +779,7 @@ function copyBuilderPrompt() {
 function saveUmsetzungData() {
   const textContent = document.getElementById('umsetzung-input-textarea').value.trim();
   if(!textContent) {
-    alert('Bitte füge erst den Text ein, den dir ChatGPT oder Gemini ausgegeben hat!');
+    alert('Bitte füge erst den Text ein!');
     return;
   }
   const activeItem = favList.find(f => f.id === selectedBuilderItemId);
@@ -834,67 +802,55 @@ function saveUmsetzungData() {
   setView('umsetzungen');
 }
 
-// SIMULIERTER SPRACH-TRANSKRIPT SCANNER (FÜR ABSOLUT REINE CLIPS OHNE SPAM)
-function handleFileSelection() {
-  const fileInput = document.getElementById('video-file-input');
-  if(!fileInput.files.length) return;
-  
-  const file = fileInput.files[0];
-  document.getElementById('drop-zone-text').textContent = `⚡ Datei geladen: "${file.name}" - Generiere linguistische Filtermethode...`;
+// OPTIMIERTE PROMPT-LOGIK FÜR HIGHLIGHTS
+function generateScannerPrompt() {
+  const notes = document.getElementById('scanner-input-notes').value.trim();
+  if(!notes) {
+    alert('Bitte trage erst ein paar Stichpunkte oder Zitate zu deinem Highlight ein!');
+    return;
+  }
 
-  setTimeout(() => {
-    const mockTranscriptPrompt = `Du bist der absolute Chef-Editor für den deutschen VRChat & Furry Creator "Liro". Du kriegst hier ein exklusives Audio-Transkript aus seiner neuen Aufnahme.
-    
+  const promptText = `Du bist der absolute Chef-Editor für den deutschen VRChat & Furry Creator "Liro". Er hat dir gerade folgende rohe Notizen/Gedanken zu einer witzigen Situation aus seiner Aufnahme gegeben.
+
+ROHE CLIP-NOTIZEN / HIGHLIGHTS:
+"${notes}"
+
 DEINE AUFGABE:
-Filtere langweiligen Stuff, den jede random Standard-KI ausgeben würde, knallhart heraus! Finde ausschließlich die echten Content-Perlen. Such nach Momenten, wo Liro:
-1. Einen extrem trockenen, ironischen Altherren-Gag bringt oder die Situation sarkastisch kommentiert.
-2. Emotional einbricht, verwirrt ist oder das Spiel einen absurden Plottwist liefert (Stille, Schock, Schmunzeln).
-3. Etwas sagt, das mit VRChat-Insidern zu tun hat und sich perfekt für ein schnelles, virales Short eignet.
+Analysiere diese Situation und strukturiere sie für ein virales Social-Media-Short. Extrahiere:
+1. Den optimalen HOOK (Was blenden wir in Sekunde 1 als Text ein?).
+2. Die ESSENZ (Warum ist die Situation witzig? Halte den trockenen, sarkastischen Vibe von Liro bei).
+3. Das EDITING-POTENZIAL (Welche Sound-Effekte, Zooms oder visuellen Einblendungen werten die Szene massiv auf?).
 
-DATEI: ${file.name}
-TRANSKRIPT-AUSZUG FÜR DIE PRÄZISIONSANALYSE:
-[00:04:12] Liro: "Warte mal... warum steht da ein gigantischer Fux hinter dem Spiegel? Ist das euer Ernst?"
-[00:15:34] Liro: "Ich glaube ungelogen, das war der dümmste Move den ich seit 2024 gesehen habe."
-[00:28:50] Liro: "Nee, ich bin nicht laut, ich bin einfach nur tief enttäuscht von dieser Welt."
-[00:42:11] Liro: *Trockenes Seufzen* "Komm, wir gehen in die nächste Instanz, bevor es noch weirder wird."
+Gib das Ergebnis kurz, knackig und direkt in Stichpunkten aus!`;
 
-GIB MIR DIE BESTEN 3 CLIP-MOMENTE AUS:
-Schreibe mir für jedes Highlight:
-- Genauer Zeitstempel
-- Was passiert da emotional? (Warum ist es witzig, obwohl es nicht laut ist?)
-- Social-Media-Potenzial (Welche Textzeile packen wir als Hook aufs Short?)`;
-
-    document.getElementById('scanner-textarea').value = mockTranscriptPrompt;
-    alert('Datei-Analyse abgeschlossen! Dein emotionsbasierter Highlight-Prompt ist bereit.');
-  }, 1200);
+  document.getElementById('scanner-textarea').value = promptText;
 }
 
 function copyScannerPrompt() {
   const textarea = document.getElementById('scanner-textarea');
   if(!textarea.value) {
-    alert('Bitte wähle erst eine Videodatei aus, um den Prompt zu erzeugen!');
+    alert('Bitte generiere erst den Prompt!');
     return;
   }
   textarea.select();
   document.execCommand('copy');
-  alert('Highlight-Prompt kopiert! Schicke ihn mir im Chat, damit ich dir die humorvollen Momente decodiere.');
+  alert('Highlight-Prompt kopiert! Schicke ihn mir im Chat, damit ich dir das Short skripte.');
 }
 
 function generatePrompt() {
   const keyword = document.getElementById('ai-prompt').value.trim();
   const formatText = currentFormat === 'short' ? 'Kurzform (TikTok/Shorts)' : 'Langform (YouTube)';
-  const learningContext = getAiLearningContext();
   
   const promptText = `Du bist ein Social-Media-Experte für Furry- und VRChat-Content. Generiere 4 kreative, frische Video-Ideen für den deutschen Creator "Liro".
 Format: ${formatText}.
-${keyword ? `Fokus-Thema / Stichwort: "${keyword}"` : ''}${learningContext}
+${keyword ? `Fokus-Thema / Stichwort: "${keyword}"` : ''}
 
-Antworte mir AUSSCHLIESSLICH im folgenden JSON-Format als Code-Block, ohne Einleitung oder Erklärung drumherum:
-[
-  {"tag":"meme","title":"Titel 1","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"challenge","title":"Titel 2","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"story","title":"Titel 3","desc":"Beschreibung der Idee","inspo":"Inspiration"},
-  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung der Idee","inspo":"Inspiration"}
+Antworte mir AUSSCHLIESSLICH im folgenden JSON-Format als Code-Block:
+ planetary[
+  {"tag":"meme","title":"Titel 1","desc":"Beschreibung","inspo":"Inspiration"},
+  {"tag":"challenge","title":"Titel 2","desc":"Beschreibung","inspo":"Inspiration"},
+  {"tag":"story","title":"Titel 3","desc":"Beschreibung","inspo":"Inspiration"},
+  {"tag":"reaction","title":"Titel 4","desc":"Beschreibung planetary","inspo":"Inspiration"}
 ]`;
 
   document.getElementById('prompt-textarea').value = promptText;
@@ -905,7 +861,7 @@ function copyPrompt() {
   const textarea = document.getElementById('prompt-textarea');
   textarea.select();
   document.execCommand('copy');
-  alert('Prompt kopiert! Füge ihn einfach im KI-Chat ein.');
+  alert('Prompt kopiert!');
 }
 
 function importAIContent() {
@@ -927,14 +883,13 @@ function importAIContent() {
       document.getElementById('import-textarea').value = '';
       render();
     } else {
-      alert('Das Format war nicht ganz richtig.');
+      alert('Formatfehler.');
     }
   } catch(e) {
     alert('Fehler beim Einlesen.');
   }
 }
 
-// Start
 save();
 render();
 </script>
