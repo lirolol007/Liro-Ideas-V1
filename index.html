@@ -118,7 +118,7 @@
     letter-spacing: -0.01em;
   }
 
-  /* Phasen Umschalter (Dynamisch ein/ausblendbar) */
+  /* Phasen Umschalter */
   .phase-wrapper {
     display: flex;
     gap: 8px;
@@ -150,7 +150,7 @@
     border: 1px solid var(--border);
   }
 
-  /* Split Layouts um Übereinander-Stapeln zu verhindern */
+  /* Split Layouts */
   .panel-split-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -537,7 +537,7 @@
             
             <div class="box-title" style="color: #ff453a; border-top: 1px solid var(--border); padding-top: 16px;">2. KI-Ergebnis (Die Video-Struktur) hier speichern:</div>
             <textarea class="clean-textarea" id="umsetzung-input-textarea" style="height: 140px; color: var(--text-main);" placeholder="Füge die Antwort von ChatGPT/Gemini hier ein..."></textarea>
-            <button class="action-btn" style="background: #ff453a; color: #fff;" onclick="saveUmsetzungData()">Als Umsetzung保存</button>
+            <button class="action-btn" style="background: #ff453a; color: #fff;" onclick="saveUmsetzungData()">Als Umsetzung sichern</button>
           </div>
         </div>
       </div>
@@ -585,8 +585,8 @@
       <div class="section-title">🔮 Liro Labs Super-Creator Hub (VRChat Tools)</div>
       
       <div class="live-scout-box">
-        <div class="box-title" style="color: #a78bfa; margin-bottom: 4px;">📍 Real-World Tracker (Wo du die echten Welten findest)</div>
-        <p style="color: var(--text-muted); font-size: 11px;">KIs können keine Live-Datenbanken auslesen. Nutze diese Plattformen parallel für die genauen Weltennamen:</p>
+        <div class="box-title" style="color: #a78bfa; margin-bottom: 4px;">📍 Quick Tracker Links (Ein Klick zu echten Welten)</div>
+        <p style="color: var(--text-muted); font-size: 11px;">Falls du manuell stöbern willst, bringen dich diese Links ohne Umwege zu den echten Trends:</p>
         <div class="scout-links-grid">
           <a class="scout-link-card" href="https://vrchat.com/home/worlds" target="_blank">🌐 VRChat Web-Dashboard (Trending-Tab)</a>
           <a class="scout-link-card" href="https://vrcw.net/" target="_blank">🔍 VRCW (Beste externe Welten-Suche)</a>
@@ -598,13 +598,13 @@
         
         <div class="feature-card-hub">
           <div>
-            <div class="box-title" style="color:#a78bfa;">🧭 VRChat Konzept- &amp; Such-Filter Radar</div>
-            <p style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">Erstellt dir präzise Filter-Keywords und Videoaufhänger statt gefälschter Weltennamen.</p>
+            <div class="box-title" style="color:#a78bfa;">🧭 VRChat Welten-Finder &amp; Story-Aufhänger</div>
+            <p style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">Zwingt die KI, dir echte Kult-Welten oder exakte Suchnamen auszugeben.</p>
             <select class="select-clean" id="radar-world-type">
-              <option value="Trending Horror Welten (Fokus: Jumpscares & Coop)">Horror (Schocker / Psychologisch / Co-Op)</option>
-              <option value="Mini-Games, PvP & Party-Lobbies">Events &amp; Community Mini-Games / PvP</option>
-              <option value="Optik-Porn, Cyberpunk & Chill-Lobbies">Ästhetik- &amp; High-End-Grafik-Welten</option>
-              <option value="Absurde Meme- &amp; Japan-Lobbies">Skurrile Nischen- &amp; Meme-Welten</option>
+              <option value="Gruselige Horror Welten (z.B. The Devouring, Spirits of the Realm, Obsession)">Horror (Schocker / Psychologisch / Co-Op)</option>
+              <option value="Mini-Games & Action (z.B. Pop Death Run, Murder 4, Prison Escape, Battle Discs)">Events &amp; Community Mini-Games / PvP</option>
+              <option value="Wunderschöne Grafik & Chill (z.B. Yayoi Summer Night, Organism, Treehouse in the Shade)">Ästhetik- &amp; High-End-Grafik-Welten</option>
+              <option value="Lustige & Absurde Welten (z.B. Kitchen Cook, Avatar Roulette, Great Pug)">Skurrile Nischen- &amp; Meme-Welten</option>
             </select>
           </div>
           <button class="gen-button" style="background:#a78bfa; color:#000; width:100%;" onclick="triggerWorldRadar()">Welt-Trend-Prompt kopieren</button>
@@ -731,7 +731,6 @@ function setView(view) {
   if(view === 'radar') targetId = 'nav-radar';
   document.getElementById(targetId).classList.add('active');
   
-  // DYNAMISCHES AUSBLENDEN DER PHASEN-LEISTE
   const phaseBar = document.getElementById('phase-switcher-container');
   if(view === 'archive' || view === 'umsetzungen' || view === 'sichter' || view === 'radar') {
     phaseBar.style.display = 'none';
@@ -766,7 +765,6 @@ function setFormat(fmt) {
   render();
 }
 
-// Live-Sichter Logik
 function toggleTimer() {
   const btn = document.getElementById('btn-toggle-timer');
   const buzzer = document.getElementById('btn-buzzer');
@@ -877,15 +875,16 @@ function exportTimestamps() {
   alert('Die Highlight- & Zitat-Liste wurde kopiert!');
 }
 
-// FIX: KIs erfinden Namen. Neuer Prompt zwingt KI zu Such-Kombinationen & Konzepten!
+// OPTIMIERTE HUB PROMPTS FÜR SCHNELLE, ECHTE ERGEBNISSE
 function triggerWorldRadar() {
   const type = document.getElementById('radar-world-type').value;
   document.getElementById('radar-box-title').textContent = "Ausgabe: Trend-Radar Prompt";
-  document.getElementById('radar-output-textarea').value = `Du bist Liros Content-Strategist für VRChat. Da du keine Echtzeit-Welten-Datenbank auslesen kannst, erfinde KEINE fake Weltennamen! Generiere mir stattdessen 3 präzise Video-Konzepte und exakte Suchbegriffe/Tags für das Genre "${type}".
-Sag mir stattdessen im Detail:
-1. Nach welchen spezifischen Tags oder Begriffen (z.B. "Quest Cozy", "Coop Puzzles", "PVP Minigame") ich im VRChat Weltenmenü suchen soll.
-2. Welche Art von Video-Challenge Liro dort drehen soll (inklusive packender Hook).
-3. Wie er die Interaktion mit Lobbypublikum oder Freunden gestalten soll.`;
+  document.getElementById('radar-output-textarea').value = `Du bist Liros Content-Strategist für VRChat. Generiere 3 maßgeschneiderte Video-Konzepte für die VRChat-Kategorie "${type}".
+
+WICHTIGSTE REGEL: Liro möchte so wenig Aufwand wie möglich haben. 
+1. Nenne ihm pro Konzept mindestens einen weltbekannten, existierenden ECHTEN Weltennamen (z.B. Welten wie die in den Klammern der Auswahl, oder andere reale Riesen-Trends), den er sofort eintippen kann.
+2. Wenn du neuere Welten vorschlägst, nenne den EXAKTEN Suchnamen für das VRChat-In-Game-Suchfeld, sodass er das erste Ergebnis anklicken kann und fertig ist.
+3. Schreibe eine super kurze Video-Challenge (inklusive packender Hook für Shorts) dazu. Keine komplizierten Regelwerke, sondern schneller, spaßiger Content.`;
 }
 
 function triggerPersonaAmplifier() {
@@ -918,7 +917,7 @@ function copyRadarOutput() {
 }
 
 
-// Globaler Workflow (Cards & Listen)
+// Globaler Workflow
 function toggleFav(id, origin) {
   let item = findItem(id, origin);
   if(!item) return;
@@ -1165,6 +1164,8 @@ function generatePrompt() {
   const promptText = `Du bist ein Social-Media-Experte für Furry- und VRChat-Content. Generiere 4 kreative, frische Video-Ideen für den deutschen Creator "Liro".
 Format: ${formatText}.
 ${keyword ? `Fokus-Thema / Stichwort: "${keyword}"` : ''}
+
+WICHTIGSTE REGEL FÜR DIE WELTEN: Nenne NUR existierende, echte VRChat-Welten mit ihrem exakten Suchnamen, damit Liro sie ohne Aufwand sofort in-game finden kann.
 
 Antworte mir AUSSCHLIESSLICH im folgenden JSON-Format als Code-Block:
 [
