@@ -42,7 +42,6 @@
     position: relative;
   }
 
-  /* Flüssiger Maus-Glow */
   #mouse-glow {
     position: fixed;
     width: 400px;
@@ -56,7 +55,6 @@
     will-change: transform;
   }
 
-  /* Layout mit Sidebar (Links) */
   .app-container {
     display: flex;
     max-width: 1400px;
@@ -116,6 +114,42 @@
     color: var(--text-muted);
     font-weight: 400;
     letter-spacing: -0.01em;
+  }
+
+  /* Modus Umschalter (Ideen vs Welten) */
+  .mode-wrapper {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    background: rgba(255,255,255,0.03);
+    padding: 6px;
+    border-radius: var(--radius-apple);
+    border: 1px solid var(--border);
+  }
+
+  .mode-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .mode-btn:hover { color: var(--text-main); }
+  .mode-btn.active {
+    background: var(--bg-card);
+    color: var(--text-main);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
   }
 
   /* Phasen Umschalter */
@@ -320,6 +354,7 @@
   .idea-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
   .idea-card.ai-style { border-color: rgba(10, 132, 255, 0.2); background: linear-gradient(to bottom right, var(--bg-card), rgba(10, 132, 255, 0.01)); }
   .idea-card.umsetzung-style { border-color: rgba(255, 69, 58, 0.2); background: linear-gradient(to bottom right, var(--bg-card), rgba(255, 69, 58, 0.01)); }
+  .idea-card.world-style { border-color: rgba(167, 139, 250, 0.2); background: linear-gradient(to bottom right, var(--bg-card), rgba(167, 139, 250, 0.01)); }
   .idea-card.archive-style { opacity: 0.5; }
 
   .card-header { display: flex; justify-content: space-between; align-items: center; }
@@ -327,7 +362,12 @@
   .card-tag { font-size: 9px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); font-weight: 700; background: rgba(255,255,255,0.05); padding: 2px 7px; border-radius: var(--radius-pill); }
   .card-tag.ai-badge { background: rgba(10, 132, 255, 0.15); color: #0a84ff; }
   .card-tag.u-badge { background: rgba(255, 69, 58, 0.15); color: #ff453a; }
+  .card-tag.w-badge { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
   
+  .card-title { font-size: 15px; font-weight: 700; color: var(--text-main); }
+  .card-desc { font-size: 13px; color: var(--text-muted); }
+  .card-footer { font-size: 11px; color: var(--text-dim); margin-top: auto; padding-top: 6px; }
+
   .card-actions { display: flex; gap: 4px; }
   .icon-action-btn {
     width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border); background: transparent;
@@ -335,6 +375,12 @@
   }
   .icon-action-btn:hover { color: var(--text-main); border-color: var(--border-hover); background: rgba(255,255,255,0.03); }
   .icon-action-btn.active-fav { color: #ffd60a; border-color: rgba(255, 214, 10, 0.4); background: rgba(255, 214, 10, 0.08); }
+  .icon-action-btn.active-plan { color: #ff453a; border-color: rgba(255, 69, 58, 0.4); background: rgba(255, 69, 58, 0.08); }
+
+  .vrc-search-link {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #0a84ff; text-decoration: none; margin-top: 8px; font-weight: 600; transition: var(--transition);
+  }
+  .vrc-search-link:hover { color: #ffffff; text-shadow: 0 0 8px var(--glow-blue); }
 
   .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-dim); border: 1px dashed var(--border); border-radius: var(--radius-apple); font-size: 13px; }
 
@@ -372,7 +418,6 @@
   .ts-del { background: transparent; border: none; color: rgba(255,69,58,0.6); cursor: pointer; font-size: 12px; }
   .ts-del:hover { color: #ff453a; }
 
-  /* Grid für neue Features */
   .feature-grid-2x2 {
     display: grid;
     grid-template-columns: 1fr;
@@ -397,7 +442,6 @@
     color: var(--text-main); border-radius: 8px; font-family: inherit; font-size: 13px; outline: none; margin-bottom: 12px;
   }
 
-  /* Live Links Box Style */
   .live-scout-box {
     background: rgba(167, 139, 250, 0.03);
     border: 1px solid rgba(167, 139, 250, 0.15);
@@ -449,16 +493,21 @@
       <p class="logo-sub">Content Engine · VRChat &amp; Furry</p>
     </header>
 
+    <div class="mode-wrapper">
+      <button class="mode-btn active" id="mode-ideas-btn" onclick="setDashboardMode('ideas')">📁 Ideen</button>
+      <button class="mode-btn" id="mode-worlds-btn" onclick="setDashboardMode('worlds')">🌍 Welten</button>
+    </div>
+
     <nav class="workflow-nav">
       <button class="nav-item nav-all active" id="nav-all" onclick="setView('all')">
-        <span>📁 Ideen-Pool</span>
+        <span id="nav-pool-text">📁 Ideen-Pool</span>
       </button>
       <button class="nav-item nav-fav" id="nav-fav" onclick="setView('favorites')">
         <span>⭐ Favoriten</span>
         <span class="badge" id="badge-fav">0</span>
       </button>
       <button class="nav-item nav-umsetzung" id="nav-umsetzung" onclick="setView('umsetzungen')">
-        <span>🎬 Umsetzung</span>
+        <span id="nav-mid-text">🎬 Umsetzung</span>
         <span class="badge" id="badge-ums">0</span>
       </button>
       <button class="nav-item nav-done" id="nav-done" onclick="setView('archive')">
@@ -477,7 +526,7 @@
   <main class="main-content">
     
     <div class="phase-wrapper" id="phase-switcher-container">
-      <button class="phase-btn active" id="phase1-btn" onclick="setPhase(1)">Phase 1: Ideen finden</button>
+      <button class="phase-btn active" id="phase1-btn" onclick="setPhase(1)">Phase 1: Content finden</button>
       <button class="phase-btn" id="phase2-btn" onclick="setPhase(2)">Phase 2: Konzept ausbauen</button>
     </div>
 
@@ -488,25 +537,47 @@
       </div>
 
       <div class="panel-split-grid" id="generator-split-view">
-        <section class="generator-panel">
-          <div class="box-title" style="color: #0a84ff; margin-bottom:12px;">1. Ideen-Generator</div>
-          <div class="input-row">
-            <input class="clean-input" id="ai-prompt" placeholder='Stichwort (z.B. "Horror Welten", "Blackout")...' />
-            <button class="gen-button" onclick="generatePrompt()">Prompt erstellen</button>
+        
+        <section class="generator-panel" id="panel-generator-left">
+          <div id="ideas-generator-ui">
+            <div class="box-title" style="color: #0a84ff; margin-bottom:12px;">1. Ideen-Generator</div>
+            <div class="input-row">
+              <input class="clean-input" id="ai-prompt" placeholder='Stichwort (z.B. "Horror Welten", "Blackout")...' />
+              <button class="gen-button" onclick="generatePrompt()">Prompt erstellen</button>
+            </div>
+            <div class="box-container" id="prompt-box">
+              <div class="box-title" style="color: #0a84ff;">Kopiere diesen Text für deinen KI-Chat:</div>
+              <textarea class="clean-textarea" id="prompt-textarea" readonly></textarea>
+              <button class="action-btn" style="background:#ffffff; color:#000;" onclick="copyPrompt()">Text kopieren</button>
+            </div>
           </div>
 
-          <div class="box-container" id="prompt-box">
-            <div class="box-title" style="color: #0a84ff;">Kopiere diesen Text für deinen KI-Chat:</div>
-            <textarea class="clean-textarea" id="prompt-textarea" readonly></textarea>
-            <button class="action-btn" style="background:#ffffff; color:#000;" onclick="copyPrompt()">Text kopieren</button>
+          <div id="worlds-generator-ui" style="display:none;">
+            <div class="box-title" style="color: #a78bfa; margin-bottom:12px;">Neue Welt manuell sichern</div>
+            <div class="input-row" style="display:flex; flex-direction:column; gap:10px; align-items:stretch;">
+              <input class="clean-input" id="manual-world-name" placeholder='Exakter Welten-Name (z.B. "The Devouring")...' />
+              <input class="clean-input" id="manual-world-desc" placeholder='Kategorie / Kurze Notiz (z.B. "Coop Horror Coole Story")...' />
+              <button class="gen-button" style="background:#a78bfa; color:#000;" onclick="addManualWorld()">Welt im Pool speichern</button>
+            </div>
           </div>
         </section>
 
         <section class="generator-panel">
-          <div class="box-title" style="color: #30d158; margin-bottom:12px;">2. KI-Antwort importieren</div>
-          <div class="input-row" style="display:block;">
-            <textarea class="clean-textarea" id="import-textarea" style="height:48px; margin-bottom:10px;" placeholder="Füge das generierte [ ] JSON hier ein..."></textarea>
-            <button class="gen-button" style="width:100%;" onclick="importAIContent()">Ideen einlesen</button>
+          <div id="ideas-import-ui">
+            <div class="box-title" style="color: #30d158; margin-bottom:12px;">2. KI-Antwort importieren</div>
+            <div class="input-row" style="display:block;">
+              <textarea class="clean-textarea" id="import-textarea" style="height:48px; margin-bottom:10px;" placeholder="Füge das generierte [ ] JSON hier ein..."></textarea>
+              <button class="gen-button" style="width:100%;" onclick="importAIContent()">Ideen einlesen</button>
+            </div>
+          </div>
+          
+          <div id="worlds-quick-ui" style="display:none;">
+            <div class="box-title" style="color: #30d158; margin-bottom:8px;">VRChat Schnell-Links</div>
+            <p style="color:var(--text-muted); font-size:12px; margin-bottom:14px;">Nutze diese offiziellen Anlaufstellen, um die Namen neuer Hype-Welten direkt abzugreifen.</p>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <a class="scout-link-card" style="padding:10px;" href="https://vrchat.com/home/worlds" target="_blank">🌐 VRChat Trending Web-Tab</a>
+              <a class="scout-link-card" style="padding:10px;" href="https://vrcw.net/" target="_blank">🔍 VRCW Welten-Suchmaschine</a>
+            </div>
           </div>
         </section>
       </div>
@@ -528,7 +599,7 @@
         <div class="builder-output">
           <div id="builder-empty-notice" class="empty-state" style="border: none; padding: 20px 0;">Wähle links eine deiner favorisierten Ideen aus, um einen detaillierten Konzept-Prompt zu generieren.</div>
           <div id="builder-content" style="display: none;">
-            <h3 id="builder-display-title" style="font-size: 18px; font-weight: 700; margin-bottom: 6px; color: #a78bfa; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Ideentitel</h3>
+            <h3 id="builder-display-title" style="font-size: 18px; font-weight: 700; margin-bottom: 6px; color: #a78bfa;">Ideentitel</h3>
             <p id="builder-display-desc" style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Beschreibung</p>
             
             <div class="box-title" style="color: #a78bfa;">1. Kopiere diesen Konzept-Prompt für die KI:</div>
@@ -549,21 +620,17 @@
         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 16px;">
           Starte den Timer parallel zur Stream-Aufnahme. Klicke bei Highlights oder verrückten Zuschauer-Zitaten den Buzzer (oder drücke <kbd>Leertaste</kbd>).
         </p>
-
         <div class="timer-display" id="stream-timer">00:00:00</div>
-
         <div class="sichter-controls">
           <button class="action-btn" id="btn-toggle-timer" style="background: #30d158; color: #000; padding: 12px 20px;" onclick="toggleTimer()">Stream Starten</button>
           <button class="action-btn" style="background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border);" onclick="resetTimer()">Reset</button>
         </div>
-
         <button class="buzzer-btn" id="btn-buzzer" onclick="pressBuzzer()" disabled>💥 Highlight / Chat-Zitat sichern (Leertaste)</button>
 
         <div style="margin-top: 32px; display: flex; justify-content: space-between; align-items: center;">
           <div class="box-title" style="color: var(--text-main); margin: 0;">Gelistete Stream-Momente &amp; Zitate</div>
           <button class="action-btn" style="background: #ffffff; color: #000; font-size: 11px;" onclick="exportTimestamps()">Liste für Short-Skripte kopieren</button>
         </div>
-
         <table class="timestamp-table">
           <thead>
             <tr>
@@ -573,9 +640,7 @@
             </tr>
           </thead>
           <tbody id="timestamp-tbody">
-            <tr>
-              <td colspan="3" class="empty-state" style="padding: 20px 0; border: none;">Noch keine Highlights markiert. Starte den Timer und buzzere!</td>
-            </tr>
+            <tr><td colspan="3" class="empty-state" style="padding: 20px 0; border: none;">Noch keine Highlights markiert. Starte den Timer und buzzere!</td></tr>
           </tbody>
         </table>
       </div>
@@ -595,7 +660,6 @@
       </div>
 
       <div class="feature-grid-2x2">
-        
         <div class="feature-card-hub">
           <div>
             <div class="box-title" style="color:#a78bfa;">🧭 VRChat Welten-Finder &amp; Story-Aufhänger</div>
@@ -639,7 +703,6 @@
           </div>
           <button class="action-btn" style="background:#0a84ff; color:#fff; width:100%;" onclick="copyRadarOutput()">Kopieren &amp; in KI einfügen</button>
         </div>
-
       </div>
     </div>
 
@@ -652,6 +715,7 @@
 </div>
 
 <script>
+// Maus-Glow
 const glow = document.getElementById('mouse-glow');
 document.addEventListener('mousemove', (e) => {
   window.requestAnimationFrame(() => {
@@ -659,6 +723,7 @@ document.addEventListener('mousemove', (e) => {
   });
 });
 
+// Basis-Pool Daten für Ideen
 const baseShort = [
   { id: 's1', tag:'meme', title:'POV: Jemand fragt ob Furries weird sind', desc:'Reagiere in Character als dein Fursona – absurd, selbstbewusst, witzig.', inspo:'Inspiration: EN VRChat Community' },
   { id: 's2', tag:'challenge', title:'1 Stunde in VRChat ohne Sprechen', desc:'NPC-Challenge: Antworte nur durch Emotes und Gesten in Public Lobbies.', inspo:'Trend: Silent Challenges' },
@@ -669,17 +734,39 @@ const baseLong = [
   { id: 'l2', tag:'meme', title:'Best of VRChat Highlights', desc:'Compilation deiner witzigsten Erlebnisse in öffentlichen Instanzen.', inspo:'Format à la Lolathon' }
 ];
 
+// Basis-Pool Daten für Welten (Falls lokaler Speicher leer ist)
+const defaultWorlds = [
+  { id: 'w_def1', tag:'horror', title:'The Devouring', desc:'Der absolute Gold-Standard für VRChat Horror-Kampagnen. Extrem gruselig, ca. 5-6 Stunden Gameplay.', inspo:'Klassiker', isWorld: true },
+  { id: 'w_def2', tag:'game', title:'Pop Death Run', desc:'Absurd spaßiges Minispiel im Stil eines Hindernisparcours. Perfekt für Chaos im Stream.', inspo:'Trend', isWorld: true },
+  { id: 'w_def3', tag:'chill', title:'Yayoi Summer Night', desc:'Wunderschöne, japanische Sommernacht mit genialen Lichteffekten. Top für Deep Talks.', inspo:'Ästhetik', isWorld: true }
+];
+
+// Zustands-Variablen
+let dbMode = 'ideas'; // 'ideas' oder 'worlds'
 let currentView = 'all'; 
 let currentFormat = 'short';
 let currentPhase = 1;
 let selectedBuilderItemId = null;
 
+// Speicher-Listen laden
 let aiList = JSON.parse(localStorage.getItem('ll_ai') || '[]');
 let favList = JSON.parse(localStorage.getItem('ll_fav') || '[]');
 let archList = JSON.parse(localStorage.getItem('ll_arch') || '[]');
 let umsList = JSON.parse(localStorage.getItem('ll_ums') || '[]'); 
 let timestampList = JSON.parse(localStorage.getItem('ll_timestamps') || '[]');
 
+// Eigene Listen für Welten-Modus
+let worldsPoolList = JSON.parse(localStorage.getItem('ll_worlds_pool') || '[]');
+let worldsFavList = JSON.parse(localStorage.getItem('ll_worlds_fav') || '[]');
+let worldsPlanList = JSON.parse(localStorage.getItem('ll_worlds_plan') || '[]');
+let worldsArchList = JSON.parse(localStorage.getItem('ll_worlds_arch') || '[]');
+
+// Falls der Weltenpool komplett leer ist, Standardwelten einfügen
+if(worldsPoolList.length === 0 && worldsFavList.length === 0 && worldsPlanList.length === 0 && worldsArchList.length === 0) {
+  worldsPoolList = [...defaultWorlds];
+}
+
+// Timer Variablen
 let timerInterval = null;
 let startTime = 0;
 let elapsedTime = 0;
@@ -691,13 +778,55 @@ function save() {
   localStorage.setItem('ll_arch', JSON.stringify(archList));
   localStorage.setItem('ll_ums', JSON.stringify(umsList));
   localStorage.setItem('ll_timestamps', JSON.stringify(timestampList));
+
+  localStorage.setItem('ll_worlds_pool', JSON.stringify(worldsPoolList));
+  localStorage.setItem('ll_worlds_fav', JSON.stringify(worldsFavList));
+  localStorage.setItem('ll_worlds_plan', JSON.stringify(worldsPlanList));
+  localStorage.setItem('ll_worlds_arch', JSON.stringify(worldsArchList));
+
   updateBadges();
 }
 
 function updateBadges() {
-  document.getElementById('badge-fav').textContent = favList.length;
-  document.getElementById('badge-done').textContent = archList.length;
-  document.getElementById('badge-ums').textContent = umsList.length; 
+  if (dbMode === 'ideas') {
+    document.getElementById('badge-fav').textContent = favList.length;
+    document.getElementById('badge-ums').textContent = umsList.length;
+    document.getElementById('badge-done').textContent = archList.length;
+  } else {
+    document.getElementById('badge-fav').textContent = worldsFavList.length;
+    document.getElementById('badge-ums').textContent = worldsPlanList.length;
+    document.getElementById('badge-done').textContent = worldsArchList.length;
+  }
+}
+
+// Umschalten zwischen Ideen-Modus und Welten-Modus
+function setDashboardMode(mode) {
+  dbMode = mode;
+  document.getElementById('mode-ideas-btn').classList.toggle('active', mode === 'ideas');
+  document.getElementById('mode-worlds-btn').classList.toggle('active', mode === 'worlds');
+
+  // Sidebar Beschriftungen anpassen
+  if (mode === 'ideas') {
+    document.getElementById('nav-pool-text').textContent = "📁 Ideen-Pool";
+    document.getElementById('nav-mid-text').textContent = "🎬 Umsetzung";
+    document.getElementById('phase-switcher-container').style.style = 'flex';
+    document.getElementById('ideas-generator-ui').style.display = 'block';
+    document.getElementById('ideas-import-ui').style.display = 'block';
+    document.getElementById('worlds-generator-ui').style.display = 'none';
+    document.getElementById('worlds-quick-ui').style.display = 'none';
+  } else {
+    document.getElementById('nav-pool-text').textContent = "🌍 Welten-Pool";
+    document.getElementById('nav-mid-text').textContent = "🎥 In Planung";
+    document.getElementById('phase-switcher-container').style.display = 'none';
+    document.getElementById('ideas-generator-ui').style.display = 'none';
+    document.getElementById('ideas-import-ui').style.display = 'none';
+    document.getElementById('worlds-generator-ui').style.display = 'block';
+    document.getElementById('worlds-quick-ui').style.display = 'block';
+    if(currentPhase === 2) setPhase(1);
+  }
+
+  updateBadges();
+  render();
 }
 
 function setPhase(phase) {
@@ -732,7 +861,7 @@ function setView(view) {
   document.getElementById(targetId).classList.add('active');
   
   const phaseBar = document.getElementById('phase-switcher-container');
-  if(view === 'archive' || view === 'umsetzungen' || view === 'sichter' || view === 'radar') {
+  if(view === 'archive' || view === 'umsetzungen' || view === 'sichter' || view === 'radar' || dbMode === 'worlds') {
     phaseBar.style.display = 'none';
   } else {
     phaseBar.style.display = 'flex';
@@ -750,8 +879,8 @@ function setView(view) {
     document.getElementById('sichter-view-container').style.display = 'none';
     document.getElementById('radar-view-container').style.display = 'block';
   } else {
-    setPhase(1);
-    document.getElementById('format-container').style.display = view === 'all' ? 'flex' : 'none';
+    if (dbMode === 'ideas') setPhase(1);
+    document.getElementById('format-container').style.display = (view === 'all' && dbMode === 'ideas') ? 'flex' : 'none';
     document.getElementById('generator-split-view').style.display = view === 'all' ? 'grid' : 'none';
     document.getElementById('radar-view-container').style.display = 'none';
     render();
@@ -765,6 +894,334 @@ function setFormat(fmt) {
   render();
 }
 
+// Manuelle Welten hinzufügen
+function addManualWorld() {
+  const nameInput = document.getElementById('manual-world-name');
+  const descInput = document.getElementById('manual-world-desc');
+  const name = nameInput.value.trim();
+  const desc = descInput.value.trim();
+
+  if(!name) {
+    alert('Bitte gib zumindest den Namen der Welt ein!');
+    return;
+  }
+
+  const newWorld = {
+    id: 'w_' + Math.random().toString(36).substr(2, 9),
+    tag: 'VRC Welt',
+    title: name,
+    desc: desc || 'Keine Beschreibung hinterlegt.',
+    inspo: 'Manuell gesichert',
+    isWorld: true
+  };
+
+  worldsPoolList.unshift(newWorld);
+  save();
+  nameInput.value = '';
+  descInput.value = '';
+  render();
+}
+
+// Welten Logik (Favorisieren, Planen, Archivieren)
+function handleWorldAction(id, action, origin) {
+  let world = null;
+  
+  // Suchen und aus altem Array entfernen
+  if (origin === 'pool') {
+    world = worldsPoolList.find(w => w.id === id);
+    if(action !== 'fav' && action !== 'plan') worldsPoolList = worldsPoolList.filter(w => w.id !== id);
+  } else if (origin === 'fav') {
+    world = worldsFavList.find(w => w.id === id);
+    worldsFavList = worldsFavList.filter(w => w.id !== id);
+  } else if (origin === 'plan') {
+    world = worldsPlanList.find(w => w.id === id);
+    worldsPlanList = worldsPlanList.filter(w => w.id !== id);
+  } else if (origin === 'arch') {
+    world = worldsArchList.find(w => w.id === id);
+    worldsArchList = worldsArchList.filter(w => w.id !== id);
+  }
+
+  if(!world) return;
+
+  // In neues Array schieben
+  if (action === 'fav') {
+    const exists = worldsFavList.some(w => w.id === id);
+    if (exists) {
+      worldsFavList = worldsFavList.filter(w => w.id !== id);
+    } else {
+      worldsFavList.push(world);
+    }
+  } else if (action === 'plan') {
+    const exists = worldsPlanList.some(w => w.id === id);
+    if (exists) {
+      worldsPlanList = worldsPlanList.filter(w => w.id !== id);
+      if(!worldsPoolList.some(w => w.id === id)) worldsPoolList.unshift(world);
+    } else {
+      worldsPlanList.push(world);
+    }
+  } else if (action === 'arch') {
+    worldsArchList.push(world);
+  } else if (action === 'pool') {
+    if(!worldsPoolList.some(w => w.id === id)) worldsPoolList.unshift(world);
+  } else if (action === 'delete') {
+    // Permanent gelöscht aus Archiv
+  }
+
+  save();
+  render();
+}
+
+
+// Ideen Workflow Logik
+function toggleFav(id, origin) {
+  let item = findItem(id, origin);
+  if(!item) return;
+
+  const isFav = favList.some(f => f.id === id);
+  if(isFav) {
+    favList = favList.filter(f => f.id !== id);
+    if(item.isAi && !aiList.some(a => a.id === id) && currentView !== 'all') {
+      aiList.push(item);
+    }
+    if(selectedBuilderItemId === id) selectedBuilderItemId = null;
+  } else {
+    if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
+    if(origin === 'arch') archList = archList.filter(a => a.id !== id);
+    if(origin === 'ums') umsList = umsList.filter(u => u.id !== id);
+    favList.push(item);
+  }
+  save();
+  render();
+}
+
+function archiveItem(id, origin) {
+  let item = findItem(id, origin);
+  if(!item) return;
+
+  if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
+  if(origin === 'fav') favList = favList.filter(f => f.id !== id);
+  if(origin === 'ums') umsList = umsList.filter(u => u.id !== id);
+
+  if(!archList.some(a => a.id === id)) archList.push(item);
+  if(selectedBuilderItemId === id) selectedBuilderItemId = null;
+  save();
+  render();
+}
+
+function deletePermanent(id) {
+  archList = archList.filter(a => a.id !== id);
+  save();
+  render();
+}
+
+function findItem(id, origin) {
+  if(origin === 'base_short') return baseShort.find(i => i.id === id);
+  if(origin === 'base_long') return baseLong.find(i => i.id === id);
+  if(origin === 'ai') return aiList.find(i => i.id === id);
+  if(origin === 'fav') return favList.find(i => i.id === id);
+  if(origin === 'arch') return archList.find(i => i.id === id);
+  if(origin === 'ums') return umsList.find(i => i.id === id);
+  return null;
+}
+
+// DYNAMISCHES RENDERN DER KARTEN (IDEEN VS WELTEN)
+function buildCardHTML(item, origin) {
+  // WELTEN-KARTEN HTML
+  if (item.isWorld) {
+    const isFav = worldsFavList.some(w => w.id === item.id);
+    const isPlan = worldsPlanList.some(w => w.id === item.id);
+    let buttons = '';
+
+    if (currentView === 'all') {
+      buttons = `
+        <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="handleWorldAction('${item.id}', 'fav', 'pool')" title="Favorisieren">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </button>
+        <button class="icon-action-btn ${isPlan?'active-plan':''}" onclick="handleWorldAction('${item.id}', 'plan', 'pool')" title="Für ein Video einplanen">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </button>
+        <button class="icon-action-btn" onclick="handleWorldAction('${item.id}', 'arch', 'pool')" title="Ins Archiv legen">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+        </button>
+      `;
+    } else if (currentView === 'favorites') {
+      buttons = `
+        <button class="icon-action-btn active-fav" onclick="handleWorldAction('${item.id}', 'fav', 'fav')" title="Aus Favoriten entfernen">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </button>
+      `;
+    } else if (currentView === 'umsetzungen') {
+      buttons = `
+        <button class="icon-action-btn active-plan" onclick="handleWorldAction('${item.id}', 'plan', 'plan')" title="Planung aufheben">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </button>
+        <button class="icon-action-btn" onclick="handleWorldAction('${item.id}', 'arch', 'plan')" title="Video erledigt! Ab ins Archiv">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+        </button>
+      `;
+    } else if (currentView === 'archive') {
+      buttons = `
+        <button class="icon-action-btn" onclick="handleWorldAction('${item.id}', 'pool', 'arch')" title="Zurück in den Pool werfen">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        </button>
+        <button class="icon-action-btn" onclick="handleWorldAction('${item.id}', 'delete', 'arch')" title="Permanent löschen" style="color:rgba(255,69,58,0.6)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+        </button>
+      `;
+    }
+
+    const encWorldName = encodeURIComponent(item.title);
+
+    return `
+      <div class="idea-card world-style ${currentView==='archive'?'archive-style':''}">
+        <div class="card-header">
+          <div class="card-tags">
+            <span class="card-tag w-badge">🌍 ${item.tag}</span>
+          </div>
+          <div class="card-actions">${buttons}</div>
+        </div>
+        <div class="card-title">${item.title}</div>
+        <div class="card-desc">${item.desc}</div>
+        <a class="vrc-search-link" href="https://vrchat.com/home/search/${encWorldName}" target="_blank">🔗 VRChat Web-Suche öffnen</a>
+        <div class="card-footer">${item.inspo || 'Liro Worlds Hub'}</div>
+      </div>
+    `;
+  }
+
+  // STANDARD IDEEN-KARTEN HTML
+  const isFav = favList.some(f => f.id === item.id);
+  let buttons = '';
+
+  if(currentView === 'all') {
+    buttons = `
+      <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="toggleFav('${item.id}', '${origin}')" title="Favorisieren">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <button class="icon-action-btn" onclick="archiveItem('${item.id}', '${origin}')" title="Archivieren">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+      </button>
+    `;
+  } else if(currentView === 'favorites') {
+    buttons = `
+      <button class="icon-action-btn active-fav" onclick="toggleFav('${item.id}', 'fav')" title="Entfernen">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <button class="icon-action-btn" onclick="archiveItem('${item.id}', 'fav')" title="Abhaken">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+      </button>
+    `;
+  } else if(currentView === 'umsetzungen') {
+    buttons = `
+      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'ums')" title="Zurücklegen">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <button class="icon-action-btn" onclick="archiveItem('${item.id}', 'ums')" title="Ins Archiv legen">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+      </button>
+    `;
+  } else if(currentView === 'archive') {
+    buttons = `
+      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'arch')" title="Wiederherstellen">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+      <button class="icon-action-btn" onclick="deletePermanent('${item.id}')" title="Permanent löschen" style="color:rgba(255,69,58,0.6)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+      </button>
+    `;
+  }
+
+  return `
+    <div class="idea-card ${item.isAi?'ai-style':''} ${item.isUmsetzung?'umsetzung-style':''} ${currentView==='archive'?'archive-style':''}">
+      <div class="card-header">
+        <div class="card-tags">
+          <span class="card-tag">${item.tag}</span>
+          ${item.isAi ? '<span class="card-tag ai-badge">KI</span>' : ''}
+          ${item.isUmsetzung ? '<span class="card-tag u-badge">Konzept</span>' : ''}
+        </div>
+        <div class="card-actions">${buttons}</div>
+      </div>
+      <div class="card-title">${item.title}</div>
+      <div class="card-desc">${item.desc}</div>
+      <div class="card-footer">${item.inspo || 'Liro Labs Engine'}</div>
+    </div>
+  `;
+}
+
+function render() {
+  const mainGrid = document.getElementById('main-grid');
+  const aiGrid = document.getElementById('ai-grid');
+  const aiTitle = document.getElementById('ai-title');
+  const poolTitle = document.getElementById('pool-title');
+
+  // RENDER-LOGIK FÜR WELTEN-MODUS
+  if (dbMode === 'worlds') {
+    aiTitle.style.display = 'none';
+    aiGrid.style.display = 'none';
+    poolTitle.style.display = 'block';
+
+    if (currentView === 'all') {
+      poolTitle.textContent = "Gespeicherte Welten-Sammlung";
+      if(!worldsPoolList.length) {
+        mainGrid.innerHTML = `<div class="empty-state">Noch keine Welten gesichert. Nutze das linke Feld, um deine Entdeckungen einzutragen!</div>`;
+      } else {
+        mainGrid.innerHTML = worldsPoolList.map(w => buildCardHTML(w, 'pool')).join('');
+      }
+    } else {
+      poolTitle.style.display = 'none';
+      let targetList = [];
+      let emptyMsg = '';
+      if(currentView === 'favorites') { targetList = worldsFavList; emptyMsg = 'Keine Favoriten-Welten markiert.'; }
+      if(currentView === 'umsetzungen') { targetList = worldsPlanList; emptyMsg = 'Keine Welten für anstehende Videos eingeplant.'; }
+      if(currentView === 'archive') { targetList = worldsArchList; emptyMsg = 'Das Welten-Archiv ist leer.'; }
+
+      if(!targetList.length) {
+        mainGrid.innerHTML = `<div class="empty-state">${emptyMsg}</div>`;
+      } else {
+        mainGrid.innerHTML = targetList.map(w => buildCardHTML(w, currentView === 'favorites'?'fav':currentView==='umsetzungen'?'plan':'arch')).join('');
+      }
+    }
+    return;
+  }
+
+  // RENDER-LOGIK FÜR IDEEN-MODUS
+  if(currentView === 'all') {
+    poolTitle.style.display = 'block';
+    poolTitle.textContent = currentFormat === 'short' ? 'Basis-Ideenpool (Shorts)' : 'Basis-Ideenpool (YouTube)';
+    
+    if(aiList.length) {
+      aiTitle.style.display = 'block';
+      aiGrid.style.display = 'grid';
+      aiGrid.innerHTML = aiList.map(i => buildCardHTML(i, 'ai')).join('');
+    } else {
+      aiTitle.style.display = 'none';
+      aiGrid.style.display = 'none';
+    }
+
+    let base = currentFormat === 'short' ? baseShort : baseLong;
+    mainGrid.innerHTML = base.map(i => buildCardHTML(i, currentFormat === 'short' ? 'base_short' : 'base_long')).join('');
+
+  } else {
+    aiTitle.style.display = 'none';
+    aiGrid.style.display = 'none';
+    poolTitle.style.display = 'none';
+
+    let listToRender = [];
+    if(currentView === 'favorites') listToRender = favList;
+    if(currentView === 'umsetzungen') listToRender = umsList;
+    if(currentView === 'archive') listToRender = archList;
+
+    if(!listToRender.length) {
+      let msg = 'Das Archiv ist leer.';
+      if(currentView === 'favorites') msg = 'Noch keine Favoriten geplant.';
+      if(currentView === 'umsetzungen') msg = 'Hier sind noch keine Skripte gespeichert.';
+      mainGrid.innerHTML = `<div class="empty-state">${msg}</div>`;
+    } else {
+      mainGrid.innerHTML = listToRender.map(i => buildCardHTML(i, currentView === 'favorites' ? 'fav' : currentView === 'umsetzungen' ? 'ums' : 'arch')).join('');
+    }
+  }
+}
+
+// Sichter & Live Timer Funktionen
 function toggleTimer() {
   const btn = document.getElementById('btn-toggle-timer');
   const buzzer = document.getElementById('btn-buzzer');
@@ -851,11 +1308,10 @@ function renderSichter() {
     tbody.innerHTML = `<tr><td colspan="3" class="empty-state" style="padding: 20px 0; border: none;">Noch keine Highlights markiert. Starte den Timer und buzzere!</td></tr>`;
     return;
   }
-  
   tbody.innerHTML = timestampList.map(t => `
     <tr>
       <td class="ts-time">${t.time}</td>
-      <td><input class="ts-input" type="text" placeholder="Z.B. Zuschauer sagt Satz X / Legendärer Lobby-Moment..." value="${t.note}" onchange="updateNote('${t.id}', this.value)"></td>
+      <td><input class="ts-input" type="text" placeholder="Z.B. Zuschauer sagt Satz X..." value="${t.note}" onchange="updateNote('${t.id}', this.value)"></td>
       <td><button class="ts-del" onclick="deleteTimestamp('${t.id}')">✕</button></td>
     </tr>
   `).join('');
@@ -866,213 +1322,15 @@ function exportTimestamps() {
     alert('Deine Liste ist noch leer!');
     return;
   }
-  let copyString = `Hier sind die echten Highlights und Chat-Momente aus Liros Live-Stream. Hilf mir, daraus fesselnde, virale Kurzvideos / Reaction-Shorts zu skripten:\n\n`;
+  let copyString = `Hier sind die Highlights aus Liros Live-Stream:\n\n`;
   timestampList.forEach(t => {
-    copyString += `- [${t.time}] Highlight-Zitaten-Notiz: ${t.note || 'Auffälliger Moment'}\n`;
+    copyString += `- [${t.time}] Notiz: ${t.note || 'Highlight'}\n`;
   });
-  
   navigator.clipboard.writeText(copyString);
-  alert('Die Highlight- & Zitat-Liste wurde kopiert!');
+  alert('Die Highlight-Liste wurde kopiert!');
 }
 
-// OPTIMIERTE HUB PROMPTS FÜR SCHNELLE, ECHTE ERGEBNISSE
-function triggerWorldRadar() {
-  const type = document.getElementById('radar-world-type').value;
-  document.getElementById('radar-box-title').textContent = "Ausgabe: Trend-Radar Prompt";
-  document.getElementById('radar-output-textarea').value = `Du bist Liros Content-Strategist für VRChat. Generiere 3 maßgeschneiderte Video-Konzepte für die VRChat-Kategorie "${type}".
-
-WICHTIGSTE REGEL: Liro möchte so wenig Aufwand wie möglich haben. 
-1. Nenne ihm pro Konzept mindestens einen weltbekannten, existierenden ECHTEN Weltennamen (z.B. Welten wie die in den Klammern der Auswahl, oder andere reale Riesen-Trends), den er sofort eintippen kann.
-2. Wenn du neuere Welten vorschlägst, nenne den EXAKTEN Suchnamen für das VRChat-In-Game-Suchfeld, sodass er das erste Ergebnis anklicken kann und fertig ist.
-3. Schreibe eine super kurze Video-Challenge (inklusive packender Hook für Shorts) dazu. Keine komplizierten Regelwerke, sondern schneller, spaßiger Content.`;
-}
-
-function triggerPersonaAmplifier() {
-  const style = document.getElementById('radar-avatar-style').value;
-  document.getElementById('radar-box-title').textContent = "Ausgabe: Avatar Persona Prompt";
-  document.getElementById('radar-output-textarea').value = `Ich trage im nächsten VRChat Video/Stream den Avatar-Stil "${style}". Generiere mir 5 maßgeschneiderte, extrem lustige Pointen, Einzeller oder Interaktions-Challenges für öffentliche VRChat Lobbies (Public Instances), die perfekt zu dieser visuellen Rolle passen.`;
-}
-
-function triggerThumbnailDesigner() {
-  const topic = document.getElementById('radar-thumb-topic').value.trim();
-  if(!topic) {
-    alert('Bitte gib zuerst ein ungefähres Thema ein!');
-    return;
-  }
-  document.getElementById('radar-box-title').textContent = "Ausgabe: Thumbnail-Regiebuch Prompt";
-  document.getElementById('radar-output-textarea').value = `Ich plane ein VRChat Video mit dem Thema: "${topic}". Erstelle mir ein professionelles, exaktes Regiebuch für mein YouTube/TikTok Thumbnail. Ich brauche:
-1. Posing- & Mimik-Anweisung für meinen Furry-Avatar.
-2. Hintergrund- und Lichtstimmungs-Tipps für die VRChat Welt.
-3. Die perfekte Text-Hook (maximal 3 fette Wörter) mit Farbempfehlung.`;
-}
-
-function copyRadarOutput() {
-  const txt = document.getElementById('radar-output-textarea').value;
-  if(!txt) {
-    alert('Generiere erst einen Prompt!');
-    return;
-  }
-  navigator.clipboard.writeText(txt);
-  alert('Spezial-Prompt kopiert! Ab damit in die KI.');
-}
-
-
-// Globaler Workflow
-function toggleFav(id, origin) {
-  let item = findItem(id, origin);
-  if(!item) return;
-
-  const isFav = favList.some(f => f.id === id);
-  if(isFav) {
-    favList = favList.filter(f => f.id !== id);
-    if(item.isAi && !aiList.some(a => a.id === id) && currentView !== 'all') {
-      aiList.push(item);
-    }
-    if(selectedBuilderItemId === id) selectedBuilderItemId = null;
-  } else {
-    if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
-    if(origin === 'arch') archList = archList.filter(a => a.id !== id);
-    if(origin === 'ums') umsList = umsList.filter(u => u.id !== id);
-    favList.push(item);
-  }
-  save();
-  render();
-  if(currentPhase === 2) renderBuilder();
-}
-
-function archiveItem(id, origin) {
-  let item = findItem(id, origin);
-  if(!item) return;
-
-  if(origin === 'ai') aiList = aiList.filter(a => a.id !== id);
-  if(origin === 'fav') favList = favList.filter(f => f.id !== id);
-  if(origin === 'ums') umsList = umsList.filter(u => u.id !== id);
-
-  if(!archList.some(a => a.id === id)) archList.push(item);
-  if(selectedBuilderItemId === id) selectedBuilderItemId = null;
-  save();
-  render();
-  if(currentPhase === 2) renderBuilder();
-}
-
-function deletePermanent(id) {
-  archList = archList.filter(a => a.id !== id);
-  save();
-  render();
-}
-
-function findItem(id, origin) {
-  if(origin === 'base_short') return baseShort.find(i => i.id === id);
-  if(origin === 'base_long') return baseLong.find(i => i.id === id);
-  if(origin === 'ai') return aiList.find(i => i.id === id);
-  if(origin === 'fav') return favList.find(i => i.id === id);
-  if(origin === 'arch') return archList.find(i => i.id === id);
-  if(origin === 'ums') return umsList.find(i => i.id === id);
-  return null;
-}
-
-function buildCardHTML(item, origin) {
-  const isFav = favList.some(f => f.id === item.id);
-  let buttons = '';
-
-  if(currentView === 'all') {
-    buttons = `
-      <button class="icon-action-btn ${isFav?'active-fav':''}" onclick="toggleFav('${item.id}', '${origin}')" title="Favorisieren">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="archiveItem('${item.id}', '${origin}')" title="Archivieren">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      </button>
-    `;
-  } else if(currentView === 'favorites') {
-    buttons = `
-      <button class="icon-action-btn active-fav" onclick="toggleFav('${item.id}', 'fav')" title="Vom Plan entfernen">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="archiveItem('${item.id}', 'fav')" title="Als erledigt abhaken">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-      </button>
-    `;
-  } else if(currentView === 'umsetzungen') {
-    buttons = `
-      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'ums')" title="Zurück zu Favoriten schieben">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="archiveItem('${item.id}', 'ums')" title="Ins Archiv legen">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-      </button>
-    `;
-  } else if(currentView === 'archive') {
-    buttons = `
-      <button class="icon-action-btn" onclick="toggleFav('${item.id}', 'arch')" title="Wiederherstellen">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-      </button>
-      <button class="icon-action-btn" onclick="deletePermanent('${item.id}')" title="Endgültig löschen" style="color:rgba(255,69,58,0.6)">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
-      </button>
-    `;
-  }
-
-  return `
-    <div class="idea-card ${item.isAi?'ai-style':''} ${item.isUmsetzung?'umsetzung-style':''} ${currentView==='archive'?'archive-style':''}">
-      <div class="card-header">
-        <div class="card-tags">
-          <span class="card-tag">${item.tag}</span>
-          ${item.isAi ? '<span class="card-tag ai-badge">KI</span>' : ''}
-          ${item.isUmsetzung ? '<span class="card-tag u-badge">Konzept</span>' : ''}
-        </div>
-        <div class="card-actions">${buttons}</div>
-      </div>
-      <div class="card-title">${item.title}</div>
-      <div class="card-desc">${item.desc}</div>
-      <div class="card-footer">${item.inspo || 'Liro Labs Engine'}</div>
-    </div>
-  `;
-}
-
-function render() {
-  const mainGrid = document.getElementById('main-grid');
-  const aiGrid = document.getElementById('ai-grid');
-  const aiTitle = document.getElementById('ai-title');
-  const poolTitle = document.getElementById('pool-title');
-
-  if(currentView === 'all') {
-    poolTitle.style.display = 'block';
-    poolTitle.textContent = currentFormat === 'short' ? 'Basis-Ideenpool (Shorts)' : 'Basis-Ideenpool (YouTube)';
-    
-    if(aiList.length) {
-      aiTitle.style.display = 'block';
-      aiGrid.style.display = 'grid';
-      aiGrid.innerHTML = aiList.map(i => buildCardHTML(i, 'ai')).join('');
-    } else {
-      aiTitle.style.display = 'none';
-      aiGrid.style.display = 'none';
-    }
-
-    let base = currentFormat === 'short' ? baseShort : baseLong;
-    mainGrid.innerHTML = base.map(i => buildCardHTML(i, currentFormat === 'short' ? 'base_short' : 'base_long')).join('');
-
-  } else {
-    aiTitle.style.display = 'none';
-    aiGrid.style.display = 'none';
-    poolTitle.style.display = 'none';
-
-    let listToRender = [];
-    if(currentView === 'favorites') listToRender = favList;
-    if(currentView === 'umsetzungen') listToRender = umsList;
-    if(currentView === 'archive') listToRender = archList;
-
-    if(!listToRender.length) {
-      let msg = 'Das Archiv ist leer.';
-      if(currentView === 'favorites') msg = 'Noch keine Favoriten geplant.';
-      if(currentView === 'umsetzungen') msg = 'Hier sind noch keine Skripte gespeichert.';
-      mainGrid.innerHTML = `<div class="empty-state">${msg}</div>`;
-    } else {
-      mainGrid.innerHTML = listToRender.map(i => buildCardHTML(i, currentView === 'favorites' ? 'fav' : currentView === 'umsetzungen' ? 'ums' : 'arch')).join('');
-    }
-  }
-}
-
+// Builder / Phasen-Planer Funktionen
 function renderBuilder() {
   const listContainer = document.getElementById('builder-favorites-list');
   if(favList.length === 0) {
@@ -1114,7 +1372,6 @@ Erkläre stark, aber extrem strukturiert in prägnanten STICHPUNKTEN, wie man di
       return;
     }
   }
-
   document.getElementById('builder-empty-notice').style.display = 'block';
   document.getElementById('builder-content').style.display = 'none';
 }
@@ -1128,7 +1385,7 @@ function copyBuilderPrompt() {
   const textarea = document.getElementById('builder-textarea');
   textarea.select();
   document.execCommand('copy');
-  alert('Konzept-Prompt kopiert! Schick ihn mir im Chat.');
+  alert('Konzept-Prompt kopiert!');
 }
 
 function saveUmsetzungData() {
@@ -1157,6 +1414,7 @@ function saveUmsetzungData() {
   setView('umsetzungen');
 }
 
+// KI Ideen-Prompter
 function generatePrompt() {
   const keyword = document.getElementById('ai-prompt').value.trim();
   const formatText = currentFormat === 'short' ? 'Kurzform (TikTok/Shorts)' : 'Langform (YouTube)';
@@ -1212,6 +1470,37 @@ function importAIContent() {
   }
 }
 
+// Hub-X Automationen
+function triggerWorldRadar() {
+  const type = document.getElementById('radar-world-type').value;
+  document.getElementById('radar-box-title').textContent = "Ausgabe: Trend-Radar Prompt";
+  document.getElementById('radar-output-textarea').value = `Du bist Liros Content-Strategist für VRChat. Generiere 3 maßgeschneiderte Video-Konzepte für die VRChat-Kategorie "${type}".
+1. Nenne ihm pro Konzept mindestens einen weltbekannten, existierenden ECHTEN Weltennamen, den er sofort eintippen kann.
+2. Nenne den EXAKTEN Suchnamen für das VRChat-Suchfeld.
+3. Schreibe eine super kurze Video-Challenge (inklusive packender Hook für Shorts) dazu.`;
+}
+
+function triggerPersonaAmplifier() {
+  const style = document.getElementById('radar-avatar-style').value;
+  document.getElementById('radar-box-title').textContent = "Ausgabe: Avatar Persona Prompt";
+  document.getElementById('radar-output-textarea').value = `Ich trage im nächsten VRChat Video den Avatar-Stil "${style}". Generiere mir 5 maßgeschneiderte Gags oder Interaktions-Challenges für öffentliche VRChat Lobbies.`;
+}
+
+function triggerThumbnailDesigner() {
+  const topic = document.getElementById('radar-thumb-topic').value.trim();
+  if(!topic) { alert('Bitte gib zuerst ein ungefähres Thema ein!'); return; }
+  document.getElementById('radar-box-title').textContent = "Ausgabe: Thumbnail-Regiebuch Prompt";
+  document.getElementById('radar-output-textarea').value = `Ich plane ein VRChat Video mit dem Thema: "${topic}". Erstelle mir ein professionelles Regiebuch für mein Thumbnail (Posing, Licht, Text-Hook).`;
+}
+
+function copyRadarOutput() {
+  const txt = document.getElementById('radar-output-textarea').value;
+  if(!txt) { alert('Generiere erst einen Prompt!'); return; }
+  navigator.clipboard.writeText(txt);
+  alert('Spezial-Prompt kopiert!');
+}
+
+// Initialer Start
 save();
 render();
 </script>
