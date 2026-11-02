@@ -134,9 +134,9 @@ function render(d) {
 
 $("#eye").onclick = () => { const i = $("#pw"), s = i.type === "password"; i.type = s ? "text" : "password"; $("#eye").textContent = s ? "Verbergen" : "Anzeigen"; };
 $("#loginBtn").onclick = login;
-$("#pw").onkeydown = e => e.key === "Enter" && login();
+$("#pw").addEventListener("keydown", e => { if (e.key === "Enter") login(); });
 $("#go").onclick = generate;
-$("#niche").onkeydown = e => e.key === "Enter" && generate();
+$("#niche").addEventListener("keydown", e => { if (e.key === "Enter") generate(); });
 
 (async () => {
   try {
