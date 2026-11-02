@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Liro-Creations</title>
+<style>
+:root{--bg:#000;--fg:#fff;--mut:#8c8c8c;--line:#262626;--hi:#141414}
+*{box-sizing:border-box;margin:0}
+html{color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;background-image:radial-gradient(ellipse 70% 40% at 50% 0,#1f1f1f,transparent);background-repeat:no-repeat}
+main{width:100%;max-width:760px;margin:0 auto;padding:12vh 24px 64px;flex:1}
+h1{font-size:clamp(2.6rem,10vw,5.5rem);line-height:.95;letter-spacing:-.055em;font-weight:800}
+.tag{color:var(--mut);font-size:1.1rem;margin-top:20px;max-width:34em}
+.panel{margin-top:48px}
+label{display:block;font-size:.9rem;color:var(--mut);margin:0 0 8px}
+input,select{width:100%;background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:15px 16px;font:inherit;transition:border-color .15s}
+input:hover,select:hover{border-color:#444}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.row{display:grid;grid-template-columns:1fr 200px;gap:16px;margin-bottom:20px}
+@media(max-width:600px){.row{grid-template-columns:1fr}}
+button{font:inherit;font-weight:600;cursor:pointer;border-radius:999px;padding:14px 28px;border:1px solid var(--fg);background:var(--fg);color:#000;transition:transform .15s,opacity .15s}
+button:hover{transform:translateY(-1px)}
+button:disabled{opacity:.5;cursor:wait;transform:none}
+button.ghost{background:transparent;color:var(--fg);border-color:var(--line);padding:9px 18px;font-weight:500;font-size:.9rem}
+.err{color:#ff8a8a;margin-top:16px;min-height:1.5em}
+.hide{display:none!important}
+.status{margin-top:32px;color:var(--mut);display:flex;gap:12px;align-items:center}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--fg);animation:p 1s ease-in-out infinite alternate}
+@keyframes p{to{opacity:.15}}
+@media(prefers-reduced-motion:reduce){.dot{animation:none}button{transition:none}}
+#res{margin-top:64px}
+.head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-bottom:1px solid var(--fg);padding-bottom:12px;margin-top:48px}
+.head:first-child{margin-top:0}
+h2{font-size:1.5rem;letter-spacing:-.03em}
+ul.p{list-style:none;padding:0}
+ul.p li{padding:14px 0;border-bottom:1px solid var(--line)}
+.idea{padding:24px 0;border-bottom:1px solid var(--line)}
+.idea h3{font-size:1.2rem;letter-spacing:-.02em;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.fmt{font-size:.8rem;font-weight:500;border:1px solid var(--line);border-radius:999px;padding:2px 12px;color:var(--mut)}
+.idea ul{margin:12px 0 0 18px;color:#d0d0d0}
+.idea li{margin:4px 0}
+.idea b{color:var(--fg)}
+footer{text-align:center;color:var(--mut);font-size:.85rem;padding:24px}
+</style>
+</head>
+<body>
+<main>
+  <h1 data-t="title">Liro-Creations</h1>
+  <p class="tag" data-t="tagline">Finde, was gerade auf TikTok funktioniert, und bekomm daraus deine nächsten Videoideen.</p>
+
+  <section id="login" class="panel">
+    <label for="pw" data-t="loginHint">Passwort eingeben, um den Generator zu öffnen.</label>
+    <div class="row" style="grid-template-columns:1fr auto">
+      <input id="pw" type="password" autocomplete="current-password">
+      <button id="loginBtn" data-t="loginButton">Öffnen</button>
+    </div>
+    <p class="err" id="loginErr" role="alert"></p>
+  </section>
+
+  <section id="app" class="panel hide">
+    <div class="row">
+      <div>
+        <label for="niche" data-t="nicheLabel">Nische oder Keyword</label>
+        <input id="niche" data-p="nichePlaceholder" placeholder="z. B. Fitness für Anfänger">
+      </div>
+      <div>
+        <label for="count" data-t="countLabel">Anzahl Videos zur Analyse</label>
+        <select id="count"><option>20</option><option selected>30</option><option>50</option></select>
+      </div>
+    </div>
+    <button id="go" data-t="button">Ideen generieren</button>
+    <p class="err" id="err" role="alert"></p>
+    <div class="status hide" id="status"><span class="dot"></span><span>Videos werden geladen und ausgewertet. Das dauert bis zu 2 Minuten.</span></div>
+    <div id="res" class="hide" aria-live="polite"></div>
+  </section>
+</main>
+<footer data-t="footer">© Liro-Socials</footer>
+
+<script>
+// Nach dem Deployen des Workers hier die Worker-URL eintragen:
+const API = "https://DEIN-WORKER.DEIN-NAME.workers.dev";
+const $ = s => document.querySelector(s);
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+let T = {};
+
+async function api(body) {
+  const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: sessionStorage.pw, ...body }) });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || "Etwas ist schiefgelaufen.");
+  return d;
+}
+const open = () => { $("#login").classList.add("hide"); $("#app").classList.remove("hide"); };
+
+async function login() {
+  sessionStorage.pw = $("#pw").value; $("#loginErr").textContent = "";
+  try { await api({ action: "login" }); open(); }
+  catch (e) { sessionStorage.removeItem("pw"); $("#loginErr").textContent = e.message; }
+}
+
+async function generate() {
+  const niche = $("#niche").value.trim();
+  if (!niche) { $("#err").textContent = "Bitte eine Nische eingeben."; return; }
+  $("#err").textContent = ""; $("#res").classList.add("hide"); $("#status").classList.remove("hide"); $("#go").disabled = true;
+  try { render(await api({ niche, count: $("#count").value })); }
+  catch (e) { $("#err").textContent = e.message; }
+  $("#status").classList.add("hide"); $("#go").disabled = false;
+}
+
+function render(d) {
+  const res = $("#res"); res.replaceChildren();
+  let h = el("div", "head"); h.append(el("h2", null, T.patternsTitle || "Was gerade funktioniert")); res.append(h);
+  const ul = el("ul", "p"); (d.muster || []).forEach(m => ul.append(el("li", null, m))); res.append(ul);
+
+  h = el("div", "head"); h.append(el("h2", null, T.ideasTitle || "Videoideen"));
+  const copy = el("button", "ghost", "Alles kopieren");
+  copy.onclick = async () => {
+    const t = (d.ideen || []).map(i => `${i.titel} (${i.format})\n- Hook: ${i.hook}\n- Warum: ${i.warum}`).join("\n\n");
+    await navigator.clipboard.writeText(t); copy.textContent = "Kopiert"; setTimeout(() => copy.textContent = "Alles kopieren", 1800);
+  };
+  h.append(copy); res.append(h);
+
+  (d.ideen || []).forEach(i => {
+    const box = el("div", "idea"), t = el("h3", null, i.titel); t.append(el("span", "fmt", i.format)); box.append(t);
+    const l = el("ul"); [["Hook: ", i.hook], ["Warum: ", i.warum]].forEach(([k, v]) => { const li = el("li"); li.append(el("b", null, k), v || ""); l.append(li); });
+    box.append(l); res.append(box);
+  });
+  res.classList.remove("hide");
+}
+
+$("#loginBtn").onclick = login;
+$("#pw").onkeydown = e => e.key === "Enter" && login();
+$("#go").onclick = generate;
+$("#niche").onkeydown = e => e.key === "Enter" && generate();
+
+(async () => {
+  try {
+    T = await (await fetch("content/site.json", { cache: "no-store" })).json();
+    document.title = T.title || document.title;
+    document.querySelectorAll("[data-t]").forEach(e => { if (T[e.dataset.t] != null) e.textContent = T[e.dataset.t]; });
+    document.querySelectorAll("[data-p]").forEach(e => { if (T[e.dataset.p] != null) e.placeholder = T[e.dataset.p]; });
+  } catch {}
+  if (sessionStorage.pw) { try { await api({ action: "login" }); open(); } catch { sessionStorage.removeItem("pw"); } }
+})();
+</script>
+</body>
+</html>

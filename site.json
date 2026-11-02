@@ -1,0 +1,13 @@
+{
+  "title": "Liro-Creations",
+  "tagline": "Finde, was gerade auf TikTok funktioniert, und bekomm daraus deine nächsten Videoideen.",
+  "loginHint": "Passwort eingeben, um den Generator zu öffnen.",
+  "loginButton": "Öffnen",
+  "nicheLabel": "Nische oder Keyword",
+  "nichePlaceholder": "z. B. Fitness für Anfänger",
+  "countLabel": "Anzahl Videos zur Analyse",
+  "button": "Ideen generieren",
+  "patternsTitle": "Was gerade funktioniert",
+  "ideasTitle": "Videoideen",
+  "footer": "© Liro-Socials"
+}
