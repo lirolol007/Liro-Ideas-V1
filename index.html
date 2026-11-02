@@ -15,7 +15,7 @@ h1{font-size:clamp(2.6rem,10vw,5.5rem);line-height:.95;letter-spacing:-.055em;fo
 .tag{color:var(--mut);font-size:1.1rem;margin-top:20px;max-width:34em}
 .panel{margin-top:48px}
 label{display:block;font-size:.9rem;color:var(--mut);margin:0 0 8px}
-input,select{width:100%;background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:15px 16px;font:inherit;transition:border-color .15s}
+input,select{width:100%;background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:15px 16px;font:inherit;-webkit-text-fill-color:var(--fg);caret-color:var(--fg);transition:border-color .15s}
 input:hover,select:hover{border-color:#444}
 input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .row{display:grid;grid-template-columns:1fr 200px;gap:16px;margin-bottom:20px}
@@ -52,8 +52,9 @@ footer{text-align:center;color:var(--mut);font-size:.85rem;padding:24px}
 
   <section id="login" class="panel">
     <label for="pw" data-t="loginHint">Passwort eingeben, um den Generator zu öffnen.</label>
-    <div class="row" style="grid-template-columns:1fr auto">
-      <input id="pw" type="password" autocomplete="current-password">
+    <div class="row" style="grid-template-columns:1fr auto auto">
+      <input id="pw" type="password" autocomplete="off" autofocus>
+      <button type="button" class="ghost" id="eye">Anzeigen</button>
       <button id="loginBtn" data-t="loginButton">Öffnen</button>
     </div>
     <p class="err" id="loginErr" role="alert"></p>
@@ -94,7 +95,9 @@ async function api(body) {
 const open = () => { $("#login").classList.add("hide"); $("#app").classList.remove("hide"); };
 
 async function login() {
-  sessionStorage.pw = $("#pw").value; $("#loginErr").textContent = "";
+  const v = $("#pw").value.trim(); $("#loginErr").textContent = "";
+  if (!v) { $("#loginErr").textContent = "Bitte Passwort eingeben."; return; }
+  sessionStorage.pw = v;
   try { await api({ action: "login" }); open(); }
   catch (e) { sessionStorage.removeItem("pw"); $("#loginErr").textContent = e.message; }
 }
@@ -129,6 +132,7 @@ function render(d) {
   res.classList.remove("hide");
 }
 
+$("#eye").onclick = () => { const i = $("#pw"), s = i.type === "password"; i.type = s ? "text" : "password"; $("#eye").textContent = s ? "Verbergen" : "Anzeigen"; };
 $("#loginBtn").onclick = login;
 $("#pw").onkeydown = e => e.key === "Enter" && login();
 $("#go").onclick = generate;
@@ -145,4 +149,4 @@ $("#niche").onkeydown = e => e.key === "Enter" && generate();
 })();
 </script>
 </body>
-</html>l
+</html>
